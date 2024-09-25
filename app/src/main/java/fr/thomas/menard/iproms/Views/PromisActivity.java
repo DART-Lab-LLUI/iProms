@@ -119,7 +119,7 @@ public class PromisActivity extends AppCompatActivity {
                     .build();
 
             // Read the header to get column indices
-            int qolColumnIndex = 3;
+            int qolColumnIndex = 7;
 
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
