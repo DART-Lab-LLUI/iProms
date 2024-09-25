@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.SleepActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/linearTitle"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Questionnaire : "
+            style="@style/Titleblue"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTitleQuestionnaire"
+            android:text="Sleep"
+            style="@style/Titleblue"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/linearPourcentage"
+        android:layout_below="@id/linearTitle"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Percentage completed after this question: "
+            android:fontFamily="@font/montserratregular"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtPoucentageDone"
+            android:text="x"
+            android:fontFamily="@font/montserratregular"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" %"
+            android:fontFamily="@font/montserratregular"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtIntro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/txtQuestion"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:text="Situation :"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/txtQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="My motivation is lower when I am fatigued."
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearRating"
+        android:orientation="horizontal"
+        android:layout_below="@id/txtQuestion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your rating : "
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtRating"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/constraint"
+        android:layout_below="@id/linearRating">
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekbar"
+            android:layout_margin="30dp"
+            android:thumb="@drawable/thumb_size"
+            android:splitTrack="false"
+            android:progress="1"
+            android:progressTint="@color/colorPrimary"
+            android:progressDrawable="@drawable/progress_drawable"
+            app:layout_constraintTop_toTopOf="parent"
+            android:max="3"
+            android:min="0"/>
+
+        <TextView
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtinfo0"
+            android:text="@string/info_seek_WEIMus_0"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintLeft_toLeftOf="@id/seekbar"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtinfo1"
+            android:text="@string/info_seek_WEIMus_1"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintLeft_toRightOf="@id/txtinfo0"
+            app:layout_constraintRight_toLeftOf="@id/txtinfo2"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtinfo2"
+            android:text="@string/info_seek_WEIMus_2"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintLeft_toRightOf="@id/txtinfo1"
+            app:layout_constraintRight_toLeftOf="@id/txtinfo3"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtinfo3"
+            android:text="@string/info_seek_WEIMus_3"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintRight_toRightOf="@id/seekbar"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:id="@+id/btnConfirm"
+        android:layout_below="@id/constraint"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:visibility="invisible"
+        android:background="@drawable/bg_button"
+        android:text="Confirm"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSkip"
+        android:layout_below="@id/btnConfirm"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/bg_circle_button"
+        android:visibility="visible"
+        android:fontFamily="@font/montserratregular"
+        android:text="Skip question"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSkipQuestionnaire"
+        android:layout_below="@id/btnConfirm"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="50dp"
+        android:background="@drawable/bg_circle_button"
+        android:visibility="visible"
+        android:fontFamily="@font/montserratregular"
+        android:text="Finish\nquestionnaire"/>
+
+
+
+
+</RelativeLayout>

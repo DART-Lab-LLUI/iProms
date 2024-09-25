@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".Utils.tScore"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/iproms"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/iproms"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.IPROMS"
+        tools:targetApi="31">
+        <activity
+            android:name=".Views.PromisActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.OptionnalQuestionnairesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.IntroductionFSMCActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.BDI_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.FSMCActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.SummaryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.SleepActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.QualityofLifeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.DepressionAnxietyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.FatigueQuestionnaire"
+            android:exported="false" />
+        <activity
+            android:name=".Views.IntroductionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.IdentificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.LangueActivity"
+            android:exported="true"
+            android:theme="@style/Theme.IPROMS">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Views.MainActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

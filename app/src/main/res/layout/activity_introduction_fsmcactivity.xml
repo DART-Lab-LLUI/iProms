@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.IntroductionFSMCActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtInstrucitons"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textSize="25sp"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/montserratregular"
+        android:text="@string/instructions"/>
+
+
+    <TextView
+        android:id="@+id/txtInstrucitons2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtInstrucitons"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/intro_fsmc"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="90dp"
+        android:id="@+id/btnIntroFSMC"
+        android:layout_below="@id/txtInstrucitons2"
+        android:background="@drawable/bg_button"
+        android:layout_centerHorizontal="true"
+        android:text="Start questionnaire"
+        android:textSize="25sp"/>
+
+
+</RelativeLayout>

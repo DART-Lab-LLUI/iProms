@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.SummaryActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtDescriptionOthers"
+            android:layout_below="@id/tableLayout"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:text="Based on your results, we would suggest the following additional tests. \n\nSomeone from the clinical team will also discuss the results with you."
+            android:textColor="@color/black"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="30dp"
+            android:visibility="invisible"
+            android:textSize="25sp"
+            android:fontFamily="@font/montserratregular"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearUpload"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="10dp"
+            android:visibility="invisible">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/questionnaire_done"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtUpload"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:textSize="18sp"
+                android:fontFamily="@font/montserratregular"
+                android:textColor="@color/green_clock"
+                android:text="Data uploaded"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtSummary"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:padding="20dp"
+            android:textSize="35sp"
+            android:fontFamily="@font/montserratregular"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="Your results"/>
+
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_below="@id/txtSummary"
+            android:background="@drawable/table_border"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="90dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Categorie"
+                    android:textSize="25sp"
+                    android:padding="10dp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_gravity="center"
+                    android:layout_margin="0dp"/>
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Score"
+                    android:textSize="25sp"
+                    android:padding="10dp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textSize="25sp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_gravity="center"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"
+                    android:text="Fatigue"/>
+
+
+
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cellScoreFatiue"
+                    android:text="Cell1"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+                <fr.thomas.menard.iproms.Utils.RankingBarView
+                    android:layout_width="20dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/cellResultFatigue"
+                    android:text="Cell1"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Depression"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cellDepressionScore"
+                    android:text="Cell1"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+                <fr.thomas.menard.iproms.Utils.RankingBarView
+                    android:layout_width="80dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/cellDepressionResult"
+                    android:text="Cell1"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Anxiety"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cellAnxietyScore"
+                    android:text="Cell1"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+                <fr.thomas.menard.iproms.Utils.RankingBarView
+                    android:layout_width="80dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/cellAnxietyResult"
+                    android:text="Cell1"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="BDI - II"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cellBDIScore"
+                    android:text="Cell1"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+                <fr.thomas.menard.iproms.Utils.RankingBarView
+                    android:layout_width="80dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/cellBDIResult"
+                    android:text="Cell1"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+            </TableRow>
+
+
+        </TableLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:id="@+id/btnOptionnalQuestions"
+            android:background="@drawable/bg_button"
+            android:layout_below="@id/txtSummaryDescription"
+            android:textSize="20sp"
+            android:text="Go to questionnaires"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtSummaryDescription"
+            android:text="@string/summary_text"
+            android:layout_below="@id/tableLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:layout_marginStart="30dp"
+            android:visibility="invisible"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/black"
+            android:textSize="25sp"/>
+
+    </RelativeLayout>
+
+
+
+
+
+</ScrollView>

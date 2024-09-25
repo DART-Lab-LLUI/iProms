@@ -1,0 +1,1212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.OptionnalQuestionnairesActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="100dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtTitle"
+                android:text="Additionnal questionnaires"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="30sp"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/txtTitle">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnESSFatigue"
+                    android:fontFamily="@font/montserratregular"
+                    android:layout_marginStart="70dp"
+                    android:text="Sleep"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionFatigueSleep"
+                    android:text="Question answered : 0 / 9"
+                    android:layout_below="@+id/rdBtnESSFatigue"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginTop="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearScoreFatigueSleep"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_sleep"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueSleep"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtQuestionnaireSkipped"
+                        android:text="Questionnaire skipped"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:fontFamily="@font/montserratregular"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+
+
+
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnFSMC"
+                    android:layout_below="@id/linearScoreFatigueSleep"
+                    android:fontFamily="@font/montserratregular"
+                    android:layout_marginStart="70dp"
+                    android:text="FSMC"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionFatigueFSMC"
+                    android:text="Question answered : 0 / 20"
+                    android:layout_below="@+id/rdBtnFSMC"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginTop="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearScoreFSMC"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_fsmc"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueFsmc"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"/>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionnaireSkipped_fsmc"
+                    android:text="Questionnaire skipped"
+                    android:textSize="18sp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/montserratregular"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginStart="100dp"/>
+
+
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtSleepScoreDepression"
+                    android:text="Score"
+                    android:visibility="gone"
+                    android:layout_below="@id/rdBtnBDI"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:layout_marginStart="100dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:id="@+id/rdBtnQoL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="25sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="30dp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/montserratregular"
+                        android:text="Quality of life" />
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/imgQoLDone"
+                        android:src="@drawable/questionnaire_done"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="60dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearQol"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Questions answered : "
+                        android:textSize="18sp"
+                        android:fontFamily="@font/montserratregular"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/nbrQuestionAnsweredQol"
+                        android:text="0"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/montserratregular"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" / 73"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/montserratregular"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/colorPrimary"/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtQuestionsSkippedQOL"
+                        android:layout_marginStart="20dp"
+                        android:visibility="invisible"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/montserratregular"
+                        android:text="(x skipped)"
+                        android:textColor="@color/colorPrimary"/>
+
+
+                </LinearLayout>
+
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnQol1"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/emotional_behavioral_dyscontrol"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserratregular"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionQol1"
+                    android:text="Question answered : 0 / 8"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp"
+                    android:visibility="visible"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_qol1"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueQol1"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="5dp"/>
+
+                </LinearLayout>
+
+
+
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnQol2"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/sleep_disturbance"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserratregular"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionQol2"
+                    android:text="Question answered : 0 / 8"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_qol2"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueQol2"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="5dp"/>
+
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnQol3"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/ability_in_social_roles"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserratregular"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionQol3"
+                    android:text="Question answered : 0 / 8"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_qol3"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueQol3"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="5dp"/>
+
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnQol4"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/satisfaction_with_social_act"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserratregular"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionQol4"
+                    android:text="Question answered : 0 / 8"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_qol4"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueQol4"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="5dp"/>
+
+
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnQol5"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/applied_cognition_general_concerns"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserratregular"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionQol5"
+                    android:text="Question answered : 0 / 8"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_qol5"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueQol5"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="5dp"/>
+
+
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnQol7"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/positiv_effect_well_being"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserratregular"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionQol7"
+                    android:text="Question answered : 0 / 9"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_qol7"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueQol7"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="5dp"/>
+
+
+
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnQol8"
+                    android:layout_marginStart="30dp"
+                    android:text="@string/stigma"
+                    android:layout_marginTop="10dp"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserratregular"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionQol8"
+                    android:text="Question answered : 0 / 8"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_qol8"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueQol8"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="5dp"/>
+
+
+
+                </LinearLayout>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnQol9"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/upper_function"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserratregular"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionQol9"
+                    android:text="Question answered : 0 / 8"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_qol9"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueQol9"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="5dp"/>
+
+
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdBtnQol10"
+                    android:layout_marginStart="30dp"
+                    android:text="@string/lower_function"
+                    android:layout_marginTop="10dp"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserratregular"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtQuestionQol10"
+                    android:text="Question answered : 0 / 8"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserratregular"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/img_done_qol10"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRawValueQol10"
+                        android:text="Total score : x / 40"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserratregular"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="5dp"/>
+
+
+
+                </LinearLayout>
+
+            </RadioGroup>
+
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="50dp"
+                android:visibility="visible"
+                android:layout_below="@id/radioGroup2"
+                android:background="@drawable/table_border"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Categorie"
+                        android:textSize="25sp"
+                        android:padding="10dp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_gravity="center"
+                        android:layout_margin="0dp"/>
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Score"
+                        android:textSize="25sp"
+                        android:padding="10dp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="Description"
+                        android:textSize="25sp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_gravity="center"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"
+                        android:text="Sleep"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellScoreSleep"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="20dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellResultSleep"
+                        android:text="Cell1"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="FSMC"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellFSMCScore"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="80dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellFSMCResult"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Emotional and Behavioral Dyscontrol"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellqol1Score"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellqol1Result"
+                        android:text="Cell1"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Sleep Disturbance"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellqol2Score"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="40dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellqol2Result"
+                        android:text="Cell1"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Ability to Participate in Social Activities"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellqol3Score"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="80dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellqol3Result"
+                        android:text="Cell1"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Satisfaction with Social Activities"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellqol4Score"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellqol4Result"
+                        android:text="Cell1"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Cognitive function"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellqol5Score"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellqol5Result"
+                        android:text="Cell1"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Positive Affect and Well-Being"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellqol7Score"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellqol7Result"
+                        android:text="Cell1"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Stigma"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellqol8Score"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellqol8Result"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Upper Extremity Function"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellqol9Score"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellqol9Result"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Lower Extremity Function"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cellqol10Score"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserratregular"/>
+                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/cellqol10Result"
+                        android:text="Cell1"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/montserratregular"/>
+
+                </TableRow>
+
+
+            </TableLayout>
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bg_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/montserratregular"
+        android:layout_alignParentBottom="true"
+        android:text="Confirm"
+        android:textSize="25sp"
+        android:visibility="visible" />
+
+
+
+</RelativeLayout>

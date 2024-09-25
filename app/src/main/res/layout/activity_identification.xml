@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.IdentificationActivity">
+
+    <TextView
+        android:id="@+id/txtWelcome"
+        style="@style/Titleblue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:padding="20dp"
+        android:textSize="35sp"
+        android:fontFamily="@font/montserratregular"
+        android:text="@string/welcome" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtWelcome"
+        android:id="@+id/APatient_tilId"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="7"
+        android:padding="20dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/APatient_txtIdPatient"
+            android:fontFamily="@font/montserratregular"
+            android:hint="@string/patient_id_7_characters"
+            android:textSize="20sp"
+            android:inputType="phone" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/APatient_tilCaseId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/APatient_tilId"
+        android:padding="20dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="7"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/APatient_txtIdCase"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:hint="@string/case_id_7_characters"
+            android:fontFamily="@font/montserratregular"
+            android:inputType="phone" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/txtSide"
+        style="@style/Titleblue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/APatient_tilCaseId"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp"
+        android:fontFamily="@font/montserratregular"
+        android:text="@string/diagnosis" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtSide"
+        app:errorEnabled="true"
+        android:layout_centerHorizontal="true"
+        >
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rdBtnStroke"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/montserratregular"
+                android:text="@string/stroke" />
+
+            <RadioButton
+                android:id="@+id/rdBtnParki"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/montserratregular"
+                android:text="@string/parkinson" />
+
+            <RadioButton
+                android:id="@+id/rdBtnMS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/montserratregular"
+                android:text="@string/ms" />
+
+            <RadioButton
+                android:id="@+id/rdBtnOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:textSize="25sp"
+                android:fontFamily="@font/montserratregular"
+                android:text="@string/other" />
+
+        </RadioGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tilOther"
+            android:visibility="gone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/editOtherDiagnosis"
+                android:hint="@string/precise_your_diagnosis"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:layout_marginStart="20dp"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_below="@id/tilRadioGroup"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/montserratregular"
+        android:background="@drawable/bg_button"
+        android:textSize="25sp"
+        android:text="@string/confirm" />
+
+
+</RelativeLayout>

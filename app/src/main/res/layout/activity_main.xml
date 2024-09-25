@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="100dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:id="@+id/linearPatient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserratregular"
+                    android:text="@string/patient_id"
+                    android:textColor="@color/black"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/txtPatientID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="50dp"
+                    android:fontFamily="@font/montserratregular"
+                    android:text="00000000"
+                    android:textColor="@color/black"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserratregular"
+                    android:text="@string/diagnosis__"
+                    android:textColor="@color/black"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/txtDiagnosis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserratregular"
+                    android:text="MS"
+                    android:textColor="@color/black"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtInfo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:layout_below="@id/linearPatient"
+                android:fontFamily="@font/montserratregular"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                android:text="@string/we_suggest_you_to_complete_the_following_questionnaires"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtFinish"
+                android:layout_marginTop="50dp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/thank_you_for_completing_our_questionnaires_n_you_can_now_look_at_your_results"
+                android:textSize="30sp"
+                android:fontFamily="@font/montserratregular"
+                android:layout_below="@id/linearPatient"
+                android:textColor="@color/black"
+                android:layout_marginStart="30dp"
+                android:visibility="gone"
+                android:textAlignment="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearChoseQuestionnaire"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="100dp"
+                android:layout_below="@id/txtInfo">
+
+
+                <RadioGroup
+                    android:id="@+id/radioGroup2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <RadioButton
+                        android:id="@+id/rdBtnFatigue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/montserratregular"
+                        android:text="@string/fatigue" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/linearFatigue"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/questions_answered"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:layout_marginStart="20dp"
+                            android:textColor="@color/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/nbrQuestionAnsweredFatigue"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:text="0"
+                            android:layout_marginStart="20dp"
+                            android:textColor="@color/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" / 9"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/colorPrimary"/>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtQuestionsSkippedFatigue"
+                            android:layout_marginStart="20dp"
+                            android:visibility="invisible"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:text="(x skipped)"
+                            android:textColor="@color/colorPrimary"/>
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/linearAvgScore_fatigue"
+                        android:visibility="invisible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/average_score"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/score_avg_fatigue"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:text="3"
+                            android:textColor="@color/colorPrimary"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" / 7"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/colorPrimary"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtQuestionnaireSkipped"
+                        android:text="Questionnaire skipped"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:fontFamily="@font/montserratregular"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginStart="20dp"/>
+
+                    <RadioButton
+                        android:id="@+id/rdBtnDA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/montserratregular"
+                        android:text="@string/depression_and_anxiety" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/linearDep"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtQuestionsDepression"
+                            android:text="@string/questions_answered"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:layout_marginStart="20dp"
+                            android:textColor="@color/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/nbrQuestionAnsweredDep"
+                            android:text="0"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:layout_marginStart="20dp"
+                            android:textColor="@color/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtOutQuestionsDepAnx"
+                            android:text=" / 14"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtQuestionsSkippedDepAnx"
+                            android:layout_marginStart="20dp"
+                            android:visibility="invisible"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:text="(x skipped)"
+                            android:textColor="@color/colorPrimary"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/linearAvgScore_dep"
+                        android:visibility="invisible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Depression score : "
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/score_avg_dep"
+                            android:text="3"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:textColor="@color/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtQuestionsSkippedDep"
+                            android:layout_marginStart="20dp"
+                            android:text="3"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:textColor="@color/colorPrimary"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/linearAvgScore_anx"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Anxiety score: "
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/score_avg_anx"
+                            android:text="3"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:textColor="@color/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:id="@+id/txtQuestionsSkippedAnx"
+                            android:text="3"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:textColor="@color/colorPrimary"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtQuestionnaireSkippedDep"
+                        android:text="Questionnaire skipped"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:fontFamily="@font/montserratregular"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginStart="20dp"/>
+
+
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rdBtnPROMIS"
+                        android:fontFamily="@font/montserratregular"
+                        android:text="PROMIS"
+                        android:textStyle="bold"
+                        android:textSize="25sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="15dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtQuestionPROMIS"
+                            android:text="Question answered : 0 / 10"
+                            android:layout_below="@+id/rdBtnPROMIS"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="5dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtQuestionsSkippedPROMIS"
+                            android:layout_marginStart="20dp"
+                            android:visibility="invisible"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:text="(x skipped)"
+                            android:textColor="@color/colorPrimary"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/linearScorePROMIS"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/txtQuestionPROMIS"
+                        android:visibility="visible"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtRawValuePROMIS"
+                            android:text="Total score : x / 40"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:visibility="invisible"
+                            android:layout_marginTop="5dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtQuestionnaireSkipped_PROMIS"
+                            android:text="Questionnaire skipped"
+                            android:textSize="18sp"
+                            android:visibility="invisible"
+                            android:fontFamily="@font/montserratregular"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginStart="10dp"/>
+
+                    </LinearLayout>
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rdBtnBDI"
+                        android:fontFamily="@font/montserratregular"
+                        android:text="BDI - II"
+                        android:textStyle="bold"
+                        android:textSize="25sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="15dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtQuestionBDI"
+                            android:text="Question answered : 0 / 21"
+                            android:layout_below="@+id/rdBtnBDI"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="5dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtQuestionsSkippedBDI"
+                            android:layout_marginStart="20dp"
+                            android:visibility="invisible"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:text="(x skipped)"
+                            android:textColor="@color/colorPrimary"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/linearScoreBDI"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/txtQuestionBDI"
+                        android:visibility="visible"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtRawValueBDI"
+                            android:text="Total score : x / 40"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:visibility="invisible"
+                            android:layout_marginTop="5dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtQuestionnaireSkipped_bdi"
+                            android:text="Questionnaire skipped"
+                            android:textSize="18sp"
+                            android:visibility="invisible"
+                            android:fontFamily="@font/montserratregular"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginStart="10dp"/>
+
+                    </LinearLayout>
+
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearCheckDone"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imgFatigueDone"
+                        android:layout_marginTop="30dp"
+                        android:src="@drawable/questionnaire_done"
+                        android:visibility="invisible"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imgDepressionDone"
+                        android:src="@drawable/questionnaire_done"
+                        android:layout_marginTop="70dp"
+                        android:visibility="invisible"/>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imgBDIDone"
+                        android:src="@drawable/questionnaire_done"
+                        android:layout_marginTop="70dp"
+                        android:visibility="invisible"/>
+
+
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relativeOptionnal"
+                android:layout_below="@id/linearChoseQuestionnaire"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtInfoOptionnal"
+                    android:layout_marginTop="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="Based on your results we ask you to complete the following questionnaires"
+                    android:textSize="25sp"
+                    android:fontFamily="@font/montserratregular"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="30dp"
+                    android:textAlignment="center"/>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearChoseQuestionnaireOptionnal"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_below="@id/txtInfoOptionnal">
+
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup2Optionnal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+
+                        <RadioButton
+                            android:id="@+id/rdBtnESS"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:textSize="25sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:text="ESS - Sleep" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/linearSleep"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Questions answered : "
+                                android:textSize="18sp"
+                                android:fontFamily="@font/montserratregular"
+                                android:layout_marginStart="20dp"
+                                android:textColor="@color/colorPrimary"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/nbrQuestionAnsweredSleep"
+                                android:text="0"
+                                android:textSize="18sp"
+                                android:fontFamily="@font/montserratregular"
+                                android:layout_marginStart="20dp"
+                                android:textColor="@color/colorPrimary"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" / 8"
+                                android:textSize="18sp"
+                                android:fontFamily="@font/montserratregular"
+                                android:layout_marginStart="5dp"
+                                android:textColor="@color/colorPrimary"/>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtQuestionsSkippedSleep"
+                                android:layout_marginStart="20dp"
+                                android:visibility="invisible"
+                                android:textSize="18sp"
+                                android:fontFamily="@font/montserratregular"
+                                android:text="(x skipped)"
+                                android:textColor="@color/colorPrimary"/>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:id="@+id/linearAvgScore_sleep"
+                            android:visibility="invisible">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Average score : "
+                                android:textColor="@color/colorPrimary"
+                                android:layout_marginStart="30dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/score_avg_sleep"
+                                android:text="1"
+                                android:textColor="@color/colorPrimary"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" / 3"
+                                android:textColor="@color/colorPrimary"/>
+                        </LinearLayout>
+
+
+                        <RadioButton
+                            android:id="@+id/rdBtnWEIMuS"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:textSize="25sp"
+                            android:fontFamily="@font/montserratregular"
+                            android:text="WEIMuS (only for MS)" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/linearWeimus"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Questions answered : "
+                                android:textSize="18sp"
+                                android:fontFamily="@font/montserratregular"
+                                android:layout_marginStart="20dp"
+                                android:textColor="@color/colorPrimary"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/nbrQuestionAnsweredWeimus"
+                                android:text="0"
+                                android:textSize="18sp"
+                                android:fontFamily="@font/montserratregular"
+                                android:layout_marginStart="20dp"
+                                android:textColor="@color/colorPrimary"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" / 17"
+                                android:textSize="18sp"
+                                android:fontFamily="@font/montserratregular"
+                                android:layout_marginStart="5dp"
+                                android:textColor="@color/colorPrimary"/>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtQuestionsSkippedWeimus"
+                                android:layout_marginStart="20dp"
+                                android:visibility="invisible"
+                                android:textSize="18sp"
+                                android:fontFamily="@font/montserratregular"
+                                android:text="(x skipped)"
+                                android:textColor="@color/colorPrimary"/>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/linearAvgScore_weimus"
+                            android:orientation="horizontal"
+                            android:visibility="invisible">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Average score : "
+                                android:textColor="@color/colorPrimary"
+                                android:layout_marginStart="30dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/score_avg_weimus"
+                                android:text="3"
+                                android:textColor="@color/colorPrimary"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" / 7"
+                                android:textColor="@color/colorPrimary"/>
+                        </LinearLayout>
+
+
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/linearCheckDoneOptionnal"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:visibility="visible">
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/imgESSDone"
+                            android:src="@drawable/questionnaire_done"
+                            android:layout_marginTop="60dp"
+                            android:visibility="invisible"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/imgWEIMUSDone"
+                            android:src="@drawable/questionnaire_done"
+                            android:layout_marginTop="60dp"
+                            android:visibility="invisible"/>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:id="@+id/btnResult"
+        android:text="Go to results"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_button"
+        android:textSize="25sp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:layout_below="@id/relativeOptionnal"/>
+
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:id="@+id/btnConfirm"
+        android:layout_below="@id/relativeOptionnal"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_button"
+        android:layout_alignParentBottom="true"
+        android:textSize="25sp"
+        android:text="Confirm"/>
+
+
+</RelativeLayout>
