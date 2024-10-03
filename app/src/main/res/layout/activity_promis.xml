@@ -66,20 +66,6 @@
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/txtIntro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/txtQuestion"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        android:fontFamily="@font/montserratregular"
-        android:text="@string/intro_question_fatigue"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/txtQuestion"
@@ -120,110 +106,93 @@
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/constraint"
         android:layout_below="@id/linearRating">
 
         <SeekBar
+            android:id="@+id/seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/seekbar"
-            android:layout_margin="30dp"
-            android:thumb="@drawable/thumb_size"
-            android:splitTrack="false"
-            android:progress="3"
-            android:progressTint="@color/colorPrimary"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="50dp"
+            android:max="4"
+            android:progress="2"
             android:progressDrawable="@drawable/progress_drawable"
-            app:layout_constraintTop_toTopOf="parent"
-            android:max="6"/>
+            android:progressTint="@color/colorPrimary"
+            android:splitTrack="false"
+            android:thumb="@drawable/thumb_size"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/disagree"
-            android:fontFamily="@font/montserratregular"
-            app:layout_constraintBottom_toTopOf="@id/seekbar"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintLeft_toLeftOf="@id/seekbar"
-            android:textColor="@color/black"
-            android:textSize="20sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/agree"
-            app:layout_constraintBottom_toTopOf="@id/seekbar"
-            app:layout_constraintEnd_toEndOf="@id/seekbar"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/montserratregular"
-            android:textColor="@color/black"
-            android:textSize="20sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/txt0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/montserratregular"
             android:text="1"
-            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="@id/seekbar"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="20dp"
-            android:fontFamily="@font/montserratregular"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"/>
+            app:layout_constraintTop_toBottomOf="@id/seekbar" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/txt6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserratregular"
             android:text="7"
-            app:layout_constraintTop_toBottomOf="@id/seekbar"
-            app:layout_constraintEnd_toEndOf="@id/seekbar"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="20dp"
-            android:fontFamily="@font/montserratregular"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"/>
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txt3"
+            app:layout_constraintTop_toBottomOf="@id/seekbar" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserratregular"
             android:text="2"
-            app:layout_constraintTop_toBottomOf="@id/seekbar"
-            app:layout_constraintRight_toLeftOf="@id/txt2"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/seekbar"
             app:layout_constraintLeft_toRightOf="@id/txt0"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/montserratregular"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"/>
+            app:layout_constraintRight_toLeftOf="@id/txt2"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/txt2"
-            android:text="3"
-            app:layout_constraintTop_toBottomOf="@id/seekbar"
-            app:layout_constraintRight_toLeftOf="@id/txt3"
-            app:layout_constraintLeft_toRightOf="@id/txt1"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/montserratregular"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"/>
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txt3"
-            android:text="4"
-            app:layout_constraintTop_toBottomOf="@id/seekbar"
-            app:layout_constraintRight_toLeftOf="@id/txt6"
-            app:layout_constraintLeft_toRightOf="@id/txt2"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/montserratregular"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"/>
+            android:text="3"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toRightOf="@id/txt1"
+            app:layout_constraintRight_toLeftOf="@id/txt3"
+            app:layout_constraintTop_toBottomOf="@id/seekbar" />
+
+        <TextView
+            android:id="@+id/txt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/montserratregular"
+            android:text="4"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toRightOf="@id/txt2"
+            app:layout_constraintRight_toLeftOf="@id/txt6"
+            app:layout_constraintBottom_toTopOf="@id/seekbar" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

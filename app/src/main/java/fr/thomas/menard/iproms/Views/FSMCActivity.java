@@ -173,7 +173,7 @@ public class FSMCActivity extends AppCompatActivity {
                     .build();
 
             // Read the header to get column indices
-            int qolColumnIndex = 61;
+            int qolColumnIndex = 65;
 
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
@@ -305,7 +305,7 @@ public class FSMCActivity extends AppCompatActivity {
                     .withCSVParser(csvParser)
                     .build();
 
-            int qolColumnIndex = 61;
+            int qolColumnIndex = 65;
 
             List<String[]> csvEntries = reader.readAll();
             String[] row = csvEntries.get(1);

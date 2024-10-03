@@ -104,6 +104,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
         retrieveInfos();
         displayFSMC();
         displaysleep();
+        /*
         checkQoL();
         checkQoL1();
         checkQoL2();
@@ -115,7 +116,11 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
         checkQoL9();
         checkQoL10();
         checkSkipped();
+
+         */
         checkQuestionnaireDone();
+
+
         listenRadioGroup();
         listenBtnConfirm();
 
@@ -145,6 +150,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
 
     }
 
+    /*
     private void checkSkipped(){
         if(Integer.parseInt(skippedQuestionQOL1)>4) {
             binding.rdBtnQol1.setClickable(true);
@@ -167,9 +173,12 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
         }
     }
 
+
+     */
     private void checkQuestionnaireDone(){
-        if (fsmc.equals("done") && sleep.equals("done") && qol1.equals("done") && qol2.equals("done") && qol3.equals("done") && qol4.equals("done") && qol5.equals("done") && qol7.equals("done") && qol8.equals("done") && qol9.equals("done") && qol10.equals("done")) {
+        if (fsmc.equals("done") && sleep.equals("done") /*&& qol1.equals("done") && qol2.equals("done") && qol3.equals("done") && qol4.equals("done") && qol5.equals("done") && qol7.equals("done") && qol8.equals("done") && qol9.equals("done") && qol10.equals("done")*/) {
             uploadData("infos.csv");
+        /*
             binding.rdBtnQol1.setVisibility(View.GONE);
             binding.rdBtnQol2.setVisibility(View.GONE);
             binding.rdBtnQol3.setVisibility(View.GONE);
@@ -212,6 +221,8 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
             binding.imgDoneQol10.setVisibility(View.GONE);
 
 
+         */
+
             binding.btnConfirm.setVisibility(View.GONE);
             initTab();
         }
@@ -232,9 +243,10 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
             int fatigueColumnIndex = 3;
             int depressionColumnIndex = 7;
             int bdiIndex = 13;
-            int qolColumnIndex = 17;
-            int sleepIndex = 57;
-            int FSMCIndex = 61;
+            int promisIndex = 17;
+            int qolColumnIndex = 21;
+            int sleepIndex = 61;
+            int FSMCIndex = 65;
 
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
@@ -401,6 +413,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
         displayResult("fsmc");
 
 
+        /*
 
         binding.cellqol1Score.setText(scoreQOL1);
         binding.cellqol2Score.setText(scoreQOL2);
@@ -411,6 +424,8 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
         binding.cellqol8Score.setText(scoreQOL8);
         binding.cellqol9Score.setText(scoreQOL9);
         binding.cellqol10Score.setText(scoreQOL10);
+
+
 
 
 
@@ -429,8 +444,11 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
 
 
 
+         */
+
     }
 
+    /*
     private String displayInterpretations(String categorie){
 
         if(categorie.equals("qol1")) {
@@ -863,6 +881,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
         return txt_interpretations;
     }
 
+
     private void checkQoL() {
         if (!qol.equals("null")) {
             binding.linearQol.setVisibility(View.GONE);
@@ -900,7 +919,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
                     .withCSVParser(csvParser)
                     .build();
 
-            int qolColumnIndex = 17;
+            int qolColumnIndex = 21;
 
             List<String[]> csvEntries = reader.readAll();
             String[] row = csvEntries.get(1);
@@ -931,7 +950,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
                     .withCSVParser(csvParser)
                     .build();
 
-            int qolColumnIndex = 13;
+            int qolColumnIndex = 21;
 
             switch (qol) {
                 case "qol1":
@@ -1340,6 +1359,8 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
     }
 
 
+     */
+
     private void displayResult(String categorie){
         String text_interpretations;
         if(categorie.equals("sleep")){
@@ -1437,7 +1458,9 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
                     questionnaire = "fsmc";
                     if (Integer.parseInt(skipped_question_fsmc) > 4)
                         redo_questionnaire = true;
-                } else if (checkedId == R.id.rdBtnQol1) {
+                }
+                /*
+                else if (checkedId == R.id.rdBtnQol1) {
                     questionnaire = "qol1";
                     if (Integer.parseInt(skippedQuestionQOL1) > 3) {
                         redo_questionnaire = true;
@@ -1474,7 +1497,10 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
                     questionnaire = "qol10";
                     if (Integer.parseInt(skippedQuestionQOL10) > 3)
                         redo_questionnaire = true;
+
                 }
+
+                 */
             }
         });
     }
@@ -1504,6 +1530,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
 
+                /*
                 else if (questionnaire.equals("qol1")) {
                     Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
                     intent.putExtra("date", date);
@@ -1631,6 +1658,8 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 }
+
+                 */
             }
         });
 

@@ -152,7 +152,7 @@ public class SleepActivity extends AppCompatActivity {
                     .build();
 
             // Read the header to get column indices
-            int qolColumnIndex = 57;
+            int qolColumnIndex = 61;
 
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
@@ -295,7 +295,7 @@ public class SleepActivity extends AppCompatActivity {
                     .withCSVParser(csvParser)
                     .build();
 
-            int qolColumnIndex = 57;
+            int qolColumnIndex = 61;
 
             List<String[]> csvEntries = reader.readAll();
             String[] row = csvEntries.get(1);

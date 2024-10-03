@@ -180,6 +180,8 @@
                     android:textSize="20sp"
                     android:layout_marginStart="100dp"/>
 
+                <!--
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -718,6 +720,7 @@
 
                 </LinearLayout>
 
+                -->
             </RadioGroup>
 
             <TableLayout
@@ -727,7 +730,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="50dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_below="@id/radioGroup2"
                 android:background="@drawable/table_border"
                 android:stretchColumns="*">
@@ -841,7 +844,7 @@
                 </TableRow>
 
 
-
+                <!--
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="80dp">
@@ -1185,6 +1188,7 @@
                 </TableRow>
 
 
+              -->
             </TableLayout>
 
         </RelativeLayout>

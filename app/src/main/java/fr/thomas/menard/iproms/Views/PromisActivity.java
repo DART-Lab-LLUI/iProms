@@ -67,6 +67,7 @@ public class PromisActivity extends AppCompatActivity {
         translateText();
         retrieveInfos();
         displayQuestion();
+        displayLegend();
         reinit_questionnaire();
         listenBtnConfirm();
         listenSeekbar();
@@ -119,7 +120,7 @@ public class PromisActivity extends AppCompatActivity {
                     .build();
 
             // Read the header to get column indices
-            int qolColumnIndex = 7;
+            int qolColumnIndex = 17;
 
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
@@ -133,7 +134,7 @@ public class PromisActivity extends AppCompatActivity {
                 numberQuestion = 1;
 
 
-            pourcentage = 100 * (numberQuestion) / 9;
+            pourcentage = 100 * (numberQuestion) / 10;
             binding.txtPoucentageDone.setText(String.valueOf(pourcentage));
             reader.close();
 
@@ -155,7 +156,7 @@ public class PromisActivity extends AppCompatActivity {
                         .withCSVParser(csvParser)
                         .build();
 
-                int qolColumnIndex = 3;
+                int qolColumnIndex = 17;
 
 
                 List<String[]> csvEntries = reader.readAll();
@@ -229,7 +230,7 @@ public class PromisActivity extends AppCompatActivity {
                 write_csv(rating);
                 total_Score = total_Score + Integer.parseInt(rating);
 
-                if(numberQuestion==9){
+                if(numberQuestion==10){
                     modifyCSVInfos("done", String.valueOf(total_Score), false, false);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("langue", langue);
@@ -241,7 +242,7 @@ public class PromisActivity extends AppCompatActivity {
                     finish();
                 }else {
                     modifyCSVInfos("not finished", String.valueOf(total_Score), false, false);
-                    Intent intent = new Intent(getApplicationContext(), FatigueQuestionnaire.class);
+                    Intent intent = new Intent(getApplicationContext(), PromisActivity.class);
                     intent.putExtra("patientID", idPatient);
                     intent.putExtra("caseID", caseID);
                     intent.putExtra("date", date);
@@ -280,7 +281,7 @@ public class PromisActivity extends AppCompatActivity {
             finish();
         }else {
             modifyCSVInfos("not finished", String.valueOf(total_Score), true, false);
-            Intent intent = new Intent(getApplicationContext(), FatigueQuestionnaire.class);
+            Intent intent = new Intent(getApplicationContext(), PromisActivity.class);
             intent.putExtra("patientID", idPatient);
             intent.putExtra("caseID", caseID);
             intent.putExtra("date", date);
@@ -295,31 +296,50 @@ public class PromisActivity extends AppCompatActivity {
     private void displayQuestion(){
         if(numberQuestion==1){
             question_num_string = "Question 1";
-            binding.txtQuestion.setText(R.string.question1_fatigue);
+            binding.txtQuestion.setText(R.string.promis_1);
         } else if (numberQuestion ==2) {
             question_num_string = "Question 2";
-            binding.txtQuestion.setText(R.string.question2_fatigue);
+            binding.txtQuestion.setText(R.string.promis_2);
         }else if (numberQuestion ==3) {
             question_num_string = "Question 3";
-            binding.txtQuestion.setText(R.string.question3_fatigue);
+            binding.txtQuestion.setText(R.string.promis_3);
         }else if (numberQuestion ==4) {
             question_num_string = "Question 4";
-            binding.txtQuestion.setText(R.string.question4_fatigue);
+            binding.txtQuestion.setText(R.string.promis_4);
         }else if (numberQuestion ==5) {
             question_num_string = "Question 5";
-            binding.txtQuestion.setText(R.string.question5_fatigue);
+            binding.txtQuestion.setText(R.string.promis_5);
         }else if (numberQuestion ==6) {
             question_num_string = "Question 6";
-            binding.txtQuestion.setText(R.string.question6_fatigue);
+            binding.txtQuestion.setText(R.string.promis_6);
         }else if (numberQuestion ==7) {
             question_num_string = "Question 7";
-            binding.txtQuestion.setText(R.string.question7_fatigue);
+            binding.txtQuestion.setText(R.string.promis_7);
         }else if (numberQuestion ==8) {
             question_num_string = "Question 8";
-            binding.txtQuestion.setText(R.string.question8_fatigue);
+            binding.txtQuestion.setText(R.string.promis_8);
         }else if (numberQuestion ==9) {
             question_num_string = "Question 9";
-            binding.txtQuestion.setText(R.string.question9_fatigue);
+            binding.txtQuestion.setText(R.string.promis_8);
+        }else if (numberQuestion ==10) {
+            question_num_string = "Question 10";
+            binding.txtQuestion.setText(R.string.promis_10);
+        }
+    }
+
+    private void displayLegend(){
+        if(numberQuestion==1 || numberQuestion==2 || numberQuestion==3 || numberQuestion==4 || numberQuestion==5 || numberQuestion==9){
+            binding.txt0.setText(R.string.promis_legend_1to59_1);
+            binding.txt1.setText(R.string.promis_legend_1to59_2);
+            binding.txt2.setText(R.string.promis_legend_1to59_3);
+            binding.txt3.setText(R.string.promis_legend_1to59_4);
+            binding.txt6.setText(R.string.promis_legend_1to59_5);
+        } else if (numberQuestion==6 || numberQuestion==7 || numberQuestion==8 || numberQuestion==10) {
+            binding.txt0.setText(R.string.promis_legend_6to10_1);
+            binding.txt1.setText(R.string.promis_legend_6to10_2);
+            binding.txt2.setText(R.string.promis_legend_6to10_3);
+            binding.txt3.setText(R.string.promis_legend_6to10_4);
+            binding.txt6.setText(R.string.promis_legend_6to10_5);
         }
     }
 
@@ -335,7 +355,7 @@ public class PromisActivity extends AppCompatActivity {
                     .withCSVParser(csvParser)
                     .build();
 
-            int qolColumnIndex = 3;
+            int qolColumnIndex = 17;
 
 
             List<String[]> csvEntries = reader.readAll();
@@ -383,7 +403,7 @@ public class PromisActivity extends AppCompatActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 binding.btnConfirm.setVisibility(View.VISIBLE);
                 if(!touched){
-                    rating = String.valueOf(4);
+                    rating = String.valueOf(3);
                     binding.txtRating.setText(rating);
                     touched = true;
                 }

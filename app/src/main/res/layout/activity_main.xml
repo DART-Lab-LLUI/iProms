@@ -550,6 +550,14 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/imgPromisDone"
+                        android:src="@drawable/questionnaire_done"
+                        android:layout_marginTop="70dp"
+                        android:visibility="invisible"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:id="@+id/imgBDIDone"
                         android:src="@drawable/questionnaire_done"
                         android:layout_marginTop="70dp"

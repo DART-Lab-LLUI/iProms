@@ -111,7 +111,7 @@ public class QualityofLifeActivity extends AppCompatActivity {
                         .withCSVParser(csvParser)
                         .build();
 
-                int qolColumnIndex = 17;
+                int qolColumnIndex = 21;
 
                 switch (qol) {
                     case "qol1":
@@ -230,7 +230,7 @@ public class QualityofLifeActivity extends AppCompatActivity {
 
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
-            int qolColumnIndex = 17;
+            int qolColumnIndex = 21;
 
             // Create a CSVReader with FileReader and custom CSVParser
             CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
@@ -262,7 +262,7 @@ public class QualityofLifeActivity extends AppCompatActivity {
 
     private void retrieveInfos(String qol){
         String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-        int qolColumnIndex = 17;
+        int qolColumnIndex = 21;
 
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
@@ -633,7 +633,7 @@ public class QualityofLifeActivity extends AppCompatActivity {
     private void modifyCSVGeneralQOL(String done, String  score, String answered, boolean skip){
 
         String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-        int qolColumnIndex = 17;
+        int qolColumnIndex = 21;
 
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();

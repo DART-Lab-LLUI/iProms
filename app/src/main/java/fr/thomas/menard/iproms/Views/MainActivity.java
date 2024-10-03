@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     String scoreQOL1, scoreQOL2,scoreQOL3,scoreQOL4,scoreQOL5,scoreQOL6,scoreQOL7,scoreQOL8,scoreQOL9,scoreQOL10, score_bdi;
 
     boolean redo_questionnaire;
-    boolean restart_fatigue =false, restart_dep = false, restart_qol1 = false, restart_qol2= false, restart_qol3= false, restart_qol4= false,
+    boolean restart_fatigue =false, restart_dep = false, restart_promis, restart_qol1 = false, restart_qol2= false, restart_qol3= false, restart_qol4= false,
             restart_qol5= false, restart_qol6= false, restart_qol7= false, restart_qol8= false, restart_qol9= false,restart_qol10= false;
 
 
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         checkFatigueI();
         checkDepression();
         checkBDI();
+        checkPromis();
         listenBtnStart();
         listenRadioGroup();
         listenBtnResult();
@@ -118,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
             int fatigueColumnIndex = 3;
             int depressionColumnIndex = 7;
             int bdiIndex = 13;
-            int qolColumnIndex = 17;
+            int promisColumnIndex = 17;
+            int qolColumnIndex = 21;
 
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
@@ -127,18 +129,21 @@ public class MainActivity extends AppCompatActivity {
             fatigue = firstRow[fatigueColumnIndex];
             depression = firstRow[depressionColumnIndex];
             bdi = firstRow[bdiIndex];
+            promis = firstRow[promisColumnIndex];
             qol = firstRow[qolColumnIndex];
 
             avg_score_fatigue = (firstRow[fatigueColumnIndex+1]);
             avg_score_depression = firstRow[depressionColumnIndex+1];
             avg_score_anxiety = firstRow[depressionColumnIndex + 2];
             score_bdi = firstRow[bdiIndex+1];
+            avg_score_PROMIS = firstRow[promisColumnIndex+1];
             avg_score_qol = (firstRow[qolColumnIndex+1]);
 
 
             questionAnsFatigue = (firstRow[fatigueColumnIndex+2]);
             questionAnsDep = (firstRow[depressionColumnIndex+3]);
             questionAnsBDI = firstRow[bdiIndex+2];
+            questionAnsPROMIS = firstRow[promisColumnIndex+2];
             questionAnsQol = (firstRow[qolColumnIndex+2]);
 
 
@@ -146,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
             lastQuestionDep = firstRow[depressionColumnIndex + 4];
             skipped_question_anx = firstRow[depressionColumnIndex + 5];
             skipped_question_bdi = firstRow[bdiIndex+3];
+            skipped_question_promis = firstRow[promisColumnIndex+3];
             skippedQuestionQOL = firstRow[qolColumnIndex+3];
 
             qol1 = firstRow[qolColumnIndex + 4];
@@ -213,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkQuestionnaireDone() {
-        if (fatigue.equals("done") && depression.equals("done") && bdi.equals("done")) {
+        if (fatigue.equals("done") && depression.equals("done") && bdi.equals("done") && promis.equals("done")) {
             uploadData("infos.csv");
 
             binding.btnConfirm.setVisibility(View.GONE);
@@ -307,6 +313,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void checkPromis(){
+        if(!promis.equals("null")){
+            binding.txtQuestionPROMIS.setText("Question answered : "+ (Integer.parseInt(questionAnsPROMIS) -1) +"/ 10  - ("+skipped_question_promis+" skipped)" );
+
+            if(promis.equals("done")){
+                binding.imgPromisDone.setVisibility(View.VISIBLE);
+                if(avg_score_PROMIS.equals("0")){
+                    binding.txtQuestionnaireSkippedPROMIS.setVisibility(View.VISIBLE);
+                    binding.txtQuestionPROMIS.setVisibility(View.GONE);
+                }else{
+                    binding.rdBtnPROMIS.setClickable(false);
+                    uploadData("result_bdi.csv");
+                    binding.txtQuestionPROMIS.setVisibility(View.VISIBLE);
+                    binding.txtRawValuePROMIS.setText("Total score : " + avg_score_PROMIS  +"/ 50");
+                    binding.txtRawValuePROMIS.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+
+        }
+    }
+
+
+
     @SuppressLint("SetTextI18n")
     private void checkDepression() {
         if(!depression.equals("null")){
@@ -396,44 +427,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if (checkedId == R.id.rdBtnBDI) {
                     questionnaire = "bdi";
-                } else if (checkedId == R.id.rdBtnQol1) {
-                    questionnaire = "qol1";
-                    if(Integer.parseInt(skippedQuestionQOL1)>3) {
-                        redo_questionnaire = true;
-                    }
-                }else if (checkedId == R.id.rdBtnQol2) {
-                    questionnaire = "qol2";
-                    if(Integer.parseInt(skippedQuestionQOL2)>3)
-                        redo_questionnaire=true;
-                }else if (checkedId == R.id.rdBtnQol3) {
-                    questionnaire = "qol3";
-                    if(Integer.parseInt(skippedQuestionQOL3)>3)
-                        redo_questionnaire=true;
-                }else if (checkedId == R.id.rdBtnQol4) {
-                    questionnaire = "qol4";
-                    if(Integer.parseInt(skippedQuestionQOL4)>3)
-                        redo_questionnaire=true;
-                }else if (checkedId == R.id.rdBtnQol5) {
-                    questionnaire = "qol5";
-                    if(Integer.parseInt(skippedQuestionQOL5)>3)
-                        redo_questionnaire=true;
-                }else if (checkedId == R.id.rdBtnQol7) {
-                    questionnaire = "qol7";
-                    if(Integer.parseInt(skippedQuestionQOL7)>4)
-                        redo_questionnaire=true;
-                }else if (checkedId == R.id.rdBtnQol8) {
-                    questionnaire = "qol8";
-                    if(Integer.parseInt(skippedQuestionQOL8)>3)
-                        redo_questionnaire=true;
-                }else if (checkedId == R.id.rdBtnQol9) {
-                    questionnaire = "qol9";
-                    if(Integer.parseInt(skippedQuestionQOL9)>3)
-                        redo_questionnaire=true;
-                }else if (checkedId == R.id.rdBtnQol10) {
-                    questionnaire = "qol10";
-                    if(Integer.parseInt(skippedQuestionQOL10)>3)
-                        redo_questionnaire=true;
                 }
+
+
             }
         });
 
