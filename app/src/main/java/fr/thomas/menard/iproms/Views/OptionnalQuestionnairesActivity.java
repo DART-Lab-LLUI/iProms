@@ -62,7 +62,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
 
     String lastQuestionFatigue, skippedQuestionDepAnx, skipped_question_anx, skippedQuestionQOL;
 
-    String sleep, fsmc, bdi;
+    String sleep, fsmc, bdi, type;
     String skipped_question_sleep, skipped_question_fsmc, skipped_question_bdi;
 
     String questionAnsSleep, questionAnsBDI, questionAnsFSMC;
@@ -134,6 +134,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
         date = intent.getStringExtra("date");
         caseID = intent.getStringExtra("caseID");
         diagnosis = intent.getStringExtra("diagnosis");
+        type = intent.getStringExtra("type");
 
 
         questionnaire = "";
@@ -143,7 +144,13 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
 
         writeCSV = WriteCSV.getInstance(this);
 
-        csv_path = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/";
+        if(type.equals("first")){
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + patientID + "/first/";
+
+        }else{
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + patientID + "/second/";
+
+        }
         exist_file_sleep = writeCSV.checkFileName(patientID + "_result_sleep.csv", csv_path);
         exist_file_fsmc = writeCSV.checkFileName(patientID + "_result_fsmc.csv", csv_path);
         exist_file_bdi = writeCSV.checkFileName(patientID + "_result_bdi.csv", csv_path);
@@ -229,8 +236,12 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
     }
 
     private void retrieveInfos() {
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/" + patientID + "/infos.csv";
-
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/second/infos.csv";
+        }
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -244,9 +255,9 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
             int depressionColumnIndex = 7;
             int bdiIndex = 13;
             int promisIndex = 17;
-            int qolColumnIndex = 21;
-            int sleepIndex = 61;
-            int FSMCIndex = 65;
+            int qolColumnIndex = 22;
+            int sleepIndex = 66;
+            int FSMCIndex = 70;
 
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
@@ -1362,15 +1373,17 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
      */
 
     private void displayResult(String categorie){
+
         String text_interpretations;
         if(categorie.equals("sleep")){
-            if(score_sleep.equals("0")){
+            if(score_sleep.equals("0") && !questionAnsSleep.equals("9")){
                 text_interpretations = "Questionnaire skipped";
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
-                binding.cellFSMCResult.setColorSections(upperlimit, colors);
-                binding.cellFSMCResult.setUserScore(2.75f);
-                binding.cellFSMCResult.setUserText(text_interpretations);
+                binding.cellResultSleep.setColorSections(upperlimit, colors);
+                binding.cellResultSleep.setUserScore(2.75f);
+                binding.cellResultSleep.setUserText(text_interpretations);
+                Log.d("TEST",  "HRER");
             }else{
                 if(Integer.parseInt(score_sleep)<4){
                     text_interpretations = "Good";
@@ -1390,6 +1403,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
                 float[] upperlimit = {binding.cellResultSleep.rescaleValue(greenEnd,min,redEnd,  40.0f),
                         binding.cellResultSleep.rescaleValue(yellowEnd, min,redEnd, 40.0f),
                         binding.cellResultSleep.rescaleValue(redEnd, min,redEnd, 40.0f)};
+                Log.d("TEST", "HERE");
 
                 float user_score = Float.parseFloat(score_sleep);
                 float user_score_rescale = binding.cellResultSleep.rescaleValue(user_score,min,redEnd, 40.0f);
@@ -1401,14 +1415,14 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
         }
 
         if(categorie.equals("fsmc")){
-            if (score_fsmc.equals("0")) {
+            if (score_fsmc.equals("0") && !questionAnsFSMC.equals("21")) {
                 String txt_interpretations = "Questionnaire skipped";
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
                 binding.cellFSMCResult.setColorSections(upperlimit, colors);
                 binding.cellFSMCResult.setUserScore(2.75f);
                 binding.cellFSMCResult.setUserText(txt_interpretations);
-
+                Log.d("TEST",  "HRER");
             }else{
                 String txt_interpretations  ="";
                 if(Integer.parseInt(score_fsmc)<43){
@@ -1433,6 +1447,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
                         binding.cellFSMCResult.rescaleValue(orangeEnd, min,redEnd, 40.0f),
                         binding.cellFSMCResult.rescaleValue(redEnd, min,redEnd, 40.0f)};
 
+                Log.d("TEST", "HERE");
                 float user_score = Float.parseFloat(score_fsmc);
                 float user_score_rescale = binding.cellFSMCResult.rescaleValue(user_score,min,redEnd, 40.0f);
 
@@ -1517,6 +1532,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
                     intent.putExtra("diagnosis", diagnosis);
                     intent.putExtra("langue", langue);
                     intent.putExtra("questionnaire", questionnaire);
+                    intent.putExtra("type", type);
                     startActivity(intent);
 
                 } else if (questionnaire.equals("fsmc")) {
@@ -1527,6 +1543,7 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
                     intent.putExtra("diagnosis", diagnosis);
                     intent.putExtra("langue", langue);
                     intent.putExtra("questionnaire", questionnaire);
+                    intent.putExtra("type", type);
                     startActivity(intent);
                 }
 
@@ -1669,7 +1686,12 @@ public class OptionnalQuestionnairesActivity extends AppCompatActivity {
 
     private void uploadData(String file){
         SFTP sftp = new SFTP();
-        folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID);
+        if(type.equals("first")){
+            folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID + "/first");
+
+        }else{
+            folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID +"/second");
+        }
         PATH_SERVER = "data/raw_data/" + patientID + "/iPROMS/" + date + "/";
         String file_to_send = folderSRC + "/" + patientID +"_"+file;
 

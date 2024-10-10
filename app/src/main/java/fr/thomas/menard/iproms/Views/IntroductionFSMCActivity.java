@@ -16,7 +16,7 @@ public class IntroductionFSMCActivity extends AppCompatActivity {
 
     ActivityIntroductionFsmcactivityBinding binding;
 
-    String question_num_string, csv_path, date, idPatient, caseID, diagnosis ,langue, questionnaire;
+    String question_num_string, csv_path, date, idPatient, caseID, diagnosis ,langue, questionnaire, type;
 
     Context context;
     Resources resources;
@@ -39,6 +39,7 @@ public class IntroductionFSMCActivity extends AppCompatActivity {
         langue = intent.getStringExtra("langue");
         diagnosis = intent.getStringExtra("diagnosis");
         questionnaire = intent.getStringExtra("questionnaire");
+        type = intent.getStringExtra("type");
 
         context = LocaleHelper.setLocale(getApplicationContext(), langue);
         resources = context.getResources();
@@ -55,6 +56,7 @@ public class IntroductionFSMCActivity extends AppCompatActivity {
                 intent.putExtra("diagnosis", diagnosis);
                 intent.putExtra("langue", langue);
                 intent.putExtra("questionnaire", questionnaire);
+                intent.putExtra("type", type);
                 startActivity(intent);
                 finish();
             }

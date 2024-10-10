@@ -12,9 +12,20 @@ import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.exceptions.CsvException;
+
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import fr.thomas.menard.iproms.R;
@@ -31,7 +42,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Context context;
     Resources resources;
 
-    String info_csv_path, csv_path_PID;
+
 
     private WriteCSV writeCSVClass;
 
@@ -44,6 +55,7 @@ public class IdentificationActivity extends AppCompatActivity {
         init();
         listenBtnConfirn();
         listenDiagnosis();
+
 
     }
 
@@ -70,7 +82,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientID = binding.APatientTxtIdPatient.getText().toString().trim();
                 caseID = binding.APatientTxtIdCase.getText().toString().trim();
 
-                checkUser(patientID);
                 Log.d("TEST", "id" + patientID);
                 if(patientID.length()!=7 || caseID.length()!=7){
                     Toast.makeText(context, "Please, write a correct PID & FID", Toast.LENGTH_SHORT).show();
@@ -95,43 +106,6 @@ public class IdentificationActivity extends AppCompatActivity {
         });
     }
 
-    private void checkUser(String patientID){
-        csv_path_PID = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/";
-        info_csv_path = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/infos.csv";
-
-        File folder = new File(csv_path_PID);
-
-        // Check if the folder exists
-        if (!folder.exists() || !folder.isDirectory()) {
-            // If the folder does not exist, create it
-            if (folder.mkdirs()) {
-                writeCSVClass.createAndWriteInfos(info_csv_path, patientID,caseID, date,
-                        "null","0","0","0",
-                        "null","0","0","0", "0","0",
-                        "null", "0", "0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null","0","0", "0",
-                        "null", "0", "0", "0",
-                        "null", "0", "0", "0"
-                );
-            } else {
-                System.out.println("Failed to create the folder at the specified path.");
-            }
-        } else {
-            System.out.println("The folder already exists at the specified path.");
-        }
-
-    }
 
     private void listenDiagnosis(){
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

@@ -36,7 +36,7 @@ public class SleepActivity extends AppCompatActivity {
     ActivitySleepBinding binding;
     Context context;
     Resources resources;
-    String langue, rating, questionnaire;
+    String langue, rating, questionnaire, type;
     int numberQuestion, total_Score, pourcentage = 0;
     String question_num_string, csv_path, date, idPatient, caseID, diagnosis;
 
@@ -68,9 +68,16 @@ public class SleepActivity extends AppCompatActivity {
         langue = intent.getStringExtra("langue");
         diagnosis = intent.getStringExtra("diagnosis");
         questionnaire = intent.getStringExtra("questionnaire");
+        type = intent.getStringExtra("type");
 
         writeCSVClass = WriteCSV.getInstance(this);
-        csv_path = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/";
+        if(type.equals("first")){
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/first/";
+
+        }else{
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/second/";
+
+        }
         exist_file = writeCSVClass.checkFileName(idPatient + "_ESS.csv", csv_path);
 
 
@@ -102,6 +109,7 @@ public class SleepActivity extends AppCompatActivity {
             intent.putExtra("caseID", caseID);
             intent.putExtra("date", date);
             intent.putExtra("diagnosis", diagnosis);
+            intent.putExtra("type", type);
             startActivity(intent);
             finish();
             return true;
@@ -141,8 +149,12 @@ public class SleepActivity extends AppCompatActivity {
     }
 
     private void retrieveGeneralInfos(){
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+        }
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -152,7 +164,7 @@ public class SleepActivity extends AppCompatActivity {
                     .build();
 
             // Read the header to get column indices
-            int qolColumnIndex = 61;
+            int qolColumnIndex = 66;
 
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
@@ -207,6 +219,7 @@ public class SleepActivity extends AppCompatActivity {
                     intent.putExtra("caseID", caseID);
                     intent.putExtra("date", date);
                     intent.putExtra("diagnosis", diagnosis);
+                    intent.putExtra("type", type);
                 }
                 else {
                     modifyCSVInfos("not finished", String.valueOf(total_Score), false, false);
@@ -217,6 +230,7 @@ public class SleepActivity extends AppCompatActivity {
                     intent.putExtra("date", date);
                     intent.putExtra("langue", langue);
                     intent.putExtra("diagnosis", diagnosis);
+                    intent.putExtra("type", type);
                 }
 
 
@@ -248,6 +262,7 @@ public class SleepActivity extends AppCompatActivity {
             intent.putExtra("caseID", caseID);
             intent.putExtra("date", date);
             intent.putExtra("diagnosis", diagnosis);
+            intent.putExtra("type", type);
             startActivity(intent);
             finish();
         }else{
@@ -259,6 +274,7 @@ public class SleepActivity extends AppCompatActivity {
             intent.putExtra("caseID", caseID);
             intent.putExtra("date", date);
             intent.putExtra("diagnosis", diagnosis);
+            intent.putExtra("type", type);
             startActivity(intent);
             finish();
         }
@@ -276,6 +292,7 @@ public class SleepActivity extends AppCompatActivity {
                 intent.putExtra("caseID", caseID);
                 intent.putExtra("date", date);
                 intent.putExtra("diagnosis", diagnosis);
+                intent.putExtra("type", type);
                 startActivity(intent);
                 finish();
 
@@ -285,8 +302,12 @@ public class SleepActivity extends AppCompatActivity {
 
     private void modifyCSVInfos(String done, String  score, boolean skip, boolean skip_questionnaire){
 
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+        }
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -295,7 +316,7 @@ public class SleepActivity extends AppCompatActivity {
                     .withCSVParser(csvParser)
                     .build();
 
-            int qolColumnIndex = 61;
+            int qolColumnIndex = 66;
 
             List<String[]> csvEntries = reader.readAll();
             String[] row = csvEntries.get(1);

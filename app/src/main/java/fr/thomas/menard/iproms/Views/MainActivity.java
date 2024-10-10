@@ -36,13 +36,13 @@ import fr.thomas.menard.iproms.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    String patientID, date, caseID, langue, diagnosis, questionnaire, who_fill;
+    String patientID, date, caseID, langue, diagnosis, questionnaire, who_fill, type;
     Resources resources;
     Context context;
 
 
     String questionAnsFatigue, questionAnsDep, questionAnsQol, questionAnsBDI, questionAnsPROMIS;
-    String avg_score_fatigue, avg_score_depression, avg_score_anxiety, avg_score_qol, avg_score_PROMIS;
+    String avg_score_fatigue, avg_score_depression, avg_score_anxiety, avg_score_qol, avg_score_PROMIS_physical, avg_score_PROMIS_mental;
 
     String lastQuestionFatigue, lastQuestionDep, skipped_question_anx, skippedQuestionQOL, skipped_question_bdi, skipped_question_promis;
 
@@ -94,18 +94,23 @@ public class MainActivity extends AppCompatActivity {
         date = intent.getStringExtra("date");
         caseID = intent.getStringExtra("caseID");
         diagnosis = intent.getStringExtra("diagnosis");
+        type = intent.getStringExtra("type");
 
         questionnaire = "";
 
         context = LocaleHelper.setLocale(getApplicationContext(), langue);
         resources = context.getResources();
 
-
     }
 
 
     private void retrieveInfos(){
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/infos.csv";
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/second/infos.csv";
+        }
 
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
@@ -120,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             int depressionColumnIndex = 7;
             int bdiIndex = 13;
             int promisColumnIndex = 17;
-            int qolColumnIndex = 21;
+            int qolColumnIndex = 22;
 
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
@@ -136,14 +141,16 @@ public class MainActivity extends AppCompatActivity {
             avg_score_depression = firstRow[depressionColumnIndex+1];
             avg_score_anxiety = firstRow[depressionColumnIndex + 2];
             score_bdi = firstRow[bdiIndex+1];
-            avg_score_PROMIS = firstRow[promisColumnIndex+1];
+            avg_score_PROMIS_physical = firstRow[promisColumnIndex+1];
+            avg_score_PROMIS_mental = firstRow[promisColumnIndex+2];
+
             avg_score_qol = (firstRow[qolColumnIndex+1]);
 
 
             questionAnsFatigue = (firstRow[fatigueColumnIndex+2]);
             questionAnsDep = (firstRow[depressionColumnIndex+3]);
             questionAnsBDI = firstRow[bdiIndex+2];
-            questionAnsPROMIS = firstRow[promisColumnIndex+2];
+            questionAnsPROMIS = firstRow[promisColumnIndex+3];
             questionAnsQol = (firstRow[qolColumnIndex+2]);
 
 
@@ -151,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             lastQuestionDep = firstRow[depressionColumnIndex + 4];
             skipped_question_anx = firstRow[depressionColumnIndex + 5];
             skipped_question_bdi = firstRow[bdiIndex+3];
-            skipped_question_promis = firstRow[promisColumnIndex+3];
+            skipped_question_promis = firstRow[promisColumnIndex+4];
             skippedQuestionQOL = firstRow[qolColumnIndex+3];
 
             qol1 = firstRow[qolColumnIndex + 4];
@@ -261,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(bdi.equals("done")){
                 binding.imgBDIDone.setVisibility(View.VISIBLE);
-                if(score_bdi.equals("0")){
+                if(score_bdi.equals("0") && !questionAnsBDI.equals("22")){
                     binding.txtQuestionnaireSkippedBdi.setVisibility(View.VISIBLE);
                     binding.txtQuestionBDI.setVisibility(View.GONE);
                 }else{
@@ -319,15 +326,16 @@ public class MainActivity extends AppCompatActivity {
 
             if(promis.equals("done")){
                 binding.imgPromisDone.setVisibility(View.VISIBLE);
-                if(avg_score_PROMIS.equals("0")){
-                    binding.txtQuestionnaireSkippedPROMIS.setVisibility(View.VISIBLE);
+                if(avg_score_PROMIS_mental.equals("0")){
                     binding.txtQuestionPROMIS.setVisibility(View.GONE);
                 }else{
                     binding.rdBtnPROMIS.setClickable(false);
                     uploadData("result_bdi.csv");
                     binding.txtQuestionPROMIS.setVisibility(View.VISIBLE);
-                    binding.txtRawValuePROMIS.setText("Total score : " + avg_score_PROMIS  +"/ 50");
-                    binding.txtRawValuePROMIS.setVisibility(View.VISIBLE);
+                    binding.txtRawValueMentalPROMIS.setText("Total score : " + avg_score_PROMIS_mental  +"/ 20");
+                    binding.txtRawValueMentalPROMIS.setVisibility(View.VISIBLE);
+                    binding.txtRawValuePhysicalPROMIS.setText("Total score : " + avg_score_PROMIS_physical  +"/ 20");
+                    binding.txtRawValuePhysicalPROMIS.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -350,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
                 binding.imgDepressionDone.setVisibility(View.VISIBLE);
                 binding.imgDepressionDone.setImageResource(R.drawable.questionnaire_done);
                 binding.txtQuestionsSkippedDepAnx.setVisibility(View.INVISIBLE);
-                if(!avg_score_depression.equals("0") && !avg_score_anxiety.equals("0")){
+                if(!avg_score_depression.equals("0") && !avg_score_anxiety.equals("0") || questionAnsDep.equals("15")){
                     binding.linearAvgScoreDep.setVisibility(View.VISIBLE);
                     binding.linearAvgScoreAnx.setVisibility(View.VISIBLE);
                     binding.txtQuestionsSkippedAnx.setVisibility(View.VISIBLE);
@@ -378,7 +386,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void uploadData(String file){
         SFTP sftp = new SFTP();
-        folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID);
+        if(type.equals("first")){
+            folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID + "/first");
+
+        }else{
+            folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID +"/second");
+        }
         PATH_SERVER = "data/raw_data/" + patientID + "/iPROMS/" + date + "/";
         String file_to_send = folderSRC + "/" + file;
 
@@ -460,6 +473,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("redo_questionnaire", redo_questionnaire);
             intent.putExtra("restard", restart_fatigue);
             intent.putExtra("who_fill", who_fill);
+            intent.putExtra("type", type);
             startActivity(intent);
 
 
@@ -475,6 +489,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("totalScore", Integer.parseInt(avg_score_depression));
             intent.putExtra("redo_questionnaire", redo_questionnaire);
             intent.putExtra("restard", restart_dep);
+            intent.putExtra("type", type);
 
             startActivity(intent);
 
@@ -490,6 +505,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("totalScore", Integer.parseInt(avg_score_depression));
             intent.putExtra("redo_questionnaire", redo_questionnaire);
             intent.putExtra("restard", restart_dep);
+            intent.putExtra("type", type);
 
             startActivity(intent);
 
@@ -505,6 +521,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("totalScore", Integer.parseInt(avg_score_depression));
             intent.putExtra("redo_questionnaire", redo_questionnaire);
             intent.putExtra("restard", restart_dep);
+            intent.putExtra("type", type);
 
             startActivity(intent);
 
@@ -521,6 +538,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("num_question", 1);
             intent.putExtra("qol", "qol1");
             intent.putExtra("restard", restart_qol1);
+            intent.putExtra("type", type);
             startActivity(intent);
 
         }else if (questionnaire.equals("qol2")) {
@@ -535,6 +553,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("num_question", 9);
             intent.putExtra("qol", "qol2");
             intent.putExtra("restard", restart_qol2);
+            intent.putExtra("type", type);
             startActivity(intent);
 
         }else if (questionnaire.equals("qol3")) {
@@ -549,6 +568,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("num_question", 17);
             intent.putExtra("qol", "qol3");
             intent.putExtra("restard", restart_qol3);
+            intent.putExtra("type", type);
             startActivity(intent);
 
         }else if (questionnaire.equals("qol4")) {
@@ -563,6 +583,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("num_question", 25);
             intent.putExtra("qol", "qol4");
             intent.putExtra("restard", restart_qol4);
+            intent.putExtra("type", type);
             startActivity(intent);
 
         }else if (questionnaire.equals("qol5")) {
@@ -577,6 +598,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("num_question", 33);
             intent.putExtra("qol", "qol5");
             intent.putExtra("restard", restart_qol5);
+            intent.putExtra("type", type);
             startActivity(intent);
 
         }else if (questionnaire.equals("qol6")) {
@@ -591,6 +613,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("num_question", 41);
             intent.putExtra("qol", "qol6");
             intent.putExtra("restard", restart_qol6);
+            intent.putExtra("type", type);
             startActivity(intent);
 
         }else if (questionnaire.equals("qol7")) {
@@ -605,6 +628,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("num_question", 49);
             intent.putExtra("qol", "qol7");
             intent.putExtra("restard", restart_qol7);
+            intent.putExtra("type", type);
             startActivity(intent);
 
         }else if (questionnaire.equals("qol8")) {
@@ -619,6 +643,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("num_question", 58);
             intent.putExtra("qol", "qol8");
             intent.putExtra("restard", restart_qol8);
+            intent.putExtra("type", type);
             startActivity(intent);
 
         }else if (questionnaire.equals("qol9")) {
@@ -633,6 +658,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("num_question", 66);
             intent.putExtra("qol", "qol9");
             intent.putExtra("restard", restart_qol9);
+            intent.putExtra("type", type);
             startActivity(intent);
 
         }else if (questionnaire.equals("qol10")) {
@@ -647,6 +673,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("num_question", 74);
             intent.putExtra("qol", "qol10");
             intent.putExtra("restard", restart_qol10);
+            intent.putExtra("type", type);
             startActivity(intent);
 
         }
@@ -676,6 +703,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("caseID", caseID);
                 intent.putExtra("diagnosis", diagnosis);
                 intent.putExtra("langue", langue);
+                intent.putExtra("type", type);
                 startActivity(intent);
 
             }

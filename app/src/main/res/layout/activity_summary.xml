@@ -263,6 +263,80 @@
 
             </TableRow>
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="PROMIS - physical"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cellPromis_physicalScore"
+                    android:text="Cell1"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+                <fr.thomas.menard.iproms.Utils.RankingBarView
+                    android:layout_width="80dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/cellPromisPhysicalResult"
+                    android:text="Cell1"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="PROMIS - mental"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cellPromis_mentalScore"
+                    android:text="Cell1"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+                <fr.thomas.menard.iproms.Utils.RankingBarView
+                    android:layout_width="80dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/cellPromisMentalResult"
+                    android:text="Cell1"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratregular"/>
+
+            </TableRow>
+
 
         </TableLayout>
 

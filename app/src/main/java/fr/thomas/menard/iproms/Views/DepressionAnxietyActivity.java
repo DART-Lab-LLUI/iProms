@@ -38,7 +38,7 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
     ActivityDepressionAnxietyBinding binding;
     Context context;
     Resources resources;
-    String langue, rating;
+    String langue, rating, type;
     int numberQuestion, total_Score, skipped_question, pourcentage = 0;
     String csv_path, date, idPatient, caseID, diagnosis, lastQuestion, categorie;
 
@@ -79,6 +79,7 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
         questionAns = intent.getIntExtra("questionAnswered", 0);
         lastQuestion = intent.getStringExtra("lastQuestion");
         redo_questionnaire = intent.getBooleanExtra("redo_questionnaire",false);
+        type = intent.getStringExtra("type");
 
 
         context = LocaleHelper.setLocale(getApplicationContext(), langue);
@@ -86,8 +87,13 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
 
         writeCSVClass = WriteCSV.getInstance(this);
 
-        csv_path = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/";
-        exist_file = writeCSVClass.checkFileName(idPatient+"_HADS.csv", csv_path);
+        if(type.equals("first")){
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/first/";
+
+        }else{
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/second/";
+
+        }        exist_file = writeCSVClass.checkFileName(idPatient+"_HADS.csv", csv_path);
 
         context = LocaleHelper.setLocale(getApplicationContext(), langue);
         resources = context.getResources();
@@ -103,8 +109,12 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
     }
 
     private void getQuestion(){
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+        }
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -149,6 +159,8 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
                 intent.putExtra("caseID", caseID);
                 intent.putExtra("date", date);
                 intent.putExtra("diagnosis", diagnosis);
+                intent.putExtra("type", type);
+
                 startActivity(intent);
                 finish();
 
@@ -169,6 +181,8 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
             intent.putExtra("caseID", caseID);
             intent.putExtra("date", date);
             intent.putExtra("diagnosis", diagnosis);
+            intent.putExtra("type", type);
+
             startActivity(intent);
             finish();
             return true;
@@ -181,8 +195,12 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
     }
 
     private void retrieveGeneralInfos(String categorie){
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+        }
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -214,8 +232,12 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
 
     private void reinit_questionnaire(){
         if(redo_questionnaire){
-            String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+            String csvFilePath;
+            if(type.equals("first")){
+                csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+            }else{
+                csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+            }
             try {
                 CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -288,6 +310,8 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
                     intent.putExtra("caseID", caseID);
                     intent.putExtra("date", date);
                     intent.putExtra("diagnosis", diagnosis);
+                    intent.putExtra("type", type);
+
                     startActivity(intent);
                     finish();
                 }else {
@@ -301,6 +325,8 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
                     intent.putExtra("diagnosis", diagnosis);
                     intent.putExtra("totalScore", total_Score);
                     intent.putExtra("questionAnswered", questionAns + 1);
+                    intent.putExtra("type", type);
+
                     startActivity(intent);
                 }
             }
@@ -329,6 +355,8 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
             intent.putExtra("caseID", caseID);
             intent.putExtra("date", date);
             intent.putExtra("diagnosis", diagnosis);
+            intent.putExtra("type", type);
+
 
             startActivity(intent);
             finish();
@@ -343,6 +371,8 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
             intent.putExtra("diagnosis", diagnosis);
             intent.putExtra("totalScore", total_Score);
             intent.putExtra("questionAnswered", questionAns);
+            intent.putExtra("type", type);
+
             startActivity(intent);
         }
     }
@@ -350,8 +380,12 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
 
     private void modifyCSVInfos(String done, String  score, String category, boolean skip, boolean skip_questionnaire){
 
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+        }
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 

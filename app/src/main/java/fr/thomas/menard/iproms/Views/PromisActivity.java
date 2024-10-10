@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -36,15 +37,18 @@ public class PromisActivity extends AppCompatActivity {
     ActivityPromisBinding binding;
 
     String rating;
-    String langue;
+    String langue, type;
 
     int numberQuestion;
     int total_Score = 0;
 
+    int score_physical = 0;
+    int score_mental = 0;
+
     private WriteCSV writeCSVClass;
 
     boolean exist_file = false;
-    String idPatient, caseID, date, question_num_string, diagnosis, lastQuestion;
+    String idPatient, caseID, date, question_num_string, diagnosis, lastQuestion, categorie;
 
     int pourcentage = 0;
 
@@ -85,12 +89,20 @@ public class PromisActivity extends AppCompatActivity {
         diagnosis = intent.getStringExtra("diagnosis");
         lastQuestion = intent.getStringExtra("lastQuestion");
         redo_questionnaire = intent.getBooleanExtra("redo_questionnaire", false);
+        type = intent.getStringExtra("type");
 
 
         writeCSVClass = WriteCSV.getInstance(this);
 
-        csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/";
+        if(type.equals("first")){
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/first/";
+
+        }else{
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/second/";
+
+        }
         exist_file = writeCSVClass.checkFileName(idPatient + "_PROMIS.csv", csv_path);
+
 
     }
 
@@ -109,8 +121,12 @@ public class PromisActivity extends AppCompatActivity {
     }
 
     private void retrieveInfos(){
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+        }
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -125,18 +141,21 @@ public class PromisActivity extends AppCompatActivity {
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
 
-            total_Score = Integer.parseInt(firstRow[qolColumnIndex+1]);
-            numberQuestion = Integer.parseInt((firstRow[qolColumnIndex+2]));
-            skipped_question = Integer.parseInt(firstRow[qolColumnIndex+3]);
+            score_physical = Integer.parseInt(firstRow[qolColumnIndex+1]);
+            score_mental = Integer.parseInt(firstRow[qolColumnIndex+2]);
+
+            numberQuestion = Integer.parseInt((firstRow[qolColumnIndex+3]));
+            skipped_question = Integer.parseInt(firstRow[qolColumnIndex+4]);
 
 
             if(numberQuestion==0)
                 numberQuestion = 1;
 
-
+            retrieveCategorie(numberQuestion);
             pourcentage = 100 * (numberQuestion) / 10;
             binding.txtPoucentageDone.setText(String.valueOf(pourcentage));
             reader.close();
+
 
         } catch (IOException | CsvException e) {
             Log.d("TEST", "infos " + e.getMessage());
@@ -144,10 +163,25 @@ public class PromisActivity extends AppCompatActivity {
         }
     }
 
+    private void retrieveCategorie(int numberQuestion){
+        if(numberQuestion == 2 || numberQuestion == 4 ||numberQuestion == 5 ||numberQuestion == 10)
+            categorie = "physical";
+        else if(numberQuestion == 3 || numberQuestion == 6||numberQuestion == 7 ||numberQuestion == 8)
+            categorie = "mental";
+
+        else
+            categorie = "raw";
+
+    }
+
     private void reinit_questionnaire(){
         if(redo_questionnaire){
-            String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+            String csvFilePath;
+            if(type.equals("first")){
+                csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+            }else{
+                csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+            }
             try {
                 CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -163,8 +197,9 @@ public class PromisActivity extends AppCompatActivity {
                 String[] row = csvEntries.get(1);
                 row[qolColumnIndex] = "null";
                 row[qolColumnIndex+1] = "0";
-                row[qolColumnIndex + 2] = "0";
+                row[qolColumnIndex+2] = "0";
                 row[qolColumnIndex + 3] = "0";
+                row[qolColumnIndex + 4] = "0";
 
 
                 CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
@@ -193,6 +228,8 @@ public class PromisActivity extends AppCompatActivity {
                 intent.putExtra("caseID", caseID);
                 intent.putExtra("date", date);
                 intent.putExtra("diagnosis", diagnosis);
+                intent.putExtra("type", type);
+
                 startActivity(intent);
                 finish();
 
@@ -212,6 +249,8 @@ public class PromisActivity extends AppCompatActivity {
             intent.putExtra("caseID", caseID);
             intent.putExtra("date", date);
             intent.putExtra("diagnosis", diagnosis);
+            intent.putExtra("type", type);
+
             startActivity(intent);
             finish();
             return true;
@@ -228,20 +267,27 @@ public class PromisActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 write_csv(rating);
-                total_Score = total_Score + Integer.parseInt(rating);
+                int score = 0;
+                if (categorie.equals("physical"))
+                    score = score_physical + Integer.parseInt(rating);
+                else if (categorie.equals("mental")) {
+                    score = score_mental + Integer.parseInt(rating);
+                }
 
                 if(numberQuestion==10){
-                    modifyCSVInfos("done", String.valueOf(total_Score), false, false);
+                    modifyCSVInfos("done", String.valueOf(score), false, false);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("langue", langue);
                     intent.putExtra("patientID", idPatient);
                     intent.putExtra("caseID", caseID);
                     intent.putExtra("date", date);
                     intent.putExtra("diagnosis", diagnosis);
+                    intent.putExtra("type", type);
+
                     startActivity(intent);
                     finish();
                 }else {
-                    modifyCSVInfos("not finished", String.valueOf(total_Score), false, false);
+                    modifyCSVInfos("not finished", String.valueOf(score), false, false);
                     Intent intent = new Intent(getApplicationContext(), PromisActivity.class);
                     intent.putExtra("patientID", idPatient);
                     intent.putExtra("caseID", caseID);
@@ -249,6 +295,8 @@ public class PromisActivity extends AppCompatActivity {
                     intent.putExtra("langue", langue);
                     intent.putExtra("diagnosis", diagnosis);
                     intent.putExtra("totalScore", total_Score);
+                    intent.putExtra("type", type);
+
                     startActivity(intent);
                     finish();
                 }
@@ -268,7 +316,12 @@ public class PromisActivity extends AppCompatActivity {
     private void skip(){
         write_csv("skip");
         if(numberQuestion==9){
-            modifyCSVInfos("done", String.valueOf(total_Score), true, false);
+
+            if(categorie.equals("physical"))
+                modifyCSVInfos("done", String.valueOf(score_physical), true, false);
+            else if (categorie.equals("mental")) {
+                modifyCSVInfos("done", String.valueOf(score_mental), true, false);
+            }
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("langue", langue);
@@ -276,11 +329,17 @@ public class PromisActivity extends AppCompatActivity {
             intent.putExtra("caseID", caseID);
             intent.putExtra("date", date);
             intent.putExtra("diagnosis", diagnosis);
+            intent.putExtra("type", type);
+
 
             startActivity(intent);
             finish();
         }else {
-            modifyCSVInfos("not finished", String.valueOf(total_Score), true, false);
+            if(categorie.equals("physical"))
+                modifyCSVInfos("not finished", String.valueOf(score_physical), true, false);
+            else if (categorie.equals("mental")) {
+                modifyCSVInfos("not finished", String.valueOf(score_mental), true, false);
+            }
             Intent intent = new Intent(getApplicationContext(), PromisActivity.class);
             intent.putExtra("patientID", idPatient);
             intent.putExtra("caseID", caseID);
@@ -288,6 +347,8 @@ public class PromisActivity extends AppCompatActivity {
             intent.putExtra("langue", langue);
             intent.putExtra("diagnosis", diagnosis);
             intent.putExtra("totalScore", total_Score);
+            intent.putExtra("type", type);
+
             startActivity(intent);
             finish();
         }
@@ -345,8 +406,12 @@ public class PromisActivity extends AppCompatActivity {
 
     private void modifyCSVInfos(String done, String  score, boolean skip, boolean skip_questionnaire){
 
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+        }
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -361,16 +426,20 @@ public class PromisActivity extends AppCompatActivity {
             List<String[]> csvEntries = reader.readAll();
             String[] row = csvEntries.get(1);
             row[qolColumnIndex] = done;
-            row[qolColumnIndex+1] = score;
+            if(categorie.equals("physical"))
+                row[qolColumnIndex+1] = score;
+            else if (categorie.equals("mental")) {
+                row[qolColumnIndex+2] = score;
+            }
             if(!skip_questionnaire)
-                row[qolColumnIndex + 2] = String.valueOf(numberQuestion +1);
+                row[qolColumnIndex + 3] = String.valueOf(numberQuestion +1);
 
             if(skip && !skip_questionnaire)
-                row[qolColumnIndex+3] = String.valueOf(skipped_question + 1);
+                row[qolColumnIndex+4] = String.valueOf(skipped_question + 1);
 
             if(skip_questionnaire){
-                row[qolColumnIndex + 2] = "0";
                 row[qolColumnIndex + 3] = "0";
+                row[qolColumnIndex + 4] = "0";
             }
 
 

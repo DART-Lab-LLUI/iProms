@@ -35,22 +35,24 @@ import fr.thomas.menard.iproms.databinding.ActivitySummaryBinding;
 public class SummaryActivity extends AppCompatActivity {
 
     ActivitySummaryBinding binding;
-    String patientID, date, caseID, langue, diagnosis, questionnaire, questionnaire_sleep;
+    String patientID, date, caseID, langue, diagnosis, questionnaire, questionnaire_sleep, type;
     Resources resources;
     Context context;
 
     int total_score_sleep;
-    String questionAnsFatigue, questionAnsDep, questionAnsQol;
-    String avg_score_fatigue, score_depression, score_anxiety, avg_score_qol;
+    String questionAnsFatigue, questionAnsDep, questionAnsQol, questionAnsPROMIS;
+    String avg_score_fatigue, score_depression, score_anxiety, avg_score_qol, tscore_promis_physical, tscore_promis_mental, score_promis_physical, score_promis_mental;
 
-    String lastQuestionFatigue, skippedQuestionDepAnx, skipped_question_anx, skippedQuestionQOL;
+    String lastQuestionFatigue, skippedQuestionDepAnx, skipped_question_anx, skippedQuestionQOL, skipped_question_promis;
 
-    String fatigue, depression, qol;
+    String fatigue, depression, qol, promis;
     String qol1, qol2, qol3, qol4, qol5, qol6, qol7, qol8, qol9, qol10, sleep, fsmc, bdi;
     String skippedQuestionQOL1, skippedQuestionQOL2, skippedQuestionQOL3,skippedQuestionQOL4,skippedQuestionQOL5,skippedQuestionQOL6,skippedQuestionQOL7,skippedQuestionQOL8,skippedQuestionQOL9,skippedQuestionQOL10,skipped_question_sleep, skipped_question_fsmc, skipped_question_bdi;
-
     String questionAnsQOL1, questionAnsQOL2,questionAnsQOL3,questionAnsQOL4,questionAnsQOL5,questionAnsQOL6,questionAnsQOL7,questionAnsQOL8,questionAnsQOL9,questionAnsQOL10,questionAnsSleep, questionAnsBDI, questionAnsFSMC;
     String scoreQOL1, scoreQOL2,scoreQOL3,scoreQOL4,scoreQOL5,scoreQOL6,scoreQOL7,scoreQOL8,scoreQOL9,scoreQOL10, score_sleep, score_fsmc, score_bdi;
+
+    double[][] tscorePromisPhysical = tScore.getScoreTable_promis_physical();
+    double[][] tscorePromisMental = tScore.getScoreTable_promis_mental();
 
     double[][] tScore_qol1 = tScore.getScoreTable_emotional_behavioral();
     double[][] tScore_qol2 = tScore.getScoreTable_sleep();
@@ -88,6 +90,7 @@ public class SummaryActivity extends AppCompatActivity {
 
         init();
         retrieveInfos();
+        promisTscore();
         //convertTscore();
         initTab();
         createResultCSV();
@@ -104,6 +107,7 @@ public class SummaryActivity extends AppCompatActivity {
         date = intent.getStringExtra("date");
         caseID = intent.getStringExtra("caseID");
         diagnosis = intent.getStringExtra("diagnosis");
+        type = intent.getStringExtra("type");
 
 
         questionnaire = "";
@@ -113,8 +117,13 @@ public class SummaryActivity extends AppCompatActivity {
 
         writeCSV = WriteCSV.getInstance(this);
 
-        csv_path = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/";
+        if(type.equals("first")){
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + patientID + "/first/";
 
+        }else{
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + patientID + "/second/";
+
+        }
 
     }
 
@@ -129,6 +138,11 @@ public class SummaryActivity extends AppCompatActivity {
         displayInterpretations("anxiety");
         binding.cellBDIScore.setText(score_bdi+" / 63");
         displayInterpretations("bdi");
+        binding.cellPromisPhysicalScore.setText(score_promis_physical + " / 20");
+        displayInterpretations("promis");
+        binding.cellPromisMentalScore.setText(score_promis_mental + " / 20");
+        displayInterpretations("promis");
+
 
 
 
@@ -145,11 +159,40 @@ public class SummaryActivity extends AppCompatActivity {
                 intent.putExtra("date", date);
                 intent.putExtra("caseID", caseID);
                 intent.putExtra("diagnosis", diagnosis);
+                intent.putExtra("type", type);
                 startActivity(intent);
             }
         });
     }
 
+    private void promisTscore(){
+        if(!score_promis_physical.equals("0") && Integer.parseInt(skipped_question_promis) < 4){
+            if (Integer.parseInt(skipped_question_promis) == 10) {
+                tscore_promis_physical = "0";
+
+            }else {
+                Log.d("TEST", "tes " + tscorePromisPhysical[10][1]);
+                tscore_promis_physical = String.valueOf(tscorePromisPhysical[Integer.parseInt(score_promis_physical) - 4 ][1]);
+
+            }
+
+        }else{
+            tscore_promis_physical = "No t-score";
+        }
+
+        if(!score_promis_mental.equals("0") && Integer.parseInt(skipped_question_promis) < 4){
+            if (Integer.parseInt(skipped_question_promis) == 10) {
+                tscore_promis_mental = "0";
+
+            }else {
+                tscore_promis_mental = String.valueOf(tscorePromisMental[Integer.parseInt(score_promis_mental ) - 4 ][1]);
+
+            }
+
+        }else{
+            tscore_promis_mental = "No t-score";
+        }
+    }
     private void convertTscore(){
         if(!scoreQOL10.equals("0") && Integer.parseInt(skippedQuestionQOL10) < 4){
             if (Integer.parseInt(skippedQuestionQOL10) == 0) {
@@ -283,8 +326,13 @@ public class SummaryActivity extends AppCompatActivity {
 
     }
 
-    private void retrieveInfos() {
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/" + patientID + "/infos.csv";
+    private void retrieveInfos(){
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/second/infos.csv";
+        }
 
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
@@ -298,9 +346,8 @@ public class SummaryActivity extends AppCompatActivity {
             int fatigueColumnIndex = 3;
             int depressionColumnIndex = 7;
             int bdiIndex = 13;
-            int qolColumnIndex = 17;
-            int sleepIndex = 57;
-            int FSMCIndex = 61;
+            int promisColumnIndex = 17;
+            int qolColumnIndex = 22;
 
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
@@ -308,27 +355,33 @@ public class SummaryActivity extends AppCompatActivity {
 
             fatigue = firstRow[fatigueColumnIndex];
             depression = firstRow[depressionColumnIndex];
+            bdi = firstRow[bdiIndex];
+            promis = firstRow[promisColumnIndex];
             qol = firstRow[qolColumnIndex];
 
-            avg_score_fatigue = (firstRow[fatigueColumnIndex + 1]);
-            score_depression = firstRow[depressionColumnIndex + 1];
+            avg_score_fatigue = (firstRow[fatigueColumnIndex+1]);
+            score_depression = firstRow[depressionColumnIndex+1];
             score_anxiety = firstRow[depressionColumnIndex + 2];
-            avg_score_qol = (firstRow[qolColumnIndex + 1]);
+            score_bdi = firstRow[bdiIndex+1];
+            score_promis_physical = firstRow[promisColumnIndex+1];
+            score_promis_mental = firstRow[promisColumnIndex+2];
 
-            questionAnsFatigue = (firstRow[fatigueColumnIndex + 2]);
-            questionAnsDep = (firstRow[depressionColumnIndex + 3]);
-            questionAnsQol = (firstRow[qolColumnIndex + 2]);
+            avg_score_qol = (firstRow[qolColumnIndex+1]);
+
+
+            questionAnsFatigue = (firstRow[fatigueColumnIndex+2]);
+            questionAnsDep = (firstRow[depressionColumnIndex+3]);
+            questionAnsBDI = firstRow[bdiIndex+2];
+            questionAnsPROMIS = firstRow[promisColumnIndex+3];
+            questionAnsQol = (firstRow[qolColumnIndex+2]);
 
 
             lastQuestionFatigue = firstRow[fatigueColumnIndex + 3];
             skippedQuestionDepAnx = firstRow[depressionColumnIndex + 4];
             skipped_question_anx = firstRow[depressionColumnIndex + 5];
-            skippedQuestionQOL = firstRow[qolColumnIndex + 3];
-
-            bdi = firstRow[bdiIndex];
-            score_bdi = firstRow[bdiIndex + 1];
-            questionAnsBDI = firstRow[bdiIndex + 2];
-            skipped_question_bdi = firstRow[bdiIndex + 3];
+            skipped_question_bdi = firstRow[bdiIndex+3];
+            skipped_question_promis = firstRow[promisColumnIndex+4];
+            skippedQuestionQOL = firstRow[qolColumnIndex+3];
 
             qol1 = firstRow[qolColumnIndex + 4];
             scoreQOL1 = firstRow[qolColumnIndex + 5];
@@ -355,6 +408,10 @@ public class SummaryActivity extends AppCompatActivity {
             questionAnsQOL5 = firstRow[qolColumnIndex + 22];
             skippedQuestionQOL5 = firstRow[qolColumnIndex + 23];
 
+            qol6 = firstRow[qolColumnIndex + 24];
+            scoreQOL6 = firstRow[qolColumnIndex + 25];
+            questionAnsQOL6 = firstRow[qolColumnIndex + 26];
+            skippedQuestionQOL6 = firstRow[qolColumnIndex + 27];
 
             qol7 = firstRow[qolColumnIndex + 28];
             scoreQOL7 = firstRow[qolColumnIndex + 29];
@@ -376,18 +433,11 @@ public class SummaryActivity extends AppCompatActivity {
             questionAnsQOL10 = firstRow[qolColumnIndex + 42];
             skippedQuestionQOL10 = firstRow[qolColumnIndex + 43];
 
-            sleep = firstRow[sleepIndex];
-            score_sleep = firstRow[sleepIndex + 1];
-            questionAnsSleep = firstRow[sleepIndex + 2];
-            skipped_question_sleep = firstRow[sleepIndex + 3];
+            /*
+            if(Integer.parseInt(questionAnsQol)<0)
+                questionAnsQol = "0";
 
-            fsmc = firstRow[FSMCIndex];
-            score_fsmc = firstRow[FSMCIndex + 1];
-            questionAnsFSMC = firstRow[FSMCIndex + 2];
-            skipped_question_fsmc = firstRow[FSMCIndex + 3];
-
-
-
+             */
 
             reader.close();
 
@@ -402,7 +452,7 @@ public class SummaryActivity extends AppCompatActivity {
             double mean_fatigue = (double) Integer.parseInt(avg_score_fatigue) / (Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1);
 
             writeCSV.createAndWriteResult(csv_path+"/"+patientID+"_result.csv", patientID, caseID, date,
-                    String.valueOf(mean_fatigue), score_depression, score_anxiety, score_bdi, scoreQOL1, scoreQOL2, scoreQOL3, scoreQOL4,
+                    String.valueOf(mean_fatigue), score_depression, score_anxiety, score_bdi, score_promis_physical, score_promis_mental, scoreQOL1, scoreQOL2, scoreQOL3, scoreQOL4,
                     scoreQOL5, scoreQOL7, scoreQOL8, scoreQOL9, scoreQOL10);
         }
     }
@@ -444,7 +494,7 @@ public class SummaryActivity extends AppCompatActivity {
         }
 
         if(categorie.equals("depression")){
-            if(Integer.parseInt(score_depression)==0){
+            if(Integer.parseInt(score_depression)==0 && !questionAnsDep.equals("15")){
                 txt_interpretations = "Questionnaire skipped";
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
@@ -452,7 +502,7 @@ public class SummaryActivity extends AppCompatActivity {
                 binding.cellDepressionResult.setUserScore(2.75f);
                 binding.cellDepressionResult.setUserText(txt_interpretations);
             }else{
-                if(Integer.parseInt(score_depression)<7 && Integer.parseInt(score_depression)!= 0){
+                if(Integer.parseInt(score_depression)<7){
                     txt_interpretations = "Within normal limits";
 
                 } else if (Integer.parseInt(score_depression)<11) {
@@ -475,7 +525,7 @@ public class SummaryActivity extends AppCompatActivity {
 
 
         if(categorie.equals("anxiety")){
-            if(score_anxiety.equals("0")){
+            if(score_anxiety.equals("0") && !questionAnsDep.equals("15")){
                 txt_interpretations = "Questionnaire skipped";
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
@@ -483,7 +533,7 @@ public class SummaryActivity extends AppCompatActivity {
                 binding.cellAnxietyResult.setUserScore(2.75f);
                 binding.cellAnxietyResult.setUserText(txt_interpretations);
             }else{
-                if(Integer.parseInt(score_anxiety)<7 && Integer.parseInt(score_anxiety)!=0) {
+                if(Integer.parseInt(score_anxiety)<7) {
                     txt_interpretations = "Within normal limits";
 
                 }else if (Integer.parseInt(score_anxiety)<11) {
@@ -504,7 +554,7 @@ public class SummaryActivity extends AppCompatActivity {
 
         if(categorie.equals("bdi")){
             String txt_interpretations;
-            if(score_bdi.equals("0")){
+            if(score_bdi.equals("0") && !questionAnsBDI.equals("22")){
                 txt_interpretations = "Questionnaire skipped";
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
@@ -545,52 +595,98 @@ public class SummaryActivity extends AppCompatActivity {
 
         }
 
-        /*
-        if(categorie.equals("qol1")) {
-            if (scoreQOL1.equals("No t-score") || Integer.parseInt(skippedQuestionQOL1)>3) {
+
+
+        if(categorie.equals("promis")) {
+            if (tscore_promis_physical.equals("No t-score") || Integer.parseInt(skipped_question_promis)>3) {
                 txt_interpretations = "Questionnaire skipped";
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
-                binding.cellqol1Result.setColorSections(upperlimit, colors);
-                binding.cellqol1Result.setUserScore(2.75f);
-                binding.cellqol1Result.setUserText(txt_interpretations);
+                binding.cellPromisPhysicalResult.setColorSections(upperlimit, colors);
+                binding.cellPromisPhysicalResult.setUserScore(2.75f);
+                binding.cellPromisPhysicalResult.setUserText(txt_interpretations);
 
             } else {
-                if (Double.parseDouble(scoreQOL1) > 70) {
-                    txt_interpretations = "Severely increased";
-                } else if (Double.parseDouble(scoreQOL1) < 71 && Double.parseDouble(scoreQOL1) > 60) {
-                    txt_interpretations = "Moderately increased";
+                if (Double.parseDouble(tscore_promis_physical) > 70) {
+                    txt_interpretations = "Very high";
+                } else if (Double.parseDouble(tscore_promis_physical) < 71 && Double.parseDouble(tscore_promis_physical) > 60) {
+                    txt_interpretations = "High";
 
-                } else if (Double.parseDouble(scoreQOL1) < 61 && Double.parseDouble(scoreQOL1) > 54) {
-                    txt_interpretations = "Mildly increased";
+                } else if (Double.parseDouble(tscore_promis_physical) < 61 && Double.parseDouble(tscore_promis_physical) > 40) {
+                    txt_interpretations = "Average";
 
-                } else if (Double.parseDouble(scoreQOL1) < 55) {
-                    txt_interpretations = "Within normal limits";
+                } else if (Double.parseDouble(tscore_promis_physical) < 41 && Double.parseDouble(tscore_promis_physical) > 30) {
+                    txt_interpretations = "Low";
+                }
+                else if (Double.parseDouble(tscore_promis_physical) < 31) {
+                    txt_interpretations = "Very low";
 
                 }
-                int[] colors = {android.graphics.Color.GREEN, Color.YELLOW, Color.rgb(255,165,0), Color.RED};
+                int[] colors = { Color.RED, Color.YELLOW, android.graphics.Color.GREEN};
 
-                float min = 32.2f;
-                float greenEnd = 55.0f;
-                float yellowEnd = 61.0f;
-                float orangeEnd = 71.0f;
-                float redEnd = 82.0f;
+                float min = 20.2f;
+                float greenEnd = 40.0f;
+                float yellowEnd = 60.0f;
+                float redEnd = 80.0f;
 
-                float[] upperlimit = {binding.cellqol1Result.rescaleValue(greenEnd,min, redEnd, 70.0f),
-                        binding.cellqol1Result.rescaleValue(yellowEnd, min, redEnd,70.0f),
-                        binding.cellqol1Result.rescaleValue(orangeEnd, min, redEnd,70.0f),
-                        binding.cellqol1Result.rescaleValue(redEnd, min, redEnd,70.0f)};
+                float[] upperlimit = {binding.cellPromisMentalResult.rescaleValue(greenEnd,min, redEnd, 70.0f),
+                        binding.cellPromisMentalResult.rescaleValue(yellowEnd, min, redEnd,70.0f),
+                        binding.cellPromisMentalResult.rescaleValue(redEnd, min, redEnd,70.0f)};
 
-                float user_score = Float.parseFloat(scoreQOL1);
-                float user_score_rescale = binding.cellqol1Result.rescaleValue(user_score, min, redEnd,70.0f);
+                float user_score = Float.parseFloat(tscore_promis_physical);
+                float user_score_rescale = binding.cellPromisPhysicalResult.rescaleValue(user_score, min, redEnd,70.0f);
 
-                binding.cellqol1Result.setColorSections(upperlimit, colors);
-                binding.cellqol1Result.setUserScore(user_score_rescale);
-                binding.cellqol1Result.setUserText(txt_interpretations);
+                binding.cellPromisPhysicalResult.setColorSections(upperlimit, colors);
+                binding.cellPromisPhysicalResult.setUserScore(user_score_rescale);
+                binding.cellPromisPhysicalResult.setUserText(txt_interpretations);
+
+            }
+
+            if (tscore_promis_mental.equals("No t-score") || Integer.parseInt(skipped_question_promis)>3) {
+                txt_interpretations = "Questionnaire skipped";
+                int[] colors = {Color.rgb(128,128,128)};
+                float[] upperlimit = {5.5f};
+                binding.cellPromisMentalResult.setColorSections(upperlimit, colors);
+                binding.cellPromisMentalResult.setUserScore(2.75f);
+                binding.cellPromisMentalResult.setUserText(txt_interpretations);
+
+            } else {
+                if (Double.parseDouble(tscore_promis_mental) > 70) {
+                    txt_interpretations = "Very high";
+                } else if (Double.parseDouble(tscore_promis_mental) < 71 && Double.parseDouble(tscore_promis_mental) > 60) {
+                    txt_interpretations = "High";
+
+                } else if (Double.parseDouble(tscore_promis_mental) < 61 && Double.parseDouble(tscore_promis_mental) > 40) {
+                    txt_interpretations = "Average";
+
+                } else if (Double.parseDouble(tscore_promis_mental) < 41 && Double.parseDouble(tscore_promis_mental) > 30) {
+                    txt_interpretations = "Low";
+                }
+                else if (Double.parseDouble(tscore_promis_mental) < 31) {
+                    txt_interpretations = "Very low";
+
+                }
+                int[] colors = { Color.RED, Color.YELLOW, android.graphics.Color.GREEN};
+
+                float min = 20.2f;
+                float greenEnd = 40.0f;
+                float yellowEnd = 60.0f;
+                float redEnd = 80.0f;
+
+                float[] upperlimit = {binding.cellPromisMentalResult.rescaleValue(greenEnd,min, redEnd, 70.0f),
+                        binding.cellPromisMentalResult.rescaleValue(yellowEnd, min, redEnd,70.0f),
+                        binding.cellPromisMentalResult.rescaleValue(redEnd, min, redEnd,70.0f)};
+
+                float user_score = Float.parseFloat(tscore_promis_mental);
+                float user_score_rescale = binding.cellPromisMentalResult.rescaleValue(user_score, min, redEnd,70.0f);
+
+                binding.cellPromisMentalResult.setColorSections(upperlimit, colors);
+                binding.cellPromisMentalResult.setUserScore(user_score_rescale);
+                binding.cellPromisMentalResult.setUserText(txt_interpretations);
 
             }
         }
-
+/*
         if(categorie.equals("qol2")){
             if(scoreQOL2.equals("No t-score") || Integer.parseInt(skippedQuestionQOL2)>3){
                 txt_interpretations = "Questionnaire skipped";
@@ -993,7 +1089,12 @@ public class SummaryActivity extends AppCompatActivity {
 
     private void uploadData(String file){
         SFTP sftp = new SFTP();
-        folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID);
+        if(type.equals("first")){
+            folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID + "/first");
+
+        }else{
+            folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID +"/second");
+        }
         PATH_SERVER = "data/raw_data/" + patientID + "/iPROMS/" + date + "/";
         String file_to_send = folderSRC + "/" + patientID +"_"+file;
 

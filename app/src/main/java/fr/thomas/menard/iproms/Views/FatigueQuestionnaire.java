@@ -37,7 +37,7 @@ public class FatigueQuestionnaire extends AppCompatActivity {
     ActivityFatigueQuestionnaireBinding binding;
 
     String rating;
-    String langue;
+    String langue, type;
 
     int numberQuestion;
     int total_Score = 0;
@@ -86,11 +86,18 @@ public class FatigueQuestionnaire extends AppCompatActivity {
         diagnosis = intent.getStringExtra("diagnosis");
         lastQuestion = intent.getStringExtra("lastQuestion");
         redo_questionnaire = intent.getBooleanExtra("redo_questionnaire", false);
+        type = intent.getStringExtra("type");
 
 
         writeCSVClass = WriteCSV.getInstance(this);
 
-        csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/";
+        if(type.equals("first")){
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/first/";
+
+        }else{
+            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/second/";
+
+        }
         exist_file = writeCSVClass.checkFileName(idPatient + "_FSS.csv", csv_path);
 
 
@@ -112,8 +119,12 @@ public class FatigueQuestionnaire extends AppCompatActivity {
     }
 
     private void retrieveInfos(){
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+        }
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -149,7 +160,12 @@ public class FatigueQuestionnaire extends AppCompatActivity {
 
     private void reinit_questionnaire(){
         if(redo_questionnaire){
-            String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
+            String csvFilePath;
+            if(type.equals("first")){
+                csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+            }else{
+                csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+            }
 
             try {
                 CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
@@ -196,6 +212,7 @@ public class FatigueQuestionnaire extends AppCompatActivity {
                 intent.putExtra("caseID", caseID);
                 intent.putExtra("date", date);
                 intent.putExtra("diagnosis", diagnosis);
+                intent.putExtra("type", type);
                 startActivity(intent);
                 finish();
 
@@ -215,6 +232,7 @@ public class FatigueQuestionnaire extends AppCompatActivity {
             intent.putExtra("caseID", caseID);
             intent.putExtra("date", date);
             intent.putExtra("diagnosis", diagnosis);
+            intent.putExtra("type", type);
             startActivity(intent);
             finish();
             return true;
@@ -241,6 +259,7 @@ public class FatigueQuestionnaire extends AppCompatActivity {
                     intent.putExtra("caseID", caseID);
                     intent.putExtra("date", date);
                     intent.putExtra("diagnosis", diagnosis);
+                    intent.putExtra("type", type);
                     startActivity(intent);
                     finish();
                 }else {
@@ -252,6 +271,7 @@ public class FatigueQuestionnaire extends AppCompatActivity {
                     intent.putExtra("langue", langue);
                     intent.putExtra("diagnosis", diagnosis);
                     intent.putExtra("totalScore", total_Score);
+                    intent.putExtra("type", type);
                     startActivity(intent);
                     finish();
                 }
@@ -279,6 +299,7 @@ public class FatigueQuestionnaire extends AppCompatActivity {
             intent.putExtra("caseID", caseID);
             intent.putExtra("date", date);
             intent.putExtra("diagnosis", diagnosis);
+            intent.putExtra("type", type);
 
             startActivity(intent);
             finish();
@@ -291,6 +312,7 @@ public class FatigueQuestionnaire extends AppCompatActivity {
             intent.putExtra("langue", langue);
             intent.putExtra("diagnosis", diagnosis);
             intent.putExtra("totalScore", total_Score);
+            intent.putExtra("type", type);
             startActivity(intent);
             finish();
         }
@@ -329,8 +351,12 @@ public class FatigueQuestionnaire extends AppCompatActivity {
 
     private void modifyCSVInfos(String done, String  score, boolean skip, boolean skip_questionnaire){
 
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
+        String csvFilePath;
+        if(type.equals("first")){
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
+        }else{
+            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
+        }
         try {
             CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 

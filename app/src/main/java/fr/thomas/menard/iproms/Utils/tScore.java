@@ -20,6 +20,13 @@ public class tScore extends Application {
     private static double[][] scoreTable_lower_function;
 
 
+    private static double[][] scoreTable_promis_physical;
+
+
+    private static double[][] scoreTable_promis_mental;
+
+
+
 
     public static double[][] getScoreTable_ability_in_social_roles() {
         return scoreTable_ability_in_social_roles;
@@ -56,6 +63,14 @@ public class tScore extends Application {
         return scoreTable_lower_function;
     }
 
+    public static double[][] getScoreTable_promis_physical() {
+        return scoreTable_promis_physical;
+    }
+    public static double[][] getScoreTable_promis_mental() {
+        return scoreTable_promis_mental;
+    }
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -71,7 +86,58 @@ public class tScore extends Application {
         scoreTable_stigma = initializeScoreTable_stigma();
         scoreTable_upper_function = initializeScoreTable_upper_function();
         scoreTable_lower_function = initializeScoreTable_lower_function();
+        scoreTable_promis_physical = initializeScoreTable_promis_physical();
+        scoreTable_promis_mental = initializeScoreTable_promis_mental();
     }
+
+
+    private double[][] initializeScoreTable_promis_physical() {
+        return new double[][]{
+                {4, 16.2, 4.8},
+                {5, 19.9, 4.8},
+                {6, 23.5, 4.8},
+                {7, 26.7, 4.8},
+                {8, 29.6, 4.8},
+                {9, 32.4, 4.8},
+                {10, 34.9, 4.8},
+                {11, 37.4, 4.8},
+                {12, 39.8, 4.8},
+                {13, 42.3, 4.8},
+                {14, 44.9, 4.8},
+                {15, 47.7, 4.8},
+                {16, 50.8, 4.8},
+                {17, 54.1, 4.8},
+                {18, 57.7, 4.8},
+                {19, 61.9, 4.8},
+                {20, 67.7, 4.8},
+
+        };
+    }
+
+    private double[][] initializeScoreTable_promis_mental() {
+        return new double[][]{
+                {4, 21.2, 4.8},
+                {5, 25.1, 4.8},
+                {6, 28.4, 4.8},
+                {7, 31.3, 4.8},
+                {8, 33.8, 4.8},
+                {9, 36.3, 4.8},
+                {10, 38.8, 4.8},
+                {11, 41.1, 4.8},
+                {12, 43.5, 4.8},
+                {13, 45.8, 4.8},
+                {14, 48.3, 4.8},
+                {15, 50.8, 4.8},
+                {16, 53.3, 4.8},
+                {17, 56.0, 4.8},
+                {18, 59.0, 4.8},
+                {19, 62.5, 4.8},
+                {20, 67.6, 4.8},
+
+
+        };
+    }
+
 
     private double[][] initializeScoreTable_lower_function() {
         return new double[][]{

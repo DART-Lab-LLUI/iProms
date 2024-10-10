@@ -20,8 +20,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="10dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="30dp"
                 android:orientation="horizontal">
@@ -411,7 +411,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/linearScorePROMIS"
+                        android:id="@+id/linearScorePhysicalPROMIS"
                         android:orientation="horizontal"
                         android:layout_below="@+id/txtQuestionPROMIS"
                         android:visibility="visible"
@@ -422,7 +422,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/txtRawValuePROMIS"
+                            android:id="@+id/txtRawValuePhysicalPROMIS"
                             android:text="Total score : x / 40"
                             android:textColor="@color/colorPrimary"
                             android:fontFamily="@font/montserratregular"
@@ -430,16 +430,31 @@
                             android:visibility="invisible"
                             android:layout_marginTop="5dp"/>
 
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/linearScoreMentalPROMIS"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/txtQuestionPROMIS"
+                        android:visibility="visible"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp">
+
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/txtQuestionnaireSkipped_PROMIS"
-                            android:text="Questionnaire skipped"
+                            android:id="@+id/txtRawValueMentalPROMIS"
+                            android:text="Total score : x / 40"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
                             android:textSize="18sp"
                             android:visibility="invisible"
-                            android:fontFamily="@font/montserratregular"
-                            android:textColor="@color/colorPrimary"
-                            android:layout_marginStart="10dp"/>
+                            android:layout_marginTop="5dp"/>
+
 
                     </LinearLayout>
 
