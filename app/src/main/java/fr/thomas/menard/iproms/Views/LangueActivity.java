@@ -1,49 +1,44 @@
 package fr.thomas.menard.iproms.Views;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.SeekBar;
-
-import fr.thomas.menard.iproms.Utils.RankingBarView;
 import fr.thomas.menard.iproms.databinding.ActivityLangueBinding;
 
-public class LangueActivity extends AppCompatActivity {
+public class LangueActivity extends BaseActivity {
 
-    ActivityLangueBinding binding;
+    private ActivityLangueBinding binding;
+    private String language;
+
+    private void listenBtnLangue(){
+        binding.btnDe.setOnClickListener(v -> {
+            language = "de";
+            navigateToNextActivity(IdentificationActivity.class);
+        });
+
+        binding.btnEn.setOnClickListener(v -> {
+            language = "en";
+            navigateToNextActivity(IdentificationActivity.class);
+        });
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityLangueBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
+    public void init() {
 
+    }
+
+    @Override
+    public void listenBtn() {
         listenBtnLangue();
     }
 
+    @Override
+    public void setBinding() {
+        binding = ActivityLangueBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+    }
 
-
-    private void listenBtnLangue(){
-        binding.btnDe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent =new Intent(getApplicationContext(), IdentificationActivity.class);
-                intent.putExtra("langue", "de");
-                startActivity(intent);
-            }
-        });
-        binding.btnEn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
-                intent.putExtra("langue", "en");
-                startActivity(intent);
-            }
-        });
-
+    @Override
+    public void prepareIntent(Intent intent) {
+        intent.putExtra("langue", language);
     }
 }

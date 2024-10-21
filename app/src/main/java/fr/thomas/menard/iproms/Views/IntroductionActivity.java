@@ -1,15 +1,8 @@
 package fr.thomas.menard.iproms.Views;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Toast;
-
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -25,69 +18,38 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-
-import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.WriteCSV;
 import fr.thomas.menard.iproms.databinding.ActivityIntroductionBinding;
 
-public class IntroductionActivity extends AppCompatActivity {
+public class IntroductionActivity extends BaseActivity {
 
-    ActivityIntroductionBinding binding;
-    String patientID, date, caseID, langue, diagnosis, questionnaire;
+    private ActivityIntroductionBinding binding;
+    private String langue, oldDate;
 
     private WriteCSV writeCSVClass;
+    private String fatigue;
+    private String depression;
+    private String bdi;
+    private String promis;
+    private String fsmc;
+    private String sleep;
+    private String type;
 
-    boolean exist_file = false;
 
-    String info_csv_path_first, info_csv_path_second, csv_path_PID;
-
-    String fatigue, depression, bdi, promis, qol, fsmc, sleep, type;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityIntroductionBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
-
-        init();
-        checkUser(patientID);
-        listenBtnConfirm();
-
-    }
-
-    private void init() {
-        Intent intent = getIntent();
-        langue = intent.getStringExtra("langue");
-        patientID = intent.getStringExtra("patientID");
-        caseID = intent.getStringExtra("caseID");
-        diagnosis = intent.getStringExtra("diagnosis");
-        date = intent.getStringExtra("date");
-
+    private void initAttributes() {
         writeCSVClass = WriteCSV.getInstance(this);
     }
 
     private void listenBtnConfirm() {
-        binding.btnConfirmIntro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("date", date);
-                intent.putExtra("langue", langue);
-                intent.putExtra("patientID", patientID);
-                intent.putExtra("caseID", caseID);
-                intent.putExtra("diagnosis", diagnosis);
-                intent.putExtra("type",type);
-                startActivity(intent);
-                finish();
-            }
+        binding.btnConfirmIntro.setOnClickListener(v -> {
+            navigateToNextActivity(MainActivity.class);
         });
     }
 
 
     private void retrieveInfos() {
 
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/" + patientID + "/first/infos.csv";
+        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/" + patientInfo.getPatientId() + "/first/infos.csv";
 
         Log.d("TEST", "path " + csvFilePath);
         try {
@@ -110,19 +72,16 @@ public class IntroductionActivity extends AppCompatActivity {
             List<String[]> csvEntries = reader.readAll();
             String[] firstRow = csvEntries.get(1);
 
-            date = firstRow[2];
+            oldDate = firstRow[2];
             fatigue = firstRow[fatigueColumnIndex];
             depression = firstRow[depressionColumnIndex];
             bdi = firstRow[bdiIndex];
             promis = firstRow[promisIndex];
-            qol = firstRow[qolColumnIndex];
+            String qol = firstRow[qolColumnIndex]; //???
             sleep = firstRow[sleepIndex];
             fsmc = firstRow[FSMCIndex];
 
-
             reader.close();
-
-
         } catch (IOException | CsvException e) {
             Log.d("TEST", "infos " + e.getMessage());
             e.printStackTrace();
@@ -134,7 +93,7 @@ public class IntroductionActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
         Date fileDate = null;
         try {
-            fileDate = sdf.parse(date);
+            fileDate = sdf.parse(oldDate);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -143,7 +102,6 @@ public class IntroductionActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, +14); // Two weeks ago
         Date twoWeeksAgo = calendar.getTime();
-
 
         // Return true if the file date is before two weeks ago
         return fileDate == null || fileDate.before(twoWeeksAgo);
@@ -160,13 +118,11 @@ public class IntroductionActivity extends AppCompatActivity {
          else {
             return "first";
         }
-
-
     }
 
-    private void checkUser(String patientID) {
+    private void checkUser() {
 
-        csv_path_PID = getExternalFilesDir(null).getAbsolutePath() + "/" + patientID + "/";
+        String csv_path_PID = getExternalFilesDir(null).getAbsolutePath() + "/" + patientInfo.getPatientId() + "/";
 
         File folder = new File(csv_path_PID);
 
@@ -178,69 +134,76 @@ public class IntroductionActivity extends AppCompatActivity {
                 File f2 = new File(csv_path_PID + "/first");
                 if (!f2.exists() || !f2.isDirectory()) {
                     if(f2.mkdirs()){
-                        info_csv_path_first = csv_path_PID+ "/first/infos.csv";
-                        writeCSVClass.createAndWriteInfos(info_csv_path_first, patientID, caseID, date,
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0","0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0"
-                        );
+                        createInfoCsv(csv_path_PID + "/first/infos.csv");
                     }
                 }
-
-
-
             }
-
-        }
-        else {
-
+        } else {
             if(checkTypeScreening().equals("first")){
-
                 type = "first";
-                
-            }else{
+            } else{
                 type = "second";
                 File f2 = new File(csv_path_PID + "/second");
                 if (!f2.exists() || !f2.isDirectory()) {
                     if(f2.mkdirs()){
-                        info_csv_path_first = csv_path_PID+ "/second/infos.csv";
-                        writeCSVClass.createAndWriteInfos(info_csv_path_first, patientID, caseID, date,
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0","0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0",
-                                "null", "0", "0", "0"
-                        );
+                        createInfoCsv(csv_path_PID + "/second/infos.csv");
                     }
                 }
             }
         }
+    }
+
+    private void createInfoCsv(String path){
+        writeCSVClass.createAndWriteInfos(path,
+                patientInfo.getPatientId(),
+                patientInfo.getCaseId(),
+                patientInfo.getDate(),
+                "null", "0", "0", "0",
+                "null", "0", "0", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0","0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0"
+        );
+    }
+
+    @Override
+    public void init() {
+        initAttributes();
+        checkUser();
+    }
+
+    @Override
+    public void listenBtn() {
+        listenBtnConfirm();
+    }
+
+    @Override
+    public void setBinding() {
+        binding = ActivityIntroductionBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+    }
+
+    @Override
+    public void prepareIntent(Intent intent) {
+        intent.putExtra("langue", langue);
+        intent.putExtra("type",type);
+    }
+
+    @Override
+    public void processReceivedIntent(Intent intent) {
+        langue = intent.getStringExtra("langue");
     }
 }
 

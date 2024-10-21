@@ -33,10 +33,10 @@ import fr.thomas.menard.iproms.Utils.SFTP;
 import fr.thomas.menard.iproms.Utils.tScore;
 import fr.thomas.menard.iproms.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
-    ActivityMainBinding binding;
-    String patientID, date, caseID, langue, diagnosis, questionnaire, who_fill, type;
+    private ActivityMainBinding binding;
+    private String langue, questionnaire, who_fill, type;
     Resources resources;
     Context context;
 
@@ -66,46 +66,17 @@ public class MainActivity extends AppCompatActivity {
     private static String PATH_SERVER;
 
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
-
-        init();
-        retrieveInfos();
-        checkQuestionnaireDone();
-        skippedQuestion();
-        displayText();
-        checkFatigueI();
-        checkDepression();
-        checkBDI();
-        checkPromis();
-        listenBtnStart();
-        listenRadioGroup();
-        listenBtnResult();
-    }
-
-    private void init(){
-        Intent intent = getIntent();
-        langue = intent.getStringExtra("langue");
-        patientID = intent.getStringExtra("patientID");
-        date = intent.getStringExtra("date");
-        caseID = intent.getStringExtra("caseID");
-        diagnosis = intent.getStringExtra("diagnosis");
-        type = intent.getStringExtra("type");
-
+    private void initAttributes(){
         questionnaire = "";
-
         context = LocaleHelper.setLocale(getApplicationContext(), langue);
         resources = context.getResources();
-
     }
 
 
     private void retrieveInfos(){
         String csvFilePath;
+        String patientID = patientInfo.getPatientId();
+
         if(type.equals("first")){
             csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/first/infos.csv";
         }else{
@@ -254,11 +225,10 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void displayText(){
-        binding.txtPatientID.setText(patientID);
+        binding.txtPatientID.setText(patientInfo.getPatientId());
         binding.txtPatientID.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-        binding.txtDiagnosis.setText(diagnosis);
+        binding.txtDiagnosis.setText(patientInfo.getDiagnosis());
         binding.txtDiagnosis.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -278,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
                     binding.txtRawValueBDI.setText("Total score : " + score_bdi  +"/ 63");
                     binding.txtRawValueBDI.setVisibility(View.VISIBLE);
                 }
-
             }
         }
     }
@@ -305,19 +274,14 @@ public class MainActivity extends AppCompatActivity {
                     }else{
                         binding.linearAvgScoreFatigue.setVisibility(View.VISIBLE);
                         binding.nbrQuestionAnsweredFatigue.setText(String.valueOf(Integer.parseInt(questionAnsFatigue) - 1));
-
-
                     }
                 }else{
                     binding.linearFatigue.setVisibility(View.GONE);
                     binding.txtQuestionnaireSkipped.setVisibility(View.VISIBLE);
                     binding.imgFatigueDone.setImageResource(R.drawable.questionnaire_done);
                 }
-
-
             }
         }
-
     }
 
     private void checkPromis(){
@@ -337,13 +301,9 @@ public class MainActivity extends AppCompatActivity {
                     binding.txtRawValuePhysicalPROMIS.setText("Total score : " + avg_score_PROMIS_physical  +"/ 20");
                     binding.txtRawValuePhysicalPROMIS.setVisibility(View.VISIBLE);
                 }
-
             }
-
-
         }
     }
-
 
 
     @SuppressLint("SetTextI18n")
@@ -372,342 +332,304 @@ public class MainActivity extends AppCompatActivity {
                     binding.imgDepressionDone.setImageResource(R.drawable.questionnaire_done);
 
                 }
-
-
             }
         }
-
     }
-
-
-
 
 
 
     private void uploadData(String file){
         SFTP sftp = new SFTP();
+        String patientID = patientInfo.getPatientId();
+
         if(type.equals("first")){
             folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID + "/first");
-
-        }else{
+        } else{
             folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID +"/second");
         }
-        PATH_SERVER = "data/raw_data/" + patientID + "/iPROMS/" + date + "/";
+
+        PATH_SERVER = "data/raw_data/" + patientID + "/iPROMS/" + patientInfo.getDate() + "/";
         String file_to_send = folderSRC + "/" + file;
 
         Log.d("TEST", "file to send" + file_to_send);
 
+        new Thread(() -> {
+            boolean co = sftp.connect(host, user, password, port,file_to_send,
+                    PATH_SERVER);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                boolean co = sftp.connect(host, user, password, port,file_to_send,
-                        PATH_SERVER);
-
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(!co) {
-                            Toast.makeText(context, "Upload failed, please check your Wifi connection", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
+            runOnUiThread(() -> {
+                if(!co) {
+                    Toast.makeText(context, "Upload failed, please check your Wifi connection", Toast.LENGTH_SHORT).show();
+                }
+            });
         }).start();
 
     }
 
     private void listenRadioGroup(){
-        binding.radioGroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rdBtnFatigue) {
-                    questionnaire = "fatigue";
+        binding.radioGroup2.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rdBtnFatigue) {
+                questionnaire = "fatigue";
 
-                    if(Integer.parseInt(lastQuestionFatigue)>3)
-                        redo_questionnaire=true;
+                if(Integer.parseInt(lastQuestionFatigue)>3)
+                    redo_questionnaire=true;
 
-                }else if (checkedId == R.id.rdBtnDA) {
-                    questionnaire = "depression";
-                    if(Integer.parseInt(lastQuestionDep)>3 || Integer.parseInt(skipped_question_anx) > 3)
-                        redo_questionnaire=true;
-                }else if (checkedId == R.id.rdBtnPROMIS) {
-                    questionnaire = "promis";
-                    if(Integer.parseInt(skipped_question_promis)>3)
-                        redo_questionnaire=true;
-                }
-                else if (checkedId == R.id.rdBtnBDI) {
-                    questionnaire = "bdi";
-                }
-
-
+            }else if (checkedId == R.id.rdBtnDA) {
+                questionnaire = "depression";
+                if(Integer.parseInt(lastQuestionDep)>3 || Integer.parseInt(skipped_question_anx) > 3)
+                    redo_questionnaire=true;
+            }else if (checkedId == R.id.rdBtnPROMIS) {
+                questionnaire = "promis";
+                if(Integer.parseInt(skipped_question_promis)>3)
+                    redo_questionnaire=true;
+            }
+            else if (checkedId == R.id.rdBtnBDI) {
+                questionnaire = "bdi";
             }
         });
 
-        binding.radioGroup2Optionnal.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rdBtnWEIMuS) {
-                    questionnaire = "WEIMuS";
-                } else if (checkedId == R.id.rdBtnESS) {
-                    questionnaire = "ESS";
-                } else {
-                    questionnaire = "";
-                }
+        binding.radioGroup2Optionnal.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rdBtnWEIMuS) {
+                questionnaire = "WEIMuS";
+            } else if (checkedId == R.id.rdBtnESS) {
+                questionnaire = "ESS";
+            } else {
+                questionnaire = "";
             }
         });
     }
 
     private void startActivity(String questionnaire){
-        if(questionnaire.equals("fatigue")){
-            Intent intent = new Intent(getApplicationContext(), FatigueQuestionnaire.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("langue", langue);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("lastQuestion", lastQuestionFatigue);
-            intent.putExtra("totalScore", Integer.parseInt(avg_score_fatigue));
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("restard", restart_fatigue);
-            intent.putExtra("who_fill", who_fill);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-
-        }
-        else if (questionnaire.equals("depression")) {
-            Intent intent = new Intent(getApplicationContext(), DepressionAnxietyActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("langue", langue);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("lastQuestion", lastQuestionDep);
-            intent.putExtra("totalScore", Integer.parseInt(avg_score_depression));
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("restard", restart_dep);
-            intent.putExtra("type", type);
-
-            startActivity(intent);
-
-        }
-        else if (questionnaire.equals("promis")) {
-            Intent intent = new Intent(getApplicationContext(), PromisActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("langue", langue);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("lastQuestion", lastQuestionDep);
-            intent.putExtra("totalScore", Integer.parseInt(avg_score_depression));
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("restard", restart_dep);
-            intent.putExtra("type", type);
-
-            startActivity(intent);
-
-        }
-        else if (questionnaire.equals("bdi")) {
-            Intent intent = new Intent(getApplicationContext(), BDI_Activity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("langue", langue);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("lastQuestion", lastQuestionDep);
-            intent.putExtra("totalScore", Integer.parseInt(avg_score_depression));
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("restard", restart_dep);
-            intent.putExtra("type", type);
-
-            startActivity(intent);
-
-        }
-        else if (questionnaire.equals("qol1")) {
-            Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("langue", langue);
-            intent.putExtra("lastQuestion", skippedQuestionQOL);
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("num_question", 1);
-            intent.putExtra("qol", "qol1");
-            intent.putExtra("restard", restart_qol1);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-        }else if (questionnaire.equals("qol2")) {
-            Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("langue", langue);
-            intent.putExtra("lastQuestion", skippedQuestionQOL);
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("num_question", 9);
-            intent.putExtra("qol", "qol2");
-            intent.putExtra("restard", restart_qol2);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-        }else if (questionnaire.equals("qol3")) {
-            Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("langue", langue);
-            intent.putExtra("lastQuestion", skippedQuestionQOL);
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("num_question", 17);
-            intent.putExtra("qol", "qol3");
-            intent.putExtra("restard", restart_qol3);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-        }else if (questionnaire.equals("qol4")) {
-            Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("langue", langue);
-            intent.putExtra("lastQuestion", skippedQuestionQOL);
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("num_question", 25);
-            intent.putExtra("qol", "qol4");
-            intent.putExtra("restard", restart_qol4);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-        }else if (questionnaire.equals("qol5")) {
-            Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("langue", langue);
-            intent.putExtra("lastQuestion", skippedQuestionQOL);
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("num_question", 33);
-            intent.putExtra("qol", "qol5");
-            intent.putExtra("restard", restart_qol5);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-        }else if (questionnaire.equals("qol6")) {
-            Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("langue", langue);
-            intent.putExtra("lastQuestion", skippedQuestionQOL);
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("num_question", 41);
-            intent.putExtra("qol", "qol6");
-            intent.putExtra("restard", restart_qol6);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-        }else if (questionnaire.equals("qol7")) {
-            Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("langue", langue);
-            intent.putExtra("lastQuestion", skippedQuestionQOL);
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("num_question", 49);
-            intent.putExtra("qol", "qol7");
-            intent.putExtra("restard", restart_qol7);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-        }else if (questionnaire.equals("qol8")) {
-            Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("langue", langue);
-            intent.putExtra("lastQuestion", skippedQuestionQOL);
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("num_question", 58);
-            intent.putExtra("qol", "qol8");
-            intent.putExtra("restard", restart_qol8);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-        }else if (questionnaire.equals("qol9")) {
-            Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("langue", langue);
-            intent.putExtra("lastQuestion", skippedQuestionQOL);
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("num_question", 66);
-            intent.putExtra("qol", "qol9");
-            intent.putExtra("restard", restart_qol9);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-        }else if (questionnaire.equals("qol10")) {
-            Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-            intent.putExtra("date", date);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("langue", langue);
-            intent.putExtra("lastQuestion", skippedQuestionQOL);
-            intent.putExtra("redo_questionnaire", redo_questionnaire);
-            intent.putExtra("num_question", 74);
-            intent.putExtra("qol", "qol10");
-            intent.putExtra("restard", restart_qol10);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
-        }
-        else{
-            Toast.makeText(context, "Please select a questionnaire", Toast.LENGTH_SHORT).show();
+        switch (questionnaire) {
+            case "fatigue":
+                navigateToNextActivityWithoutFinish(FatigueQuestionnaire.class);
+                break;
+            case "depression":
+                navigateToNextActivityWithoutFinish(DepressionAnxietyActivity.class);
+                break;
+            case "promis":
+                navigateToNextActivityWithoutFinish(PromisActivity.class);
+                break;
+            case "bdi":
+                navigateToNextActivityWithoutFinish(BDI_Activity.class);
+                break;
+            default:
+                if (questionnaire.startsWith("qol")) {
+                    navigateToNextActivityWithoutFinish(QualityofLifeActivity.class);
+                } else {
+                    Toast.makeText(context, "Please select a questionnaire", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 
     private void listenBtnStart(){
-        binding.btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //openPopup(questionnaire);
-                startActivity(questionnaire);
+        binding.btnConfirm.setOnClickListener(v -> {
+            //openPopup(questionnaire);
+            startActivity(questionnaire);
 
-            }
         });
     }
 
     private void listenBtnResult(){
-        binding.btnResult.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SummaryActivity.class);
-                intent.putExtra("date", date);
-                intent.putExtra("patientID", patientID);
-                intent.putExtra("caseID", caseID);
-                intent.putExtra("diagnosis", diagnosis);
-                intent.putExtra("langue", langue);
-                intent.putExtra("type", type);
-                startActivity(intent);
+        binding.btnResult.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), SummaryActivity.class);
+            intent.putExtra("langue", langue);
+            intent.putExtra("type", type);
+            startActivity(intent);
 
-            }
         });
     }
 
+    @Override
+    public void init() {
+        initAttributes();
+        retrieveInfos();
+        checkQuestionnaireDone();
+        skippedQuestion();
+        displayText();
+        checkFatigueI();
+        checkDepression();
+        checkBDI();
+        checkPromis();
+    }
+
+    @Override
+    public void listenBtn() {
+        listenBtnStart();
+        listenRadioGroup();
+        listenBtnResult();
+    }
+
+    @Override
+    public void setBinding() {
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+    }
+
+    @Override
+    public void prepareIntent(Intent intent) {
+        intent.putExtra("langue", langue);
+
+        switch (questionnaire){
+            case "fatigue":
+                intent.putExtra("lastQuestion", lastQuestionFatigue);
+                intent.putExtra("totalScore", Integer.parseInt(avg_score_fatigue));
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("restard", restart_fatigue);
+                intent.putExtra("who_fill", who_fill);
+                intent.putExtra("type", type);
+                break;
+            case "depression":
+            case "promis":
+            case "bdi":
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", lastQuestionDep);
+                intent.putExtra("totalScore", Integer.parseInt(avg_score_depression));
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("restard", restart_dep);
+                intent.putExtra("type", type);
+                break;
+
+            case "qol1": {
+                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", skippedQuestionQOL);
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("num_question", 1);
+                intent.putExtra("qol", "qol1");
+                intent.putExtra("restard", restart_qol1);
+                intent.putExtra("type", type);
+                startActivity(intent);
+
+                break;
+            }
+            case "qol2": {
+                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", skippedQuestionQOL);
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("num_question", 9);
+                intent.putExtra("qol", "qol2");
+                intent.putExtra("restard", restart_qol2);
+                intent.putExtra("type", type);
+                startActivity(intent);
+
+                break;
+            }
+            case "qol3": {
+                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", skippedQuestionQOL);
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("num_question", 17);
+                intent.putExtra("qol", "qol3");
+                intent.putExtra("restard", restart_qol3);
+                intent.putExtra("type", type);
+                startActivity(intent);
+
+                break;
+            }
+            case "qol4": {
+                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", skippedQuestionQOL);
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("num_question", 25);
+                intent.putExtra("qol", "qol4");
+                intent.putExtra("restard", restart_qol4);
+                intent.putExtra("type", type);
+                startActivity(intent);
+
+                break;
+            }
+            case "qol5": {
+                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", skippedQuestionQOL);
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("num_question", 33);
+                intent.putExtra("qol", "qol5");
+                intent.putExtra("restard", restart_qol5);
+                intent.putExtra("type", type);
+                startActivity(intent);
+
+                break;
+            }
+            case "qol6": {
+                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", skippedQuestionQOL);
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("num_question", 41);
+                intent.putExtra("qol", "qol6");
+                intent.putExtra("restard", restart_qol6);
+                intent.putExtra("type", type);
+                startActivity(intent);
+
+                break;
+            }
+            case "qol7": {
+                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", skippedQuestionQOL);
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("num_question", 49);
+                intent.putExtra("qol", "qol7");
+                intent.putExtra("restard", restart_qol7);
+                intent.putExtra("type", type);
+                startActivity(intent);
+
+                break;
+            }
+            case "qol8": {
+                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", skippedQuestionQOL);
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("num_question", 58);
+                intent.putExtra("qol", "qol8");
+                intent.putExtra("restard", restart_qol8);
+                intent.putExtra("type", type);
+                startActivity(intent);
+
+                break;
+            }
+            case "qol9": {
+                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", skippedQuestionQOL);
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("num_question", 66);
+                intent.putExtra("qol", "qol9");
+                intent.putExtra("restard", restart_qol9);
+                intent.putExtra("type", type);
+                startActivity(intent);
+
+                break;
+            }
+            case "qol10": {
+                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
+                intent.putExtra("langue", langue);
+                intent.putExtra("lastQuestion", skippedQuestionQOL);
+                intent.putExtra("redo_questionnaire", redo_questionnaire);
+                intent.putExtra("num_question", 74);
+                intent.putExtra("qol", "qol10");
+                intent.putExtra("restard", restart_qol10);
+                intent.putExtra("type", type);
+                startActivity(intent);
+
+                break;
+            }
+            default:
+                Toast.makeText(context, "Please select a questionnaire", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    @Override
+    public void processReceivedIntent(Intent intent) {
+        langue = intent.getStringExtra("langue");
+        type = intent.getStringExtra("type");
+    }
 }
