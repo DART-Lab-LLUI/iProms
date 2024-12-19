@@ -1,13 +1,10 @@
 package fr.thomas.menard.iproms.Views;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +16,7 @@ import java.util.Objects;
 
 import fr.thomas.menard.iproms.Interfaces.IActivityCreator;
 import fr.thomas.menard.iproms.Interfaces.IIntentHandler;
-import fr.thomas.menard.iproms.Models.Patient;
+import fr.thomas.menard.iproms.Model.Patient;
 import fr.thomas.menard.iproms.R;
 
 /**
@@ -38,31 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IIntentH
         setBinding();
         init();
         listenBtn();
-    }
-
-    @SuppressLint("RestrictedApi")
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (menu instanceof MenuBuilder) {
-            ((MenuBuilder) menu).setOptionalIconsVisible(true);
-        }
-
-        getMenuInflater().inflate(R.menu.top_app_bar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        int itemId = item.getItemId();
-        if (itemId == R.id.action_logout) {
-            logOut();
-            return true;
-        } else if(itemId == android.R.id.home && navBackArrowActivityClass != null){
-            navigateToNextActivity(navBackArrowActivityClass);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     protected void enableNavBackArrow(Class<?> navBackArrowActivityClass){

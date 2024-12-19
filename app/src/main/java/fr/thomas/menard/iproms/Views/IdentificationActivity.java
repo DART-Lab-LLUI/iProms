@@ -1,41 +1,30 @@
 package fr.thomas.menard.iproms.Views;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RadioGroup;
 import android.widget.Toast;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
+import fr.thomas.menard.iproms.Model.MyApplication;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.LocaleHelper;
-import fr.thomas.menard.iproms.Utils.WriteCSV;
 import fr.thomas.menard.iproms.databinding.ActivityIdentificationBinding;
 
 public class IdentificationActivity extends BaseActivity {
 
     private ActivityIdentificationBinding binding;
-    private String langue, diagnosis;
+    private String diagnosis;
     private Context context;
 
     private void initAttributes(){
         diagnosis  ="";
-        context = LocaleHelper.setLocale(IdentificationActivity.this, langue);
-
+        context = LocaleHelper.setLocale(IdentificationActivity.this, MyApplication.language.getLanguage());
         Resources resources = context.getResources();
         binding.txtWelcome.setText(resources.getString(R.string.welcome));
         binding.txtSide.setText(resources.getString(R.string.diagnosis));
     }
 
-    private void listenBtnConfirn(){
+    private void listenBtnConfirm(){
         binding.btnConfirm.setOnClickListener(v -> {
             String patientID = binding.APatientTxtIdPatient.getText().toString().trim();
             String caseID = binding.APatientTxtIdCase.getText().toString().trim();
@@ -77,23 +66,13 @@ public class IdentificationActivity extends BaseActivity {
     }
 
     @Override
-    public void prepareIntent(Intent intent) {
-        intent.putExtra("langue", langue);
-    }
-
-    @Override
-    public void processReceivedIntent(Intent intent) {
-        langue = intent.getStringExtra("langue");
-    }
-
-    @Override
     public void init() {
         initAttributes();
     }
 
     @Override
     public void listenBtn() {
-        listenBtnConfirn();
+        listenBtnConfirm();
         listenDiagnosis();
     }
 

@@ -1,22 +1,23 @@
 package fr.thomas.menard.iproms.Views;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
+
+import fr.thomas.menard.iproms.Enum.Language;
+import fr.thomas.menard.iproms.Model.MyApplication;
 import fr.thomas.menard.iproms.databinding.ActivityLangueBinding;
 
-public class LangueActivity extends BaseActivity {
+public class LanguageActivity extends BaseActivity {
 
     private ActivityLangueBinding binding;
-    private String language;
 
-    private void listenBtnLangue(){
+    private void listenBtnLanguage(){
         binding.btnDe.setOnClickListener(v -> {
-            language = "de";
+            MyApplication.language = Language.GERMAN;
             navigateToNextActivity(IdentificationActivity.class);
         });
 
         binding.btnEn.setOnClickListener(v -> {
-            language = "en";
+            MyApplication.language = Language.ENGLISH;
             navigateToNextActivity(IdentificationActivity.class);
         });
     }
@@ -28,17 +29,12 @@ public class LangueActivity extends BaseActivity {
 
     @Override
     public void listenBtn() {
-        listenBtnLangue();
+        listenBtnLanguage();
     }
 
     @Override
     public void setBinding() {
         binding = ActivityLangueBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
-    }
-
-    @Override
-    public void prepareIntent(Intent intent) {
-        intent.putExtra("langue", language);
     }
 }

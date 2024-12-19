@@ -1,204 +1,40 @@
 package fr.thomas.menard.iproms.Views;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static fr.thomas.menard.iproms.Model.InfoFile.*;
+
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvException;
-
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
 
+import fr.thomas.menard.iproms.Model.MyApplication;
 import fr.thomas.menard.iproms.R;
+import fr.thomas.menard.iproms.Utils.DataTransfer;
+import fr.thomas.menard.iproms.Utils.FileManager;
 import fr.thomas.menard.iproms.Utils.LocaleHelper;
-import fr.thomas.menard.iproms.Utils.SFTP;
-import fr.thomas.menard.iproms.Utils.tScore;
+import fr.thomas.menard.iproms.Utils.ReadCSV;
 import fr.thomas.menard.iproms.databinding.ActivityMainBinding;
 
 public class MainActivity extends BaseActivity {
 
     private ActivityMainBinding binding;
-    private String langue, questionnaire, who_fill, type;
-    Resources resources;
-    Context context;
+    private String questionnaire;
+    private Context context;
 
+    private boolean redo_questionnaire;
+    private boolean restart_fatigue =false;
+    private boolean restart_dep = false;
 
-    String questionAnsFatigue, questionAnsDep, questionAnsQol, questionAnsBDI, questionAnsPROMIS;
-    String avg_score_fatigue, avg_score_depression, avg_score_anxiety, avg_score_qol, avg_score_PROMIS_physical, avg_score_PROMIS_mental;
-
-    String lastQuestionFatigue, lastQuestionDep, skipped_question_anx, skippedQuestionQOL, skipped_question_bdi, skipped_question_promis;
-
-    String fatigue, depression, qol, bdi, promis;
-    String qol1, qol2, qol3, qol4, qol5, qol6, qol7, qol8, qol9, qol10;
-    String skippedQuestionQOL1, skippedQuestionQOL2, skippedQuestionQOL3,skippedQuestionQOL4,skippedQuestionQOL5,skippedQuestionQOL6,skippedQuestionQOL7,skippedQuestionQOL8,skippedQuestionQOL9,skippedQuestionQOL10;
-
-    String questionAnsQOL1, questionAnsQOL2,questionAnsQOL3,questionAnsQOL4,questionAnsQOL5,questionAnsQOL6,questionAnsQOL7,questionAnsQOL8,questionAnsQOL9,questionAnsQOL10;
-    String scoreQOL1, scoreQOL2,scoreQOL3,scoreQOL4,scoreQOL5,scoreQOL6,scoreQOL7,scoreQOL8,scoreQOL9,scoreQOL10, score_bdi;
-
-    boolean redo_questionnaire;
-    boolean restart_fatigue =false, restart_dep = false, restart_promis, restart_qol1 = false, restart_qol2= false, restart_qol3= false, restart_qol4= false,
-            restart_qol5= false, restart_qol6= false, restart_qol7= false, restart_qol8= false, restart_qol9= false,restart_qol10= false;
-
-
-    File folderSRC;
-    private static final String host = "172.20.11.10";
-    private static final int port = 22;
-    private static final String user = "lli_admin";
-    private static final String password = "0YVjglmuevOh";
-    private static String PATH_SERVER;
-
-
-    private void initAttributes(){
-        questionnaire = "";
-        context = LocaleHelper.setLocale(getApplicationContext(), langue);
-        resources = context.getResources();
-    }
-
-
-    private void retrieveInfos(){
-        String csvFilePath;
-        String patientID = patientInfo.getPatientId();
-
-        if(type.equals("first")){
-            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/first/infos.csv";
-        }else{
-            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+patientID+"/second/infos.csv";
-        }
-
-        try {
-            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
-
-            // Create a CSVReader with FileReader and custom CSVParser
-            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
-                    .withCSVParser(csvParser)
-                    .build();
-
-            // Read the header to get column indices
-            int fatigueColumnIndex = 3;
-            int depressionColumnIndex = 7;
-            int bdiIndex = 13;
-            int promisColumnIndex = 17;
-            int qolColumnIndex = 22;
-
-            List<String[]> csvEntries = reader.readAll();
-            String[] firstRow = csvEntries.get(1);
-
-
-            fatigue = firstRow[fatigueColumnIndex];
-            depression = firstRow[depressionColumnIndex];
-            bdi = firstRow[bdiIndex];
-            promis = firstRow[promisColumnIndex];
-            qol = firstRow[qolColumnIndex];
-
-            avg_score_fatigue = (firstRow[fatigueColumnIndex+1]);
-            avg_score_depression = firstRow[depressionColumnIndex+1];
-            avg_score_anxiety = firstRow[depressionColumnIndex + 2];
-            score_bdi = firstRow[bdiIndex+1];
-            avg_score_PROMIS_physical = firstRow[promisColumnIndex+1];
-            avg_score_PROMIS_mental = firstRow[promisColumnIndex+2];
-
-            avg_score_qol = (firstRow[qolColumnIndex+1]);
-
-
-            questionAnsFatigue = (firstRow[fatigueColumnIndex+2]);
-            questionAnsDep = (firstRow[depressionColumnIndex+3]);
-            questionAnsBDI = firstRow[bdiIndex+2];
-            questionAnsPROMIS = firstRow[promisColumnIndex+3];
-            questionAnsQol = (firstRow[qolColumnIndex+2]);
-
-
-            lastQuestionFatigue = firstRow[fatigueColumnIndex + 3];
-            lastQuestionDep = firstRow[depressionColumnIndex + 4];
-            skipped_question_anx = firstRow[depressionColumnIndex + 5];
-            skipped_question_bdi = firstRow[bdiIndex+3];
-            skipped_question_promis = firstRow[promisColumnIndex+4];
-            skippedQuestionQOL = firstRow[qolColumnIndex+3];
-
-            qol1 = firstRow[qolColumnIndex + 4];
-            scoreQOL1 = firstRow[qolColumnIndex + 5];
-            questionAnsQOL1 = firstRow[qolColumnIndex + 6];
-            skippedQuestionQOL1 = firstRow[qolColumnIndex + 7];
-
-            qol2 = firstRow[qolColumnIndex + 8];
-            scoreQOL2 = firstRow[qolColumnIndex + 9];
-            questionAnsQOL2 = firstRow[qolColumnIndex + 10];
-            skippedQuestionQOL2 = firstRow[qolColumnIndex + 11];
-
-            qol3 = firstRow[qolColumnIndex + 12];
-            scoreQOL3 = firstRow[qolColumnIndex + 13];
-            questionAnsQOL3 = firstRow[qolColumnIndex + 14];
-            skippedQuestionQOL3 = firstRow[qolColumnIndex + 15];
-
-            qol4 = firstRow[qolColumnIndex + 16];
-            scoreQOL4 = firstRow[qolColumnIndex + 17];
-            questionAnsQOL4 = firstRow[qolColumnIndex + 18];
-            skippedQuestionQOL4 = firstRow[qolColumnIndex + 19];
-
-            qol5 = firstRow[qolColumnIndex + 20];
-            scoreQOL5 = firstRow[qolColumnIndex + 21];
-            questionAnsQOL5 = firstRow[qolColumnIndex + 22];
-            skippedQuestionQOL5 = firstRow[qolColumnIndex + 23];
-
-            qol6 = firstRow[qolColumnIndex + 24];
-            scoreQOL6 = firstRow[qolColumnIndex + 25];
-            questionAnsQOL6 = firstRow[qolColumnIndex + 26];
-            skippedQuestionQOL6 = firstRow[qolColumnIndex + 27];
-
-            qol7 = firstRow[qolColumnIndex + 28];
-            scoreQOL7 = firstRow[qolColumnIndex + 29];
-            questionAnsQOL7 = firstRow[qolColumnIndex + 30];
-            skippedQuestionQOL7 = firstRow[qolColumnIndex + 31];
-
-            qol8 = firstRow[qolColumnIndex + 32];
-            scoreQOL8 = firstRow[qolColumnIndex + 33];
-            questionAnsQOL8 = firstRow[qolColumnIndex + 34];
-            skippedQuestionQOL8 = firstRow[qolColumnIndex + 35];
-
-            qol9 = firstRow[qolColumnIndex + 36];
-            scoreQOL9 = firstRow[qolColumnIndex + 37];
-            questionAnsQOL9 = firstRow[qolColumnIndex + 38];
-            skippedQuestionQOL9 = firstRow[qolColumnIndex + 39];
-
-            qol10 = firstRow[qolColumnIndex + 40];
-            scoreQOL10 = firstRow[qolColumnIndex + 41];
-            questionAnsQOL10 = firstRow[qolColumnIndex + 42];
-            skippedQuestionQOL10 = firstRow[qolColumnIndex + 43];
-
-            /*
-            if(Integer.parseInt(questionAnsQol)<0)
-                questionAnsQol = "0";
-
-             */
-
-            reader.close();
-
-        } catch (IOException | CsvException e) {
-            Log.d("TEST", "infos " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 
     private void checkQuestionnaireDone() {
         if (fatigue.equals("done") && depression.equals("done") && bdi.equals("done") && promis.equals("done")) {
-            uploadData("infos.csv");
+            uploadData(FileManager.getInfoFile(this));
 
             binding.btnConfirm.setVisibility(View.GONE);
             binding.btnResult.setVisibility(View.VISIBLE);
@@ -207,12 +43,6 @@ public class MainActivity extends BaseActivity {
 
     @SuppressLint("SetTextI18n")
     private void skippedQuestion(){
-        /*
-        if(!skippedQuestionQOL.equals("null") && !questionAnsQol.equals("null")) {
-            int skipped_qol = Integer.parseInt(skippedQuestionQOL) - Integer.parseInt(questionAnsQol);
-            binding.txtQuestionsSkippedQOL.setText("(" + skipped_qol + "  skipped)");
-        }
-        */
         if(!lastQuestionDep.equals("null") && !questionAnsDep.equals("null")) {
             binding.txtQuestionsSkippedDep.setText("(" + lastQuestionDep + "  skipped)");
             binding.txtQuestionsSkippedAnx.setText("(" + skipped_question_anx + "  skipped)");
@@ -243,7 +73,7 @@ public class MainActivity extends BaseActivity {
                     binding.txtQuestionBDI.setVisibility(View.GONE);
                 }else{
                     binding.rdBtnBDI.setClickable(false);
-                    uploadData("result_bdi.csv");
+                    uploadData(FileManager.getResultBDIFile(this));
                     binding.txtQuestionBDI.setVisibility(View.VISIBLE);
                     binding.txtRawValueBDI.setText("Total score : " + score_bdi  +"/ 63");
                     binding.txtRawValueBDI.setVisibility(View.VISIBLE);
@@ -294,7 +124,7 @@ public class MainActivity extends BaseActivity {
                     binding.txtQuestionPROMIS.setVisibility(View.GONE);
                 }else{
                     binding.rdBtnPROMIS.setClickable(false);
-                    uploadData("result_bdi.csv");
+                    uploadData(FileManager.getResultBDIFile(this));
                     binding.txtQuestionPROMIS.setVisibility(View.VISIBLE);
                     binding.txtRawValueMentalPROMIS.setText("Total score : " + avg_score_PROMIS_mental  +"/ 20");
                     binding.txtRawValueMentalPROMIS.setVisibility(View.VISIBLE);
@@ -338,32 +168,9 @@ public class MainActivity extends BaseActivity {
 
 
 
-    private void uploadData(String file){
-        SFTP sftp = new SFTP();
-        String patientID = patientInfo.getPatientId();
-
-        if(type.equals("first")){
-            folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID + "/first");
-        } else{
-            folderSRC = new File(getExternalFilesDir(null).getAbsolutePath() + "/"+patientID +"/second");
-        }
-
-        PATH_SERVER = "data/raw_data/" + patientID + "/iPROMS/" + patientInfo.getDate() + "/";
-        String file_to_send = folderSRC + "/" + file;
-
-        Log.d("TEST", "file to send" + file_to_send);
-
-        new Thread(() -> {
-            boolean co = sftp.connect(host, user, password, port,file_to_send,
-                    PATH_SERVER);
-
-            runOnUiThread(() -> {
-                if(!co) {
-                    Toast.makeText(context, "Upload failed, please check your Wifi connection", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }).start();
-
+    private void uploadData(File file){
+        DataTransfer dataTransfer = new DataTransfer(this);
+        dataTransfer.uploadFile(file);
     }
 
     private void listenRadioGroup(){
@@ -433,18 +240,14 @@ public class MainActivity extends BaseActivity {
 
     private void listenBtnResult(){
         binding.btnResult.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), SummaryActivity.class);
-            intent.putExtra("langue", langue);
-            intent.putExtra("type", type);
-            startActivity(intent);
-
+            navigateToNextActivityWithoutFinish(SummaryActivity.class);
         });
     }
 
     @Override
     public void init() {
-        initAttributes();
-        retrieveInfos();
+        ReadCSV.retrieveInfos(this);
+        context = LocaleHelper.setLocale(this, MyApplication.language.getLanguage());
         checkQuestionnaireDone();
         skippedQuestion();
         displayText();
@@ -469,154 +272,95 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void prepareIntent(Intent intent) {
-        intent.putExtra("langue", langue);
 
         switch (questionnaire){
             case "fatigue":
-                intent.putExtra("lastQuestion", lastQuestionFatigue);
-                intent.putExtra("totalScore", Integer.parseInt(avg_score_fatigue));
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("restard", restart_fatigue);
-                intent.putExtra("who_fill", who_fill);
-                intent.putExtra("type", type);
                 break;
             case "depression":
             case "promis":
             case "bdi":
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", lastQuestionDep);
-                intent.putExtra("totalScore", Integer.parseInt(avg_score_depression));
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("restard", restart_dep);
-                intent.putExtra("type", type);
                 break;
 
             case "qol1": {
-                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", skippedQuestionQOL);
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 1);
                 intent.putExtra("qol", "qol1");
-                intent.putExtra("restard", restart_qol1);
-                intent.putExtra("type", type);
                 startActivity(intent);
 
                 break;
             }
             case "qol2": {
-                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", skippedQuestionQOL);
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 9);
                 intent.putExtra("qol", "qol2");
-                intent.putExtra("restard", restart_qol2);
-                intent.putExtra("type", type);
                 startActivity(intent);
 
                 break;
             }
             case "qol3": {
-                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", skippedQuestionQOL);
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 17);
                 intent.putExtra("qol", "qol3");
-                intent.putExtra("restard", restart_qol3);
-                intent.putExtra("type", type);
                 startActivity(intent);
 
                 break;
             }
             case "qol4": {
-                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", skippedQuestionQOL);
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 25);
                 intent.putExtra("qol", "qol4");
-                intent.putExtra("restard", restart_qol4);
-                intent.putExtra("type", type);
                 startActivity(intent);
 
                 break;
             }
             case "qol5": {
-                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", skippedQuestionQOL);
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 33);
                 intent.putExtra("qol", "qol5");
-                intent.putExtra("restard", restart_qol5);
-                intent.putExtra("type", type);
                 startActivity(intent);
 
                 break;
             }
             case "qol6": {
-                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", skippedQuestionQOL);
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 41);
                 intent.putExtra("qol", "qol6");
-                intent.putExtra("restard", restart_qol6);
-                intent.putExtra("type", type);
                 startActivity(intent);
 
                 break;
             }
             case "qol7": {
-                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", skippedQuestionQOL);
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 49);
                 intent.putExtra("qol", "qol7");
-                intent.putExtra("restard", restart_qol7);
-                intent.putExtra("type", type);
                 startActivity(intent);
 
                 break;
             }
             case "qol8": {
-                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", skippedQuestionQOL);
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 58);
                 intent.putExtra("qol", "qol8");
-                intent.putExtra("restard", restart_qol8);
-                intent.putExtra("type", type);
                 startActivity(intent);
 
                 break;
             }
             case "qol9": {
-                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", skippedQuestionQOL);
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 66);
                 intent.putExtra("qol", "qol9");
-                intent.putExtra("restard", restart_qol9);
-                intent.putExtra("type", type);
                 startActivity(intent);
 
                 break;
             }
             case "qol10": {
-                Intent intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("lastQuestion", skippedQuestionQOL);
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 74);
                 intent.putExtra("qol", "qol10");
-                intent.putExtra("restard", restart_qol10);
-                intent.putExtra("type", type);
                 startActivity(intent);
 
                 break;
@@ -625,11 +369,5 @@ public class MainActivity extends BaseActivity {
                 Toast.makeText(context, "Please select a questionnaire", Toast.LENGTH_SHORT).show();
                 break;
         }
-    }
-
-    @Override
-    public void processReceivedIntent(Intent intent) {
-        langue = intent.getStringExtra("langue");
-        type = intent.getStringExtra("type");
     }
 }

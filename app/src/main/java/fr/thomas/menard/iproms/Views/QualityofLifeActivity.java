@@ -1,12 +1,8 @@
 package fr.thomas.menard.iproms.Views;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,82 +22,80 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import fr.thomas.menard.iproms.Model.InfoFile;
+import fr.thomas.menard.iproms.Model.Patient;
 import fr.thomas.menard.iproms.R;
-import fr.thomas.menard.iproms.Utils.LocaleHelper;
+import fr.thomas.menard.iproms.Utils.FileManager;
+import fr.thomas.menard.iproms.Utils.ReadCSV;
 import fr.thomas.menard.iproms.Utils.WriteCSV;
 import fr.thomas.menard.iproms.databinding.ActivityQualityofLifeBinding;
 
-public class QualityofLifeActivity extends AppCompatActivity {
+public class QualityofLifeActivity extends BaseActivity {
 
-    ActivityQualityofLifeBinding binding;
+    private ActivityQualityofLifeBinding binding;
 
-    Context context;
-    Resources resources;
-    String langue, rating;
-    int numberQuestion, total_Score, total_score_qol, pourcentage = 0, numberQuestion_qol;
-    int skipped_question, skipped_question_qol;
-    String question_num_string, csv_path, date, idPatient, caseID, diagnosis, lastQuestion;
+    private String rating;
+    private int numberQuestion;
+    private int total_Score;
+    private int total_score_qol;
+    private int numberQuestion_qol;
+    private int skipped_question;
 
-    int questionAns = 0, question_general_Ans;
+    private int questionAns = 0, question_general_Ans;
 
-    boolean exist_file = false, touched = false, restard = false, redo_questionnaire = false;
+    private boolean touched = false, redo_questionnaire = false;
 
-    String qol;
+    private String qol;
 
     private WriteCSV writeCSVClass;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityQualityofLifeBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
+    public void init(){
 
-        init();
+        writeCSVClass = WriteCSV.getInstance(this);
+        binding.txtIntro.setText(R.string.txt_intro_depression);
+
         reinit_questionnaire(qol);
         retrieveGeneralInfos();
         retrieveInfos(qol);
         displayText();
+
+    }
+
+    @Override
+    public void listenBtn() {
         finishQuestionnaire();
         listenSeekbar();
         listenBtnConfirm();
         listenBtnSkip();
     }
 
-    private void init(){
-        Intent intent = getIntent();
-        date = intent.getStringExtra("date");
-        idPatient = intent.getStringExtra("patientID");
-        caseID = intent.getStringExtra("caseID");
+    @Override
+    public void setBinding() {
+        binding = ActivityQualityofLifeBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+    }
+
+    @Override
+    public void processReceivedIntent(Intent intent) {
+        super.processReceivedIntent(intent);
         total_Score = intent.getIntExtra("totalScore", 0);
-        langue = intent.getStringExtra("langue");
-        diagnosis = intent.getStringExtra("diagnosis");
         questionAns = intent.getIntExtra("questionAnswered", 0);
-        lastQuestion = intent.getStringExtra("lastQuestion");
         qol = intent.getStringExtra("qol");
-        restard = intent.getBooleanExtra("restard", false);
         redo_questionnaire = intent.getBooleanExtra("redo_questionnaire",false);
+    }
 
-
-        context = LocaleHelper.setLocale(getApplicationContext(), langue);
-        resources = context.getResources();
-
-        writeCSVClass = WriteCSV.getInstance(this);
-        csv_path = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/";
-        exist_file = writeCSVClass.checkFileName(idPatient+"_QOL.csv", csv_path);
-
-
-        context = LocaleHelper.setLocale(getApplicationContext(), langue);
-        resources = context.getResources();
-        binding.txtIntro.setText(R.string.txt_intro_depression);
-
-
-
+    @Override
+    public void prepareIntent(Intent intent) {
+        super.prepareIntent(intent);
+        intent.putExtra("totalScore", total_score_qol);
+        intent.putExtra("questionAnswered", questionAns);
+        intent.putExtra("qol", qol);
     }
 
     private void reinit_questionnaire(String qol){
         if(redo_questionnaire){
-            String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
+            String csvFilePath = FileManager.getInfoFilename(this);
 
             try {
                 CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
@@ -176,20 +170,9 @@ public class QualityofLifeActivity extends AppCompatActivity {
     }
 
     private void finishQuestionnaire(){
-        binding.btnSkipQuestionnaire.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                modifyCSVInfos("done", "0", qol, true, true);
-                Intent intent = new Intent(getApplicationContext(), OptionnalQuestionnairesActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("patientID", idPatient);
-                intent.putExtra("caseID", caseID);
-                intent.putExtra("date", date);
-                intent.putExtra("diagnosis", diagnosis);
-                startActivity(intent);
-                finish();
-
-            }
+        binding.btnSkipQuestionnaire.setOnClickListener(v -> {
+            modifyCSVInfos("done", "0", qol, true, true);
+            navigateToNextActivity(OptionalQuestionnairesActivity.class);
         });
     }
 
@@ -208,14 +191,7 @@ public class QualityofLifeActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
             write_csv("exit");
-            Intent intent = new Intent(getApplicationContext(), OptionnalQuestionnairesActivity.class);
-            intent.putExtra("langue", langue);
-            intent.putExtra("patientID", idPatient);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("date", date);
-            intent.putExtra("diagnosis", diagnosis);
-            startActivity(intent);
-            finish();
+            navigateToNextActivity(OptionalQuestionnairesActivity.class);
             return true;
         } else if (id == R.id.action_skip) {
             skip();
@@ -226,42 +202,21 @@ public class QualityofLifeActivity extends AppCompatActivity {
     }
 
     private void retrieveGeneralInfos(){
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
+        ReadCSV.retrieveInfos(this);
+        question_general_Ans = Integer.parseInt(InfoFile.questionAnsQol);
+        total_Score = Integer.parseInt(InfoFile.avg_score_qol);
+        skipped_question = Integer.parseInt(InfoFile.skippedQuestionQOL);
 
-        try {
-            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
-            int qolColumnIndex = 21;
+        if(question_general_Ans == 0)
+            question_general_Ans = 1;
+        numberQuestion_qol = question_general_Ans;
 
-            // Create a CSVReader with FileReader and custom CSVParser
-            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
-                    .withCSVParser(csvParser)
-                    .build();
-
-            List<String[]> csvEntries = reader.readAll();
-            String[] firstRow = csvEntries.get(1);
-
-            question_general_Ans = Integer.parseInt((firstRow[qolColumnIndex+2]));
-
-            total_Score = Integer.parseInt(firstRow[qolColumnIndex+1]);
-            skipped_question = Integer.parseInt(firstRow[qolColumnIndex+3]);
-
-            if(question_general_Ans == 0)
-                question_general_Ans = 1;
-            numberQuestion_qol = question_general_Ans;
-
-            pourcentage = 100 * numberQuestion_qol/ 73;
-            binding.txtPoucentageDoneQOL.setText(String.valueOf(pourcentage));
-
-            reader.close();
-
-        } catch (IOException | CsvException e) {
-            Log.d("TEST", "infos " + e.getMessage());
-            e.printStackTrace();
-        }
+        int pourcentage = 100 * numberQuestion_qol / 73;
+        binding.txtPoucentageDoneQOL.setText(String.valueOf(pourcentage));
     }
 
     private void retrieveInfos(String qol){
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
+        String csvFilePath = FileManager.getInfoFilename(this);
         int qolColumnIndex = 21;
 
         try {
@@ -308,7 +263,6 @@ public class QualityofLifeActivity extends AppCompatActivity {
 
             total_score_qol = Integer.parseInt(firstRow[qolColumnIndex+1]);
             numberQuestion = Integer.parseInt((firstRow[qolColumnIndex+2]));
-            skipped_question_qol = Integer.parseInt(firstRow[qolColumnIndex+3]);
 
             if(numberQuestion==0)
                 numberQuestion = 1;
@@ -382,145 +336,68 @@ public class QualityofLifeActivity extends AppCompatActivity {
 
 
     private void listenBtnConfirm(){
-        binding.btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                numberQuestion_qol += 1;
-                write_csv(rating);
-                total_score_qol = total_score_qol + Integer.parseInt(rating);
-                total_Score = total_Score + Integer.parseInt(rating);
-                questionAns = questionAns + 1;
+        binding.btnConfirm.setOnClickListener(v -> {
+            numberQuestion_qol += 1;
+            write_csv(rating);
+            total_score_qol = total_score_qol + Integer.parseInt(rating);
+            total_Score = total_Score + Integer.parseInt(rating);
+            questionAns = questionAns + 1;
 
 
-                modifyCSVGeneralQOL("not finished", String.valueOf(total_Score), String.valueOf(question_general_Ans +1), false);
-                Log.d("TEST", "log" + numberQuestion_qol + "_" + qol);
-                //81 question
-                Intent intent;
-                if(qol.equals("qol7")){
-                    if(numberQuestion==9){
-
-                        modifyCSVInfos("done", String.valueOf(total_score_qol), qol, false, false);
-
-                        intent = new Intent(getApplicationContext(), OptionnalQuestionnairesActivity.class);
-                        intent.putExtra("langue", langue);
-                        intent.putExtra("patientID", idPatient);
-                        intent.putExtra("caseID", caseID);
-                        intent.putExtra("date", date);
-                        intent.putExtra("diagnosis", diagnosis);
-                    }
-                    else {
-                        modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, false, false);
-                        intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                        intent.putExtra("num_question", numberQuestion);
-                        intent.putExtra("patientID", idPatient);
-                        intent.putExtra("caseID", caseID);
-                        intent.putExtra("date", date);
-                        intent.putExtra("langue", langue);
-                        intent.putExtra("diagnosis", diagnosis);
-                        intent.putExtra("totalScore", total_score_qol);
-                        intent.putExtra("questionAnswered", questionAns);
-                        intent.putExtra("qol", qol);
-                    }
-                }else{
-                    if(numberQuestion==8){
-
-                        modifyCSVInfos("done", String.valueOf(total_score_qol), qol, false, false);
-
-                        intent = new Intent(getApplicationContext(), OptionnalQuestionnairesActivity.class);
-                        intent.putExtra("langue", langue);
-                        intent.putExtra("patientID", idPatient);
-                        intent.putExtra("caseID", caseID);
-                        intent.putExtra("date", date);
-                        intent.putExtra("diagnosis", diagnosis);
-                    }
-                    else {
-                        modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, false, false);
-                        intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                        intent.putExtra("num_question", numberQuestion);
-                        intent.putExtra("patientID", idPatient);
-                        intent.putExtra("caseID", caseID);
-                        intent.putExtra("date", date);
-                        intent.putExtra("langue", langue);
-                        intent.putExtra("diagnosis", diagnosis);
-                        intent.putExtra("totalScore", total_score_qol);
-                        intent.putExtra("questionAnswered", questionAns);
-                        intent.putExtra("qol", qol);
-                    }
+            modifyCSVGeneralQOL(String.valueOf(total_Score), String.valueOf(question_general_Ans +1), false);
+            Log.d("TEST", "log" + numberQuestion_qol + "_" + qol);
+            //81 question
+            if(qol.equals("qol7")){
+                if(numberQuestion==9){
+                    modifyCSVInfos("done", String.valueOf(total_score_qol), qol, false, false);
+                    navigateToNextActivity(OptionalQuestionnairesActivity.class);
                 }
-                startActivity(intent);
-                finish();
+                else {
+                    modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, false, false);
+                    navigateToNextActivity(QualityofLifeActivity.class);
+                }
+            }else{
+                if(numberQuestion==8){
 
+                    modifyCSVInfos("done", String.valueOf(total_score_qol), qol, false, false);
+                    navigateToNextActivity(OptionalQuestionnairesActivity.class);
+                }
+                else {
+                    modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, false, false);
+                    navigateToNextActivity(QualityofLifeActivity.class);
+                }
             }
         });
     }
 
     private void listenBtnSkip(){
-        binding.btnSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                skip();
-            }
-        });
+        binding.btnSkip.setOnClickListener(v -> skip());
     }
 
     private void skip(){
         write_csv("skip");
         numberQuestion_qol += 1;
-        Intent intent;
-        modifyCSVGeneralQOL("not finished", String.valueOf(total_Score), String.valueOf(question_general_Ans + 1), true);
+        modifyCSVGeneralQOL(String.valueOf(total_Score), String.valueOf(question_general_Ans + 1), true);
         if(qol.equals("qol7")){
             if(numberQuestion==9){
-
                 modifyCSVInfos("done", String.valueOf(total_score_qol), qol, true, false);
-
-                intent = new Intent(getApplicationContext(), OptionnalQuestionnairesActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("patientID", idPatient);
-                intent.putExtra("caseID", caseID);
-                intent.putExtra("date", date);
-                intent.putExtra("diagnosis", diagnosis);
+                navigateToNextActivity(OptionalQuestionnairesActivity.class);
             }
             else {
                 modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, true, false);
-                intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("num_question", numberQuestion);
-                intent.putExtra("patientID", idPatient);
-                intent.putExtra("caseID", caseID);
-                intent.putExtra("date", date);
-                intent.putExtra("langue", langue);
-                intent.putExtra("diagnosis", diagnosis);
-                intent.putExtra("totalScore", total_score_qol);
-                intent.putExtra("questionAnswered", questionAns);
-                intent.putExtra("qol", qol);
+                navigateToNextActivity(QualityofLifeActivity.class);
             }
         }else{
             if(numberQuestion==8){
 
                 modifyCSVInfos("done", String.valueOf(total_score_qol), qol, true, false);
-
-                intent = new Intent(getApplicationContext(), OptionnalQuestionnairesActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("patientID", idPatient);
-                intent.putExtra("caseID", caseID);
-                intent.putExtra("date", date);
-                intent.putExtra("diagnosis", diagnosis);
+                navigateToNextActivity(OptionalQuestionnairesActivity.class);
             }
             else {
                 modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, true, false);
-                intent = new Intent(getApplicationContext(), QualityofLifeActivity.class);
-                intent.putExtra("num_question", numberQuestion);
-                intent.putExtra("patientID", idPatient);
-                intent.putExtra("caseID", caseID);
-                intent.putExtra("date", date);
-                intent.putExtra("langue", langue);
-                intent.putExtra("diagnosis", diagnosis);
-                intent.putExtra("totalScore", total_score_qol);
-                intent.putExtra("questionAnswered", questionAns);
-                intent.putExtra("qol", qol);
+                navigateToNextActivity(QualityofLifeActivity.class);
             }
         }
-        startActivity(intent);
-        finish();
     }
 
     private void listenSeekbar(){
@@ -552,119 +429,11 @@ public class QualityofLifeActivity extends AppCompatActivity {
 
 
     private void modifyCSVInfos(String done, String  score, String qol, boolean skip, boolean skip_questionnaire){
-
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-
-        try {
-            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
-
-            // Create a CSVReader with FileReader and custom CSVParser
-            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
-                    .withCSVParser(csvParser)
-                    .build();
-            int qolColumnIndex = 17;
-
-            switch (qol) {
-                case "qol1":
-                    qolColumnIndex += 4;
-                    break;
-                case "qol2":
-                    qolColumnIndex += 8;
-                    break;
-                case "qol3":
-                    qolColumnIndex += 12;
-                    break;
-                case "qol4":
-                    qolColumnIndex += 16;
-                    break;
-                case "qol5":
-                    qolColumnIndex += 20;
-                    break;
-                case "qol6":
-                    qolColumnIndex += 24;
-                    break;
-                case "qol7":
-                    qolColumnIndex += 28;
-                    break;
-                case "qol8":
-                    qolColumnIndex += 32;
-                    break;
-                case "qol9":
-                    qolColumnIndex += 36;
-                    break;
-                case "qol10":
-                    qolColumnIndex += 40;
-                    break;
-            }
-            List<String[]> csvEntries = reader.readAll();
-            String[] row = csvEntries.get(1);
-            row[qolColumnIndex] = done;
-            row[qolColumnIndex+1] = score;
-
-            if(!skip_questionnaire) {
-                row[qolColumnIndex + 2] = String.valueOf(numberQuestion + 1);
-            }
-
-            if(skip && !skip_questionnaire)
-                row[qolColumnIndex+3] = String.valueOf(skipped_question_qol + 1);
-
-
-            if(skip_questionnaire){
-                row[qolColumnIndex + 2] = "0";
-                row[qolColumnIndex+3] = "0";
-            }
-            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
-            writer.writeAll(csvEntries);
-            writer.close();
-
-            Log.d("TEST", "row " + row[qolColumnIndex]+ row[qolColumnIndex+1]);
-
-
-            reader.close();
-
-        } catch (IOException | CsvException e) {
-            Log.d("TEST", "infos " + e.getMessage());
-            e.printStackTrace();
-        }
-
-
+        WriteCSV.getInstance(this).modifyCSVInfos_QQL(this, numberQuestion, skipped_question, done, score, qol, skip, skip_questionnaire);
     }
 
-    private void modifyCSVGeneralQOL(String done, String  score, String answered, boolean skip){
-
-        String csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/infos.csv";
-        int qolColumnIndex = 21;
-
-        try {
-            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
-
-            // Create a CSVReader with FileReader and custom CSVParser
-            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
-                    .withCSVParser(csvParser)
-                    .build();
-
-            List<String[]> csvEntries = reader.readAll();
-            String[] row = csvEntries.get(1);
-            row[qolColumnIndex] = done;
-            row[qolColumnIndex+1] = score;
-            row[qolColumnIndex + 2] = answered;
-            if(skip)
-                row[qolColumnIndex+3] = String.valueOf(skipped_question + 1);
-
-
-            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
-            writer.writeAll(csvEntries);
-            writer.close();
-
-
-            reader.close();
-
-        } catch (IOException | CsvException e) {
-            Log.d("TEST", "infos " + e.getMessage());
-            e.printStackTrace();
-        }
-
-
+    private void modifyCSVGeneralQOL(String  score, String answered, boolean skip){
+        WriteCSV.getInstance(this).modifyCSVGeneralQOL(this, skipped_question, "not finished", score, answered, skip);
     }
 
 
@@ -703,10 +472,16 @@ public class QualityofLifeActivity extends AppCompatActivity {
                 break;
         }
 
+        String csv_path = FileManager.getQQLFilename(this);
+        boolean exist_file = FileManager.isQQLFileExist(this);
+        String idPatient = Patient.getPatient().getPatientId();
+        String caseID = Patient.getPatient().getCaseId();
+        String date = Patient.getPatient().getDate();
+
         if(!exist_file){
-            writeCSVClass.createAndWriteCSV_QOL(csv_path+"/"+idPatient+"_QOL.csv", idPatient,caseID, date, full_qol, String.valueOf(numberQuestion_qol + 1), rating);
+            writeCSVClass.createAndWriteCSV_QOL(csv_path, idPatient,caseID, date, full_qol, String.valueOf(numberQuestion_qol + 1), rating);
         }else{
-            writeCSVClass.writeDataCSV_QOL(csv_path+"/"+idPatient+"_QOL.csv", full_qol, String.valueOf(numberQuestion_qol + 1), rating);
+            writeCSVClass.writeDataCSV_QOL(csv_path, full_qol, String.valueOf(numberQuestion_qol + 1), rating);
         }
     }
 

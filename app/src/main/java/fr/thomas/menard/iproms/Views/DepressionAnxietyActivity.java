@@ -1,144 +1,92 @@
 package fr.thomas.menard.iproms.Views;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
-import android.widget.Toast;
-
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvException;
-
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
-
+import fr.thomas.menard.iproms.Model.InfoFile;
+import fr.thomas.menard.iproms.Model.Patient;
 import fr.thomas.menard.iproms.R;
-import fr.thomas.menard.iproms.Utils.LocaleHelper;
+import fr.thomas.menard.iproms.Utils.FileManager;
+import fr.thomas.menard.iproms.Utils.ReadCSV;
 import fr.thomas.menard.iproms.Utils.WriteCSV;
 import fr.thomas.menard.iproms.databinding.ActivityDepressionAnxietyBinding;
 
-public class DepressionAnxietyActivity extends AppCompatActivity {
+public class DepressionAnxietyActivity extends BaseActivity {
 
 
-    ActivityDepressionAnxietyBinding binding;
-    Context context;
-    Resources resources;
-    String langue, rating, type;
-    int numberQuestion, total_Score, skipped_question, pourcentage = 0;
-    String csv_path, date, idPatient, caseID, diagnosis, lastQuestion, categorie;
+    private ActivityDepressionAnxietyBinding binding;
+    private String rating, categorie;
+    private int numberQuestion;
+    private int total_Score;
+    private int skipped_question;
 
-    int questionAns = 0;
-
-    boolean exist_file = false;
+    private int questionAns = 0;
 
     private WriteCSV writeCSVClass;
 
-    boolean touched = false, redo_questionnaire = false;
+    private boolean touched = false, redo_questionnaire = false;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityDepressionAnxietyBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
-
-        init();
+    public void init(){
+        writeCSVClass = WriteCSV.getInstance(this);
+        binding.txtIntro.setText(R.string.txt_intro_depression);
+        ReadCSV.retrieveInfos(this);
         reinit_questionnaire();
         getQuestion();
-        getCategorie();
-        retrieveGeneralInfos(categorie);
         displayText();
+    }
+
+    @Override
+    public void listenBtn() {
         finishQuestionnaire();
         listenSeekbar();
         listenBtnConfirm();
         listenBtnSkip();
     }
 
-    private void init(){
-        Intent intent = getIntent();
-        langue = intent.getStringExtra("langue");
-        date = intent.getStringExtra("date");
-        idPatient = intent.getStringExtra("patientID");
-        caseID = intent.getStringExtra("caseID");
-        diagnosis = intent.getStringExtra("diagnosis");
-        total_Score= intent.getIntExtra("totalScore", 0);
-        questionAns = intent.getIntExtra("questionAnswered", 0);
-        lastQuestion = intent.getStringExtra("lastQuestion");
-        redo_questionnaire = intent.getBooleanExtra("redo_questionnaire",false);
-        type = intent.getStringExtra("type");
-
-
-        context = LocaleHelper.setLocale(getApplicationContext(), langue);
-        resources = context.getResources();
-
-        writeCSVClass = WriteCSV.getInstance(this);
-
-        if(type.equals("first")){
-            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/first/";
-
-        }else{
-            csv_path = getExternalFilesDir(null).getAbsolutePath() + "/" + idPatient + "/second/";
-
-        }        exist_file = writeCSVClass.checkFileName(idPatient+"_HADS.csv", csv_path);
-
-        context = LocaleHelper.setLocale(getApplicationContext(), langue);
-        resources = context.getResources();
-        binding.txtIntro.setText(R.string.txt_intro_depression);
-
+    @Override
+    public void setBinding() {
+        binding = ActivityDepressionAnxietyBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
     }
 
-    private void getCategorie(){
+    @Override
+    public void processReceivedIntent(Intent intent) {
+        super.processReceivedIntent(intent);
+        questionAns = intent.getIntExtra("questionAnswered", 0);
+        redo_questionnaire = intent.getBooleanExtra("redo_questionnaire",false);
+    }
+
+    @Override
+    public void prepareIntent(Intent intent) {
+        super.prepareIntent(intent);
+        intent.putExtra("num_question", numberQuestion + 1);
+        intent.putExtra("questionAnswered", questionAns + 1);
+    }
+
+    private void getQuestion(){
+        numberQuestion = Integer.parseInt(InfoFile.questionAnsDep);
+        if(numberQuestion==0)
+            numberQuestion = 1;
+
         if(numberQuestion%2==0)
             categorie = "depression";
         else
             categorie = "anxiety";
-    }
 
-    private void getQuestion(){
-        String csvFilePath;
-        if(type.equals("first")){
-            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
-        }else{
-            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
-        }
-        try {
-            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+        if(categorie.equals("depression"))
+            total_Score = Integer.parseInt(InfoFile.avg_score_depression);
+        else
+            total_Score = Integer.parseInt(InfoFile.avg_score_anxiety);
 
-            // Create a CSVReader with FileReader and custom CSVParser
-            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
-                    .withCSVParser(csvParser)
-                    .build();
-
-            // Read the header to get column indices
-            int depressionColumnIndex = 7;
-
-            List<String[]> csvEntries = reader.readAll();
-            String[] firstRow = csvEntries.get(1);
-            numberQuestion = Integer.parseInt(firstRow[depressionColumnIndex+3]);
-            if(numberQuestion==0)
-                numberQuestion = 1;
-
-
-            reader.close();
-
-        } catch (IOException | CsvException e) {
-            Log.d("TEST", "infos " + e.getMessage());
-            e.printStackTrace();
-        }
+        skipped_question = Integer.parseInt(InfoFile.lastQuestionDep);
     }
 
     @Override
@@ -149,22 +97,9 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
     }
 
     private void finishQuestionnaire(){
-        binding.btnSkipQuestionnaire.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                modifyCSVInfos("done", "0", "skip", true, true);
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("langue", langue);
-                intent.putExtra("patientID", idPatient);
-                intent.putExtra("caseID", caseID);
-                intent.putExtra("date", date);
-                intent.putExtra("diagnosis", diagnosis);
-                intent.putExtra("type", type);
-
-                startActivity(intent);
-                finish();
-
-            }
+        binding.btnSkipQuestionnaire.setOnClickListener(v -> {
+            modifyCSVInfos("done", "0", "skip", true, true);
+            navigateToNextActivity(MainActivity.class);
         });
     }
 
@@ -175,16 +110,7 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
             write_csv("exit");
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("langue", langue);
-            intent.putExtra("patientID", idPatient);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("date", date);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("type", type);
-
-            startActivity(intent);
-            finish();
+            navigateToNextActivity(MainActivity.class);
             return true;
         } else if (id == R.id.action_skip) {
             skip();
@@ -194,82 +120,9 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
 
     }
 
-    private void retrieveGeneralInfos(String categorie){
-        String csvFilePath;
-        if(type.equals("first")){
-            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
-        }else{
-            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
-        }
-        try {
-            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
-
-            // Create a CSVReader with FileReader and custom CSVParser
-            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
-                    .withCSVParser(csvParser)
-                    .build();
-
-            // Read the header to get column indices
-            int depressionColumnIndex = 7;
-
-            List<String[]> csvEntries = reader.readAll();
-            String[] firstRow = csvEntries.get(1);
-
-            if(categorie.equals("depression"))
-                total_Score = Integer.parseInt(firstRow[depressionColumnIndex+1]);
-            else
-                total_Score = Integer.parseInt(firstRow[depressionColumnIndex+2]);
-
-            skipped_question = Integer.parseInt(firstRow[depressionColumnIndex+4]);
-
-            reader.close();
-
-        } catch (IOException | CsvException e) {
-            Log.d("TEST", "infos " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
     private void reinit_questionnaire(){
         if(redo_questionnaire){
-            String csvFilePath;
-            if(type.equals("first")){
-                csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
-            }else{
-                csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
-            }
-            try {
-                CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
-
-                // Create a CSVReader with FileReader and custom CSVParser
-                CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
-                        .withCSVParser(csvParser)
-                        .build();
-
-                int qolColumnIndex = 7;
-
-
-                List<String[]> csvEntries = reader.readAll();
-                String[] row = csvEntries.get(1);
-                row[qolColumnIndex] = "null";
-                row[qolColumnIndex+1] = "0";
-                row[qolColumnIndex + 2] = "0";
-                row[qolColumnIndex + 3] = "0";
-                row[qolColumnIndex + 4] = "0";
-                row[qolColumnIndex + 5] = "0";
-
-
-                CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
-                writer.writeAll(csvEntries);
-                writer.close();
-
-
-                reader.close();
-
-            } catch (IOException | CsvException e) {
-                Log.d("TEST", "infos " + e.getMessage());
-                e.printStackTrace();
-            }
+            WriteCSV.getInstance(this).reinit_questionnaire_Depression(this);
         }
     }
 
@@ -287,7 +140,7 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
         binding.txtinfo2.setText(getString(info2));
         binding.txtinfo3.setText(getString(info3));
 
-        pourcentage = 100 * numberQuestion / 14;
+        int pourcentage = 100 * numberQuestion / 14;
         binding.txtPoucentageDoneDep.setText(String.valueOf(pourcentage));
 
         Log.d("TEST", "number question" + numberQuestion + pourcentage);
@@ -295,52 +148,24 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
     }
 
     private void listenBtnConfirm(){
-        binding.btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                write_csv(rating);
-                total_Score += Integer.parseInt(rating);
+        binding.btnConfirm.setOnClickListener(v -> {
+            write_csv(rating);
+            total_Score += Integer.parseInt(rating);
 
-                Intent intent;
-                if(numberQuestion==14){
-                    modifyCSVInfos("done", String.valueOf(total_Score), categorie, false, false);
-                    intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("langue", langue);
-                    intent.putExtra("patientID", idPatient);
-                    intent.putExtra("caseID", caseID);
-                    intent.putExtra("date", date);
-                    intent.putExtra("diagnosis", diagnosis);
-                    intent.putExtra("type", type);
-
-                    startActivity(intent);
-                    finish();
-                }else {
-                    modifyCSVInfos("not finished", String.valueOf(total_Score), categorie, false, false);
-                    intent = new Intent(getApplicationContext(), DepressionAnxietyActivity.class);
-                    intent.putExtra("num_question", numberQuestion + 1);
-                    intent.putExtra("patientID", idPatient);
-                    intent.putExtra("caseID", caseID);
-                    intent.putExtra("date", date);
-                    intent.putExtra("langue", langue);
-                    intent.putExtra("diagnosis", diagnosis);
-                    intent.putExtra("totalScore", total_Score);
-                    intent.putExtra("questionAnswered", questionAns + 1);
-                    intent.putExtra("type", type);
-
-                    startActivity(intent);
-                }
+            Intent intent;
+            if(numberQuestion==14){
+                modifyCSVInfos("done", String.valueOf(total_Score), categorie, false, false);
+                navigateToNextActivity(MainActivity.class);
+            }else {
+                modifyCSVInfos("not finished", String.valueOf(total_Score), categorie, false, false);
+                navigateToNextActivityWithoutFinish(DepressionAnxietyActivity.class);
             }
         });
     }
 
 
     private void listenBtnSkip(){
-        binding.btnSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                skip();
-            }
-        });
+        binding.btnSkip.setOnClickListener(v -> skip());
     }
     private void skip(){
         write_csv("skip");
@@ -348,98 +173,16 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
 
         if(numberQuestion==14){
             modifyCSVInfos("done", String.valueOf(total_Score), categorie, true, false);
-
-            intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("langue", langue);
-            intent.putExtra("patientID", idPatient);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("date", date);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("type", type);
-
-
-            startActivity(intent);
-            finish();
+            navigateToNextActivity(MainActivity.class);
         }else {
             modifyCSVInfos("not finished", String.valueOf(total_Score), categorie, true, false);
-            intent = new Intent(getApplicationContext(), DepressionAnxietyActivity.class);
-            intent.putExtra("num_question", numberQuestion + 1);
-            intent.putExtra("patientID", idPatient);
-            intent.putExtra("caseID", caseID);
-            intent.putExtra("date", date);
-            intent.putExtra("langue", langue);
-            intent.putExtra("diagnosis", diagnosis);
-            intent.putExtra("totalScore", total_Score);
-            intent.putExtra("questionAnswered", questionAns);
-            intent.putExtra("type", type);
-
-            startActivity(intent);
+            navigateToNextActivityWithoutFinish(DepressionAnxietyActivity.class);
         }
     }
 
 
     private void modifyCSVInfos(String done, String  score, String category, boolean skip, boolean skip_questionnaire){
-
-        String csvFilePath;
-        if(type.equals("first")){
-            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/first/infos.csv";
-        }else{
-            csvFilePath = getExternalFilesDir(null).getAbsolutePath() + "/"+idPatient+"/second/infos.csv";
-        }
-        try {
-            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
-
-            // Create a CSVReader with FileReader and custom CSVParser
-            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
-                    .withCSVParser(csvParser)
-                    .build();
-
-            // Read the header to get column indices
-            int depressionColumnIndex = 7;
-
-            List<String[]> csvEntries = reader.readAll();
-            String[] row = csvEntries.get(1);
-            row[depressionColumnIndex] = done;
-            if(category.equals("depression"))
-                row[depressionColumnIndex+1] = score;
-            else if (category.equals("skip")) {
-                row[depressionColumnIndex+1] = "0";
-                row[depressionColumnIndex+2] = "0";
-                row[depressionColumnIndex + 3] = "0";
-                row[depressionColumnIndex+4] = "0";
-                row[depressionColumnIndex+5] = "0";
-
-            }else {
-                row[depressionColumnIndex + 2] = score;
-            }
-
-            if(!skip_questionnaire)
-                row[depressionColumnIndex + 3] = String.valueOf(numberQuestion + 1);
-
-            if(skip && !skip_questionnaire){
-                if(category.equals("depression"))
-                    row[depressionColumnIndex+4] = String.valueOf(skipped_question + 1);
-                else
-                    row[depressionColumnIndex+5] = String.valueOf(skipped_question + 1);
-
-
-            }
-
-
-
-            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
-            writer.writeAll(csvEntries);
-            writer.close();
-
-
-            reader.close();
-
-        } catch (IOException | CsvException e) {
-            Log.d("TEST", "infos " + e.getMessage());
-            e.printStackTrace();
-        }
-
-
+        WriteCSV.getInstance(this).modifyCSVInfos_Depression(this, numberQuestion, skipped_question, done, score, category, skip, skip_questionnaire);
     }
 
 
@@ -471,10 +214,15 @@ public class DepressionAnxietyActivity extends AppCompatActivity {
     }
 
     private void write_csv(String rating){
-        if(!exist_file){
-            writeCSVClass.createAndWriteCSV_fatigue(csv_path+"/"+idPatient+"_HADS.csv", idPatient,caseID, date, String.valueOf(numberQuestion), rating);
+        String csv_path = FileManager.getHADSFilename(this);
+        String idPatient = Patient.getPatient().getPatientId();
+        String caseID = Patient.getPatient().getCaseId();
+        String date = Patient.getPatient().getDate();
+
+        if(!FileManager.isHADSFileExist(this)){
+            writeCSVClass.createAndWriteCSV_fatigue(csv_path, idPatient,caseID, date, String.valueOf(numberQuestion), rating);
         }else{
-            writeCSVClass.writeDataCSV_fatigue(csv_path+"/"+idPatient+"_HADS.csv", String.valueOf(numberQuestion), rating);
+            writeCSVClass.writeDataCSV_fatigue(csv_path, String.valueOf(numberQuestion), rating);
         }
     }
 

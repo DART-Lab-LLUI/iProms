@@ -25,7 +25,7 @@
             android:name=".Views.PromisActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.OptionnalQuestionnairesActivity"
+            android:name=".Views.OptionalQuestionnairesActivity"
             android:exported="false" />
         <activity
             android:name=".Views.IntroductionFSMCActivity"
@@ -58,7 +58,7 @@
             android:name=".Views.IdentificationActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.LangueActivity"
+            android:name=".Views.LanguageActivity"
             android:exported="true"
             android:theme="@style/Theme.IPROMS">
             <intent-filter>

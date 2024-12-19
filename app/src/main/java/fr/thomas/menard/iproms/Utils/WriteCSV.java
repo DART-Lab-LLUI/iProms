@@ -1,23 +1,61 @@
 package fr.thomas.menard.iproms.Utils;
 
+import android.content.Context;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import fr.thomas.menard.iproms.Model.MyApplication;
+import fr.thomas.menard.iproms.Model.Patient;
 
 public class WriteCSV extends ViewModel {
 
     public static WriteCSV getInstance(@NonNull ViewModelStoreOwner owner) {
 
         return new ViewModelProvider(owner, (ViewModelProvider.Factory) new ViewModelProvider.NewInstanceFactory()).get(WriteCSV.class);
+    }
+
+    public void initInfos(String path){
+        Patient patientInfo = Patient.getPatient();
+        createAndWriteInfos(path,
+                patientInfo.getPatientId(),
+                patientInfo.getCaseId(),
+                patientInfo.getDate(),
+                "null", "0", "0", "0",
+                "null", "0", "0", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0","0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0",
+                "null", "0", "0", "0"
+        );
     }
 
 
@@ -395,12 +433,498 @@ public class WriteCSV extends ViewModel {
         }
     }
 
+    public void modifyCSVInfos_FCSM(String csvFilePath, String done, String  score, boolean skip, boolean skip_questionnaire, int numberQuestion, int skipped_question){
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+
+            int qolColumnIndex = 70;
+
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[qolColumnIndex] = done;
+            row[qolColumnIndex+1] = score;
+
+            row[qolColumnIndex + 2] = String.valueOf(numberQuestion + 1);
+
+            if(skip)
+                row[qolColumnIndex+3] = String.valueOf(skipped_question + 1);
+
+            if(skip_questionnaire){
+                row[qolColumnIndex] = done;
+                row[qolColumnIndex+1] = score;
+                row[qolColumnIndex + 2] = "0";
+                row[qolColumnIndex + 3] = "0";
+            }
 
 
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
 
 
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void modifyCSVInfos_Promis(String csvFilePath, String categorie, int numberQuestion, int skipped_question, String done, String  score, boolean skip, boolean skip_questionnaire){
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+
+            int qolColumnIndex = 17;
 
 
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[qolColumnIndex] = done;
+            if(categorie.equals("physical"))
+                row[qolColumnIndex+1] = score;
+            else if (categorie.equals("mental")) {
+                row[qolColumnIndex+2] = score;
+            }
+            if(!skip_questionnaire)
+                row[qolColumnIndex + 3] = String.valueOf(numberQuestion +1);
+
+            if(skip && !skip_questionnaire)
+                row[qolColumnIndex+4] = String.valueOf(skipped_question + 1);
+
+            if(skip_questionnaire){
+                row[qolColumnIndex + 3] = "0";
+                row[qolColumnIndex + 4] = "0";
+            }
+
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
+
+
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void reinit_questionnaire_Promis(Context context){
+        String csvFilePath = FileManager.getInfoFilename(context);
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+
+            int qolColumnIndex = 17;
+
+
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[qolColumnIndex] = "null";
+            row[qolColumnIndex+1] = "0";
+            row[qolColumnIndex+2] = "0";
+            row[qolColumnIndex + 3] = "0";
+            row[qolColumnIndex + 4] = "0";
+
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
+
+
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    public void modifyCSVGeneralQOL(Context context, int skipped_question, String done, String  score, String answered, boolean skip){
+
+        String csvFilePath = FileManager.getInfoFilename(context);
+        int qolColumnIndex = 21;
+
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[qolColumnIndex] = done;
+            row[qolColumnIndex+1] = score;
+            row[qolColumnIndex + 2] = answered;
+            if(skip)
+                row[qolColumnIndex+3] = String.valueOf(skipped_question + 1);
+
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
+
+
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void modifyCSVInfos_QQL(Context context, int numberQuestion, int skipped_question_qol, String done, String  score, String qol, boolean skip, boolean skip_questionnaire){
+
+        String csvFilePath = FileManager.getInfoFilename(context);
+
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+            int qolColumnIndex = 17;
+
+            switch (qol) {
+                case "qol1":
+                    qolColumnIndex += 4;
+                    break;
+                case "qol2":
+                    qolColumnIndex += 8;
+                    break;
+                case "qol3":
+                    qolColumnIndex += 12;
+                    break;
+                case "qol4":
+                    qolColumnIndex += 16;
+                    break;
+                case "qol5":
+                    qolColumnIndex += 20;
+                    break;
+                case "qol6":
+                    qolColumnIndex += 24;
+                    break;
+                case "qol7":
+                    qolColumnIndex += 28;
+                    break;
+                case "qol8":
+                    qolColumnIndex += 32;
+                    break;
+                case "qol9":
+                    qolColumnIndex += 36;
+                    break;
+                case "qol10":
+                    qolColumnIndex += 40;
+                    break;
+            }
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[qolColumnIndex] = done;
+            row[qolColumnIndex+1] = score;
+
+            if(!skip_questionnaire) {
+                row[qolColumnIndex + 2] = String.valueOf(numberQuestion + 1);
+            }
+
+            if(skip && !skip_questionnaire)
+                row[qolColumnIndex+3] = String.valueOf(skipped_question_qol + 1);
+
+
+            if(skip_questionnaire){
+                row[qolColumnIndex + 2] = "0";
+                row[qolColumnIndex+3] = "0";
+            }
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
+
+            Log.d("TEST", "row " + row[qolColumnIndex]+ row[qolColumnIndex+1]);
+
+
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    public void modifyCSVInfos_Sleep(Context context, int numberQuestion, int skipped_question, String done, String  score, boolean skip, boolean skip_questionnaire){
+
+        String csvFilePath = FileManager.getInfoFilename(context);
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+
+            int qolColumnIndex = 66;
+
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[qolColumnIndex] = done;
+            row[qolColumnIndex+1] = score;
+            row[qolColumnIndex + 2] = String.valueOf(numberQuestion + 1);
+
+            if(skip)
+                row[qolColumnIndex+3] = String.valueOf(skipped_question + 1);
+
+            if(skip_questionnaire)
+            {
+                row[qolColumnIndex+1] = score;
+                row[qolColumnIndex + 2] = "0";
+                row[qolColumnIndex+3] = "0";
+            }
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
+
+
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void modifyCSVInfos_BDI(Context context, int numberQuestion, int skipped_question, String done, String  score, boolean skip, boolean skip_questionnaire) {
+
+        String csvFilePath = FileManager.getInfoFilename(context);
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+
+            int qolColumnIndex = 13;
+
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[qolColumnIndex] = done;
+            row[qolColumnIndex + 1] = score;
+            row[qolColumnIndex + 2] = String.valueOf(numberQuestion);
+
+            if (skip)
+                row[qolColumnIndex + 3] = String.valueOf(skipped_question + 1);
+
+            if (skip_questionnaire) {
+                row[qolColumnIndex + 1] = "0";
+                row[qolColumnIndex + 2] = "0";
+                row[qolColumnIndex + 3] = "0";
+            }
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
+
+
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void modifyCSVInfos_Depression(Context context, int numberQuestion, int skipped_question, String done, String  score, String category, boolean skip, boolean skip_questionnaire){
+
+        String csvFilePath = FileManager.getInfoFilename(context);
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+
+            // Read the header to get column indices
+            int depressionColumnIndex = 7;
+
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[depressionColumnIndex] = done;
+            if(category.equals("depression"))
+                row[depressionColumnIndex+1] = score;
+            else if (category.equals("skip")) {
+                row[depressionColumnIndex+1] = "0";
+                row[depressionColumnIndex+2] = "0";
+                row[depressionColumnIndex + 3] = "0";
+                row[depressionColumnIndex+4] = "0";
+                row[depressionColumnIndex+5] = "0";
+
+            }else {
+                row[depressionColumnIndex + 2] = score;
+            }
+
+            if(!skip_questionnaire)
+                row[depressionColumnIndex + 3] = String.valueOf(numberQuestion + 1);
+
+            if(skip && !skip_questionnaire){
+                if(category.equals("depression"))
+                    row[depressionColumnIndex+4] = String.valueOf(skipped_question + 1);
+                else
+                    row[depressionColumnIndex+5] = String.valueOf(skipped_question + 1);
+
+
+            }
+
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
+
+
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void reinit_questionnaire_Depression(Context context){
+        String csvFilePath = FileManager.getInfoFilename(context);
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+
+            int qolColumnIndex = 7;
+
+
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[qolColumnIndex] = "null";
+            row[qolColumnIndex+1] = "0";
+            row[qolColumnIndex + 2] = "0";
+            row[qolColumnIndex + 3] = "0";
+            row[qolColumnIndex + 4] = "0";
+            row[qolColumnIndex + 5] = "0";
+
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
+
+
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void reinit_questionnaire_Fatigue(Context context){
+        String csvFilePath = FileManager.getInfoFilename(context);
+
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+
+            int qolColumnIndex = 3;
+
+
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[qolColumnIndex] = "null";
+            row[qolColumnIndex+1] = "0";
+            row[qolColumnIndex + 2] = "0";
+            row[qolColumnIndex + 3] = "0";
+
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
+
+
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void modifyCSVInfos_Fatigue(Context context, int numberQuestion, int skipped_question, String done, String  score, boolean skip, boolean skip_questionnaire){
+
+        String csvFilePath = FileManager.getInfoFilename(context);
+        try {
+            CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+            // Create a CSVReader with FileReader and custom CSVParser
+            CSVReader reader = new CSVReaderBuilder(new FileReader(csvFilePath))
+                    .withCSVParser(csvParser)
+                    .build();
+
+            int qolColumnIndex = 3;
+
+
+            List<String[]> csvEntries = reader.readAll();
+            String[] row = csvEntries.get(1);
+            row[qolColumnIndex] = done;
+            row[qolColumnIndex+1] = score;
+            if(!skip_questionnaire)
+                row[qolColumnIndex + 2] = String.valueOf(numberQuestion +1);
+
+            if(skip && !skip_questionnaire)
+                row[qolColumnIndex+3] = String.valueOf(skipped_question + 1);
+
+            if(skip_questionnaire){
+                row[qolColumnIndex + 2] = "0";
+                row[qolColumnIndex + 3] = "0";
+            }
+
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+            writer.writeAll(csvEntries);
+            writer.close();
+
+
+            reader.close();
+
+        } catch (IOException | CsvException e) {
+            Log.d("TEST", "infos " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+    }
 
     public boolean checkFileName(String outputFileName, String filePath) {
         boolean flag = false;

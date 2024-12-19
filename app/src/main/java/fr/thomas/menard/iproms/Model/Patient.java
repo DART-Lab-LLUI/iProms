@@ -1,12 +1,10 @@
-package fr.thomas.menard.iproms.Models;
+package fr.thomas.menard.iproms.Model;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -20,7 +18,7 @@ public class Patient {
 
     private static Patient patient;
     private String patientId, caseId, diagnosis;
-    private String date, stopTime;
+    private String date;
     private int clinicId;
 
     private Patient() {
@@ -44,7 +42,6 @@ public class Patient {
         this.patientId = patientId;
         this.caseId = caseId;
         this.date = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        this.stopTime = null;
     }
 
     public String getPatientId(){
@@ -72,11 +69,6 @@ public class Patient {
     }
     public String getDate() { return this.date; }
     public String getPointDate() { return this.date.replace('_', '.');}
-
-    public String getStopTime() {return  this.stopTime;}
-    public void setStopTime() {
-        this.stopTime = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-    }
 
     public String getFormattedDate(){
         return Utils.changeDateFormatFromYMDToDMY(this.date);
