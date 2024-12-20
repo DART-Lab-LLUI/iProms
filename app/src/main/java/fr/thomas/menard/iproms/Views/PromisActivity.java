@@ -148,7 +148,7 @@ public class PromisActivity extends BaseActivity {
 
     private void skip(){
         write_csv("skip");
-        if(numberQuestion==9){
+        if(numberQuestion==10){
 
             if(categorie.equals("physical"))
                 modifyCSVInfos("done", String.valueOf(InfoFile.avg_score_PROMIS_physical), true, false);
