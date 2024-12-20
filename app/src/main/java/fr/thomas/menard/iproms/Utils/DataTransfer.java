@@ -1,6 +1,5 @@
 package fr.thomas.menard.iproms.Utils;
 
-import static fr.thomas.menard.iproms.BuildConfig.*;
 import static fr.thomas.menard.iproms.BuildConfig.MINIO_HS_ACCESS;
 import static fr.thomas.menard.iproms.BuildConfig.MINIO_HS_BUCKET;
 import static fr.thomas.menard.iproms.BuildConfig.MINIO_HS_ENDPOINT;
@@ -10,8 +9,6 @@ import static fr.thomas.menard.iproms.BuildConfig.MINIO_VZ_BUCKET;
 import static fr.thomas.menard.iproms.BuildConfig.MINIO_VZ_ENDPOINT;
 import static fr.thomas.menard.iproms.BuildConfig.MINIO_VZ_SECRET;
 import static fr.thomas.menard.iproms.Utils.FileManager.getSessionFolder;
-
-import android.app.AlertDialog;
 
 import java.io.File;
 

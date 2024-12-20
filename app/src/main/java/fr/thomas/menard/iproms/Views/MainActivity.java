@@ -169,8 +169,8 @@ public class MainActivity extends BaseActivity {
 
 
     private void uploadData(File file){
-//        DataTransfer dataTransfer = new DataTransfer(this);
-//        dataTransfer.uploadFile(file);
+        DataTransfer dataTransfer = new DataTransfer(this);
+        dataTransfer.uploadFile(file);
     }
 
     private void listenRadioGroup(){
