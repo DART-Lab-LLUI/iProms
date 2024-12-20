@@ -39,7 +39,6 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
         displaysleep();
         checkQuestionnaireDone();
 
-
         listenRadioGroup();
         listenBtnConfirm();
     }

@@ -43,11 +43,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IIntentH
         this.navBackArrowActivityClass = navBackArrowActivityClass;
     }
 
-    @Override
-    public void onBackPressed() {
-        // When user press the inbuilt android back button
-    }
-
     public void navigateToNextActivity(Class<?> nextClass) {
         Intent intent = new Intent(this, nextClass);
         prepareIntent(intent);

@@ -60,16 +60,19 @@ public class IntroductionActivity extends BaseActivity {
     }
 
     private void checkUser() {
-        File folder = FileManager.getSessionFolder(this);
         WriteCSV writeCSVClass = WriteCSV.getInstance(this);
         MyApplication.type = Type.FIRST;
+
         // Check if the folder exists
         if (!FileManager.isInfoFileExist(this)) {
             writeCSVClass.initInfos(FileManager.getInfoFilename(this));
         } else {
             if(!checkTypeScreening().equals(Type.FIRST)){
                 MyApplication.type = Type.SECOND;
-                writeCSVClass.initInfos(FileManager.getInfoFilename(this));
+
+                if(!FileManager.isInfoFileExist(this)){
+                    writeCSVClass.initInfos(FileManager.getInfoFilename(this));
+                }
             }
         }
     }

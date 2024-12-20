@@ -207,6 +207,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void startActivity(String questionnaire){
+
+        if(questionnaire == null){
+            Toast.makeText(context, "Please select a questionnaire", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         switch (questionnaire) {
             case "fatigue":
                 navigateToNextActivityWithoutFinish(FatigueQuestionnaire.class);
@@ -239,7 +245,7 @@ public class MainActivity extends BaseActivity {
 
     private void listenBtnResult(){
         binding.btnResult.setOnClickListener(v -> {
-            navigateToNextActivity(SummaryActivity.class);
+            navigateToNextActivityWithoutFinish(SummaryActivity.class);
         });
     }
 
