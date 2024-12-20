@@ -12,6 +12,7 @@ import fr.thomas.menard.iproms.Model.InfoFile;
 import fr.thomas.menard.iproms.Model.Patient;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.FileManager;
+import fr.thomas.menard.iproms.Utils.ReadCSV;
 import fr.thomas.menard.iproms.Utils.WriteCSV;
 import fr.thomas.menard.iproms.databinding.ActivityBdiBinding;
 
@@ -109,6 +110,7 @@ public class BDI_Activity extends BaseActivity {
 
 
     private void retrieveGeneralInfos(){
+        ReadCSV.retrieveInfos(this);
         numberQuestion = Integer.parseInt(InfoFile.questionAnsBDI);
         int percentage = 100 * numberQuestion / 21;
         binding.txtPoucentageDone.setText(String.valueOf(percentage));

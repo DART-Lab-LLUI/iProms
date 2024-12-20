@@ -21,7 +21,7 @@ public class PromisActivity extends BaseActivity {
 
     private String rating;
 
-    private int total_Score = 0, numberQuestion = 0;
+    private int numberQuestion = 0;
 
     private WriteCSV writeCSVClass;
 
@@ -55,15 +55,8 @@ public class PromisActivity extends BaseActivity {
     }
 
     @Override
-    public void prepareIntent(Intent intent) {
-        super.prepareIntent(intent);
-        intent.putExtra("totalScore", total_Score);
-    }
-
-    @Override
     public void processReceivedIntent(Intent intent) {
         super.processReceivedIntent(intent);
-        total_Score = intent.getIntExtra("totalScore", 0);
         redo_questionnaire = intent.getBooleanExtra("redo_questionnaire", false);
     }
 
@@ -134,9 +127,9 @@ public class PromisActivity extends BaseActivity {
             write_csv(rating);
             int score = 0;
             if (categorie.equals("physical"))
-                score = Integer.parseInt(InfoFile.avg_score_PROMIS_physical + Integer.parseInt(rating));
+                score = Integer.parseInt(InfoFile.avg_score_PROMIS_physical) + Integer.parseInt(rating);
             else if (categorie.equals("mental")) {
-                score = Integer.parseInt(InfoFile.avg_score_PROMIS_mental + Integer.parseInt(rating));
+                score = Integer.parseInt(InfoFile.avg_score_PROMIS_mental) + Integer.parseInt(rating);
             }
 
             if(numberQuestion==10){

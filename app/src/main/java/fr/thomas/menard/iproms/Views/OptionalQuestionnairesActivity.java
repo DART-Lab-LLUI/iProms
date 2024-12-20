@@ -260,8 +260,8 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
     }
 
     private void uploadData(File file){
-        DataTransfer dataTransfer = new DataTransfer(this);
-        dataTransfer.uploadFile(file);
+//        DataTransfer dataTransfer = new DataTransfer(this);
+//        dataTransfer.uploadFile(file);
     }
 
     @Override

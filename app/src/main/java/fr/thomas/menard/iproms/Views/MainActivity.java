@@ -169,8 +169,8 @@ public class MainActivity extends BaseActivity {
 
 
     private void uploadData(File file){
-        DataTransfer dataTransfer = new DataTransfer(this);
-        dataTransfer.uploadFile(file);
+//        DataTransfer dataTransfer = new DataTransfer(this);
+//        dataTransfer.uploadFile(file);
     }
 
     private void listenRadioGroup(){
@@ -232,7 +232,6 @@ public class MainActivity extends BaseActivity {
 
     private void listenBtnStart(){
         binding.btnConfirm.setOnClickListener(v -> {
-            //openPopup(questionnaire);
             startActivity(questionnaire);
 
         });
@@ -240,7 +239,7 @@ public class MainActivity extends BaseActivity {
 
     private void listenBtnResult(){
         binding.btnResult.setOnClickListener(v -> {
-            navigateToNextActivityWithoutFinish(SummaryActivity.class);
+            navigateToNextActivity(SummaryActivity.class);
         });
     }
 
@@ -273,6 +272,10 @@ public class MainActivity extends BaseActivity {
     @Override
     public void prepareIntent(Intent intent) {
 
+        if(questionnaire == null){
+            return;
+        }
+
         switch (questionnaire){
             case "fatigue":
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
@@ -289,80 +292,60 @@ public class MainActivity extends BaseActivity {
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 1);
                 intent.putExtra("qol", "qol1");
-                startActivity(intent);
-
                 break;
             }
             case "qol2": {
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 9);
                 intent.putExtra("qol", "qol2");
-                startActivity(intent);
-
                 break;
             }
             case "qol3": {
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 17);
                 intent.putExtra("qol", "qol3");
-                startActivity(intent);
-
                 break;
             }
             case "qol4": {
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 25);
                 intent.putExtra("qol", "qol4");
-                startActivity(intent);
-
                 break;
             }
             case "qol5": {
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 33);
                 intent.putExtra("qol", "qol5");
-                startActivity(intent);
-
                 break;
             }
             case "qol6": {
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 41);
                 intent.putExtra("qol", "qol6");
-                startActivity(intent);
-
                 break;
             }
             case "qol7": {
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 49);
                 intent.putExtra("qol", "qol7");
-                startActivity(intent);
-
                 break;
             }
             case "qol8": {
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 58);
                 intent.putExtra("qol", "qol8");
-                startActivity(intent);
-
                 break;
             }
             case "qol9": {
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 66);
                 intent.putExtra("qol", "qol9");
-                startActivity(intent);
-
                 break;
             }
             case "qol10": {
                 intent.putExtra("redo_questionnaire", redo_questionnaire);
                 intent.putExtra("num_question", 74);
                 intent.putExtra("qol", "qol10");
-                startActivity(intent);
-
                 break;
             }
             default:
