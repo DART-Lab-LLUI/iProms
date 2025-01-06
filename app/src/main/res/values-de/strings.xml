@@ -3,7 +3,6 @@
     <string name="app_name">iProms</string>
     <string name="welcome">Welcome to iProms (DE)</string>
 
-    <string name="intro_text">On the next page you will find different questionnaires that provide us valuable information to understand your health situation better./n All questionnaires are short screening tests. Please fill them out as completely as possible./n At the end, you will see a summary of the results and you will be able to discuss them with our medical team./n If you need any help, feel free to ask our nurses, therapists, or doctors.</string>
     <string name="summary_text">You have completed all the screening measures.\n
         If you are interested in sharing more details about your health situation with us, there are some optional, more detailed questionnaires coming up next.</string>
 
@@ -128,16 +127,18 @@
     <string name="txt_info_ess_3">würde mit grosser Wahrscheinlichkeit einschlafen</string>
 
 
-    <string name="txtStart_questionnaire">Sie sind dabei, den Fragebogen zu beginnen:</string>
     <string name="fatigue">Fatigue</string>
-    <string name="start_questionnaire">Start questionnaire</string>
     <string name="questionnaire">Questionnaire :</string>
-    <string name="we_suggest_you_to_continue_with_the_following_questionnaire_depression_and_anxiety">We suggest you to continue with the following questionnaire : </string>
-    <string name="we_suggest_you_to_contiue_this_fatigue_questionnaire">We suggest you to contiue this fatigue questionnaire</string>
 
     <string name="depression_and_anxiety">Depression and Anxiety</string>
 
 
+    <string name="intro_text">
+        Auf der nächsten Seite finden Sie verschiedene Fragebögen, die uns helfen sollen, Ihr körperliches und emotionales Wohlbefinden besser zu verstehen. Ihre Antworten geben uns wichtige Einblicke in Ihre Lebensqualität und ermöglichen es Ihrem Rehabilitationsteam, Ihre Behandlung auf festgestellte Probleme oder Bedürfnisse zuzuschneiden, um Ihren Genesungsprozess zu verbessern und Ihre langfristige Gesundheit zu unterstützen. \n\n
+        Bitte beantworten Sie alle Fragen so vollständig wie möglich. Wenn eine Frage unklar ist, interpretieren Sie sie nach bestem Wissen und Gewissen und wählen Sie dann die Antwort aus, die Ihnen am zutreffendsten erscheint. Es gibt keine richtigen oder falschen Antworten; wir wollen nur Ihre Sichtweise verstehen. Wenn Sie unsicher sind oder sich nicht in der Lage fühlen zu antworten, können Sie die Frage überspringen.\n\n
+        Am Ende erhalten Sie eine Zusammenfassung Ihrer Ergebnisse, die Sie mit Ihrem Rehabilitationsteam besprechen können. Dies unterstützt die gemeinsame Entscheidungsfindung und hilft Ihrem Team, Ihren Pflegeplan auf das abzustimmen, was Ihnen am wichtigsten ist. \n\n
+        Wenn Sie Hilfe brauchen, zögern Sie nicht, unsere Krankenschwestern, Therapeuten oder Ärzte zu fragen.
+    </string>
     <string name="diagnosis">Diagnose</string>
     <string name="txt_intro_depression">Kreuzen Sie das Kästchen neben der Antwort an, die Ihren Gefühlen in der letzten Woche am ehesten entspricht. \n \n Lassen Sie sich mit Ihren Antworten nicht zu viel Zeit: Am besten ist es, wenn Sie sofort antworten.</string>
     <string name="your_rating">Ihre Bewertung : </string>

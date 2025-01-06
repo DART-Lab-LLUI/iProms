@@ -1,12 +1,25 @@
 <resources>
     <string name="app_name">iPROMS</string>
     <string name="welcome"> Welcome to iProms</string>
-    <string name="intro_text">On the next page you will find different questionnaires that provide us valuable information to understand your health situation better.\n \n All questionnaires are short screening tests. Please fill them out as completely as possible.\n \n At the end, you will see a summary of the results and you will be able to discuss them with our medical team.\n \n \n If you need any help, feel free to ask our nurses, therapists, or doctors.</string>
+    <string name="intro_text">
+        On the next page you will find different questionnaires designed to help us better understand your physical and emotional well being. Your answers provide important insights into your quality of life, enabling your rehabilitation team to tailor your treatment to identified concerns or needs, in order to improve your recovery journey, and support your long-term health.\n\n
+        Please answer all questions as completely as possible. If a question is unclear, interpret it to the best of your ability and then pick the answer choice that feels most accurate to you. There are no right or wrong answers; we just want to understand your perspective. If you are unsure or feel unable to answer, you may skip the question.\n\n
+        At the end, you will see a summary of your results, which you can review with your rehabilitation team. This will support shared decision-making and help your team align your care plan with what matters most to you. \n\n
+        If you need help, do not hesitate to ask our nurses, therapists, or doctors.
+    </string>
 
     <string name="diagnosis">Diagnosis</string>
     <string name="case_id_7_characters">Case ID (7 characters)</string>
     <string name="patient_id">Patient ID :</string>
     <string name="diagnosis__">Diagnosis :</string>
+    <string name="clinic_id">Clinic: </string>
+
+    <string-array name="clinic_names">
+        <item>Cereneo</item>
+        <item>Hertenstein</item>
+        <item>SPZ</item>
+    </string-array>
+
     <string name="we_suggest_you_to_complete_the_following_questionnaires">We suggest you to complete the following questionnaires</string>
     <string name="thank_you_for_completing_our_questionnaires_n_you_can_now_look_at_your_results">Thank you for completing our questionnaires \n You can now look at your results</string>
     <string name="fatigue">Fatigue</string>

@@ -3,6 +3,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import fr.thomas.menard.iproms.Model.MyApplication;
@@ -24,6 +25,16 @@ public class IdentificationActivity extends BaseActivity {
         binding.txtSide.setText(resources.getString(R.string.diagnosis));
     }
 
+    private void initClinicIdSpinner(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.clinic_names, R.layout.item_spinner
+        );
+
+        adapter.setDropDownViewResource(R.layout.item_spinner);
+        binding.clinicIdSpinner.setAdapter(adapter);
+        binding.clinicIdSpinner.setSelection(0);
+    }
+
     private void listenBtnConfirm(){
         binding.btnConfirm.setOnClickListener(v -> {
             String patientID = binding.APatientTxtIdPatient.getText().toString().trim();
@@ -38,7 +49,8 @@ public class IdentificationActivity extends BaseActivity {
                     diagnosis = binding.editOtherDiagnosis.getText().toString();
                 }
 
-                patientInfo.setPatientData(patientID, caseID, diagnosis,1, context);
+                int clinicId = binding.clinicIdSpinner.getSelectedItemPosition();
+                patientInfo.setPatientData(patientID, caseID, diagnosis, clinicId, context);
                 navigateToNextActivity(IntroductionActivity.class);
             }
         });
@@ -68,6 +80,7 @@ public class IdentificationActivity extends BaseActivity {
     @Override
     public void init() {
         initAttributes();
+        initClinicIdSpinner();
     }
 
     @Override

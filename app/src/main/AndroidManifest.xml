@@ -20,6 +20,8 @@
         android:roundIcon="@drawable/iproms"
         android:supportsRtl="true"
         android:theme="@style/Theme.IPROMS"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".Views.PromisActivity"

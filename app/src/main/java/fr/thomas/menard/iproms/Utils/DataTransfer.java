@@ -10,6 +10,8 @@ import static fr.thomas.menard.iproms.BuildConfig.MINIO_VZ_ENDPOINT;
 import static fr.thomas.menard.iproms.BuildConfig.MINIO_VZ_SECRET;
 import static fr.thomas.menard.iproms.Utils.FileManager.getSessionFolder;
 
+import android.app.AlertDialog;
+
 import java.io.File;
 
 import fr.thomas.menard.iproms.Model.Patient;
@@ -87,6 +89,10 @@ public class DataTransfer {
     }
 
     private void tryAgainMessage() {
-        DebugLogger.debugLog("DATA TRANSFER", "TRY AGAIN");
+        new AlertDialog.Builder(mainActivity)
+                .setTitle("Error in Uploading.")
+                .setMessage("There is an error in the uploading. Please notify a therapist about that.")
+                .setNeutralButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }

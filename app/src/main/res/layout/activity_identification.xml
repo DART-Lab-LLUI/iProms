@@ -146,12 +146,39 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <RelativeLayout
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:id="@+id/clinicIdWrapper"
+        android:layout_below="@id/tilRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="25dp">
+
+        <TextView
+            android:id="@+id/clinicIdTxt"
+            style="@style/Titleblue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/clinic_id" />
+
+        <Spinner
+            android:id="@+id/clinicIdSpinner"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/clinicIdTxt"
+            tools:listitem="@layout/item_spinner"/>
+
+    </RelativeLayout>
+
 
     <Button
         android:id="@+id/btnConfirm"
         android:layout_width="300dp"
         android:layout_height="80dp"
-        android:layout_below="@id/tilRadioGroup"
+        android:layout_below="@id/clinicIdWrapper"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:fontFamily="@font/montserratregular"
