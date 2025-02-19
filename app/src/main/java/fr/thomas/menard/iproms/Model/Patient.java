@@ -50,6 +50,10 @@ public class Patient {
 
     public String getClinicIdtoString() {
         if (clinicId >= 0 && clinicId <= 99) {
+            if(clinicId == 1){ //HS
+                return String.format("%02d", clinicId);
+            }
+
             return String.format("%02d", clinicId + 1);
         } else {
             throw new IllegalArgumentException("Invalid clinicId: " + clinicId);
