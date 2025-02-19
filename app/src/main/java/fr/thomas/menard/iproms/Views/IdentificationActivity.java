@@ -32,7 +32,7 @@ public class IdentificationActivity extends BaseActivity {
 
         adapter.setDropDownViewResource(R.layout.item_spinner);
         binding.clinicIdSpinner.setAdapter(adapter);
-        binding.clinicIdSpinner.setSelection(0);
+        binding.clinicIdSpinner.setSelection(1);
     }
 
     private void listenBtnConfirm(){
