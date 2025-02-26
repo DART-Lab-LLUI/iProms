@@ -1,17 +1,18 @@
 package fr.thomas.menard.iproms.Views;
 
+import static fr.thomas.menard.iproms.App.MyApplication.setType;
+
 import android.view.LayoutInflater;
-import java.io.File;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import fr.thomas.menard.iproms.App.MyApplication;
 import fr.thomas.menard.iproms.Enum.Type;
 import fr.thomas.menard.iproms.Model.InfoFile;
-import fr.thomas.menard.iproms.Model.MyApplication;
-import fr.thomas.menard.iproms.Utils.DebugLogger;
 import fr.thomas.menard.iproms.Utils.FileManager;
 import fr.thomas.menard.iproms.Utils.ReadCSV;
 import fr.thomas.menard.iproms.Utils.WriteCSV;
@@ -61,17 +62,17 @@ public class IntroductionActivity extends BaseActivity {
 
     private void checkUser() {
         WriteCSV writeCSVClass = WriteCSV.getInstance(this);
-        MyApplication.type = Type.FIRST;
+        setType(Type.FIRST); // Save Type persistently
 
         // Check if the folder exists
         if (!FileManager.isInfoFileExist(this)) {
-            writeCSVClass.initInfos(FileManager.getInfoFilename(this));
+            writeCSVClass.initInfos(FileManager.getInfoFilename(this), this);
         } else {
-            if(!checkTypeScreening().equals(Type.FIRST)){
-                MyApplication.type = Type.SECOND;
+            if (!checkTypeScreening().equals(Type.FIRST)) {
+                setType(Type.SECOND);
 
-                if(!FileManager.isInfoFileExist(this)){
-                    writeCSVClass.initInfos(FileManager.getInfoFilename(this));
+                if (!FileManager.isInfoFileExist(this)) {
+                    writeCSVClass.initInfos(FileManager.getInfoFilename(this), this);
                 }
             }
         }

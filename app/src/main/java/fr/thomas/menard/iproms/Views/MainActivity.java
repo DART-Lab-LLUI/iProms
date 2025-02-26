@@ -13,9 +13,9 @@ import android.widget.Toast;
 
 import java.io.File;
 
-import fr.thomas.menard.iproms.Model.MyApplication;
+import fr.thomas.menard.iproms.App.MyApplication;
 import fr.thomas.menard.iproms.R;
-import fr.thomas.menard.iproms.Utils.DataTransfer;
+import fr.thomas.menard.iproms.Utils.DebugLogger;
 import fr.thomas.menard.iproms.Utils.FileManager;
 import fr.thomas.menard.iproms.Utils.LocaleHelper;
 import fr.thomas.menard.iproms.Utils.ReadCSV;
@@ -55,9 +55,9 @@ public class MainActivity extends BaseActivity {
 
     @SuppressLint("SetTextI18n")
     private void displayText(){
-        binding.txtPatientID.setText(patientInfo.getPatientId());
+        binding.txtPatientID.setText(patientInfo.getPatientId(this));
         binding.txtPatientID.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-        binding.txtDiagnosis.setText(patientInfo.getDiagnosis());
+        binding.txtDiagnosis.setText(patientInfo.getDiagnosis(this));
         binding.txtDiagnosis.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
     }
 
@@ -169,8 +169,8 @@ public class MainActivity extends BaseActivity {
 
 
     private void uploadData(File file){
-        DataTransfer dataTransfer = new DataTransfer(this);
-        dataTransfer.uploadFile(file);
+        //DataTransfer dataTransfer = new DataTransfer(this);
+        //dataTransfer.uploadFile(file);
     }
 
     private void listenRadioGroup(){

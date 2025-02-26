@@ -9,8 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import java.io.File;
+
+import fr.thomas.menard.iproms.App.MyApplication;
 import fr.thomas.menard.iproms.Enum.Type;
-import fr.thomas.menard.iproms.Model.MyApplication;
 import fr.thomas.menard.iproms.Model.Patient;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.DataTransfer;
@@ -62,7 +63,7 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
 
     @SuppressLint("SetTextI18n")
     private void displayFSMC(){
-        if(!Patient.getPatient().getDiagnosis().equals("Stroke")){
+        if(!Patient.getPatient().getDiagnosis(this).equals("Stroke")){
             if(!fsmc.equals("null")){
                 binding.txtQuestionFatigueFSMC.setText("Question answered : "+ (Integer.parseInt(questionAnsFCSM) -1) +"/ 20 - ("+skipped_question_fsmc+" skipped)" );
 
@@ -111,9 +112,9 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
 
     private void createResultSleepCSV(){
         Patient patient = Patient.getPatient();
-        String patientID = patient.getPatientId();
-        String caseID = patient.getCaseId();
-        String date = patient.getDate();
+        String patientID = patient.getPatientId(this);
+        String caseID = patient.getCaseId(this);
+        String date = patient.getDate(this);
 
         if(!FileManager.isSleepResultFileExist(this)){
             writeCSV.createAndWriteSleepResult(FileManager.getSleepResultFile(this).getAbsolutePath(), patientID, caseID, date,score_sleep);
@@ -122,10 +123,10 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
 
     private void createResultFSMCCSV(){
         Patient patient = Patient.getPatient();
-        String patientID = patient.getPatientId();
-        String caseID = patient.getCaseId();
-        String date = patient.getDate();
-        Type type = MyApplication.type;
+        String patientID = patient.getPatientId(this);
+        String caseID = patient.getCaseId(this);
+        String date = patient.getDate(this);
+        Type type = MyApplication.getType();
 
         if(!FileManager.isFSMCResultFileExist(this)){
             writeCSV.createAndWriteFSMCResult(FileManager.getFSMCResultFile(this).getAbsolutePath(), patientID, caseID, date, scoreFSMC);

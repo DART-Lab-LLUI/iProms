@@ -199,9 +199,9 @@ public class FatigueQuestionnaire extends BaseActivity {
 
     private void write_csv(String rating){
         String csv_path = FileManager.getFSSFilename(this);
-        String idPatient = Patient.getPatient().getPatientId();
-        String caseID = Patient.getPatient().getCaseId();
-        String date = Patient.getPatient().getDate();
+        String idPatient = Patient.getPatient().getPatientId(this);
+        String caseID = Patient.getPatient().getCaseId(this);
+        String date = Patient.getPatient().getDate(this);
 
         if(!FileManager.isFSSFileExist(this)){
             writeCSVClass.createAndWriteCSV_fatigue(csv_path, idPatient,caseID, date, String.valueOf(numberQuestion), rating);

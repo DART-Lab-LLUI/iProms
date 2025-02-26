@@ -1,10 +1,12 @@
 package fr.thomas.menard.iproms.Utils;
 
+import static fr.thomas.menard.iproms.App.MyApplication.getType;
+
 import android.content.Context;
 
 import java.io.File;
 
-import fr.thomas.menard.iproms.Model.MyApplication;
+import fr.thomas.menard.iproms.App.MyApplication;
 import fr.thomas.menard.iproms.Model.Patient;
 
 public class FileManager {
@@ -36,7 +38,8 @@ public class FileManager {
         Patient patient = Patient.getPatient();
 
         // Construct the session path
-        return createFolder(baseDir, patient.getPatientId());
+        DebugLogger.debugLog("SessionFolder", baseDir.getAbsolutePath() + patient.getPatientId(context));
+        return createFolder(baseDir, patient.getPatientId(context));
     }
 
     public static File getCrashLogFile(Context context, Patient patient){
@@ -49,7 +52,7 @@ public class FileManager {
     }
 
     public static File getInfoFile(Context context){
-        File folder = createFolder(getSessionFolder(context), MyApplication.type.getType());
+        File folder = createFolder(getSessionFolder(context), getType().getType());
         String filename = "infos.csv";
         return new File(folder, filename);
     }
@@ -63,7 +66,7 @@ public class FileManager {
     }
 
     public static File getResultBDIFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
         String filename = "result_bdi.csv";
         return new File(folder, filename);
     }
@@ -73,8 +76,8 @@ public class FileManager {
     }
 
     public static File getFSMCFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_FSMC.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_FSMC.csv";
         return new File(folder, filename);
     }
 
@@ -87,8 +90,8 @@ public class FileManager {
     }
 
     public static File getFSMCResultFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_result_fsmc.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_result_fsmc.csv";
         return new File(folder, filename);
     }
 
@@ -97,8 +100,8 @@ public class FileManager {
     }
 
     public static File getSleepResultFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_result_sleep.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_result_sleep.csv";
         return new File(folder, filename);
     }
 
@@ -107,8 +110,8 @@ public class FileManager {
     }
 
     public static File getBDIResultFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_result_bdi.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_result_bdi.csv";
         return new File(folder, filename);
     }
 
@@ -117,8 +120,8 @@ public class FileManager {
     }
 
     public static File getPromisFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_Promis.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_Promis.csv";
         return new File(folder, filename);
     }
 
@@ -131,8 +134,8 @@ public class FileManager {
     }
 
     public static File getQQLFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_QQL.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_QQL.csv";
         return new File(folder, filename);
     }
 
@@ -145,8 +148,8 @@ public class FileManager {
     }
 
     public static File getESSFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_ESS.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_ESS.csv";
         return new File(folder, filename);
     }
 
@@ -159,8 +162,8 @@ public class FileManager {
     }
 
     public static File getResultFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_result.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_result.csv";
         return new File(folder, filename);
     }
 
@@ -173,8 +176,8 @@ public class FileManager {
     }
 
     public static File getBDIFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_BDI.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_BDI.csv";
         return new File(folder, filename);
     }
 
@@ -187,8 +190,8 @@ public class FileManager {
     }
 
     public static File getHADSFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_HADS.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_HADS.csv";
         return new File(folder, filename);
     }
 
@@ -201,8 +204,8 @@ public class FileManager {
     }
 
     public static File getFSSFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   MyApplication.type.getType());
-        String filename = Patient.getPatient().getPatientId() + "_FSS.csv";
+        File folder = createFolder(getSessionFolder(context),   getType().getType());
+        String filename = Patient.getPatient().getPatientId(context) + "_FSS.csv";
         return new File(folder, filename);
     }
 

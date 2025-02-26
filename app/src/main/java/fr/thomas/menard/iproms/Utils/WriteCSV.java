@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.thomas.menard.iproms.Model.MyApplication;
 import fr.thomas.menard.iproms.Model.Patient;
 
 public class WriteCSV extends ViewModel {
@@ -32,12 +31,12 @@ public class WriteCSV extends ViewModel {
         return new ViewModelProvider(owner, (ViewModelProvider.Factory) new ViewModelProvider.NewInstanceFactory()).get(WriteCSV.class);
     }
 
-    public void initInfos(String path){
+    public void initInfos(String path, Context context){
         Patient patientInfo = Patient.getPatient();
         createAndWriteInfos(path,
-                patientInfo.getPatientId(),
-                patientInfo.getCaseId(),
-                patientInfo.getDate(),
+                patientInfo.getPatientId(context),
+                patientInfo.getCaseId(context),
+                patientInfo.getDate(context),
                 "null", "0", "0", "0",
                 "null", "0", "0", "0", "0", "0",
                 "null", "0", "0", "0",

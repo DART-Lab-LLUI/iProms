@@ -1,5 +1,9 @@
 package fr.thomas.menard.iproms.Utils;
 
+import android.content.Context;
+
+import org.checkerframework.checker.units.qual.C;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -17,13 +21,15 @@ public class MinioHelper {
     private static final String APPNAME = "iproms";
     private MinioClient minioClient;
     private final String MINIO_ENDPOINT, MINIO_ACCESS, MINIO_SECRET, MINIO_BUCKET;
+    private Context context;
 
-    public MinioHelper(String endpoint, String access, String secret, String bucket) {
+    public MinioHelper(String endpoint, String access, String secret, String bucket, Context context) {
 
         this.MINIO_ENDPOINT = endpoint;
         this.MINIO_ACCESS = access;
         this.MINIO_SECRET = secret;
         this.MINIO_BUCKET = bucket;
+        this.context = context;
 
         // Create a MinioClient object with the MinIO server URL, access key, and secret key
         try {
@@ -60,7 +66,7 @@ public class MinioHelper {
                 int[] uploadStatus = {1, 0, 0};
                 if(file.exists()){
                     Patient patient = Patient.getPatient();
-                    String customMinioPath = APPNAME + "/" + patient.getClinicIdtoString()  + "/" + patient.getCaseId() + "/" + patient.getDate();
+                    String customMinioPath = APPNAME + "/" + patient.getClinicIdtoString(context)  + "/" + patient.getCaseId(context) + "/" + patient.getDate(context);
                     String objectName = customMinioPath + "/" + file.getName();
                     DebugLogger.debugLog("MINIOTEST", "Uploading: " + objectName);
 
@@ -87,7 +93,7 @@ public class MinioHelper {
                 int[] uploadStatus = {0, 0, 0}; // [totalFiles, successfulUploads, failedUploads]
 
                 if (folder.exists() && folder.isDirectory()) {
-                    String customMinioPath = APPNAME + "/" + patient.getClinicIdtoString()  + "/" + patient.getCaseId() + "/" + patient.getDate();
+                    String customMinioPath = APPNAME + "/" + patient.getClinicIdtoString(context)  + "/" + patient.getCaseId(context) + "/" + patient.getDate(context);
 
                     // Recursively upload all files and subfolders
                     uploadFolderToMinio(folder, folder.getAbsolutePath(), customMinioPath, uploadStatus);

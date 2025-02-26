@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import fr.thomas.menard.iproms.Model.MyApplication;
+import fr.thomas.menard.iproms.App.MyApplication;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.LocaleHelper;
 import fr.thomas.menard.iproms.databinding.ActivityIdentificationBinding;

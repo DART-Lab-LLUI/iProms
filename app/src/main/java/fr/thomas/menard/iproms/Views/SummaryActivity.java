@@ -2,7 +2,6 @@ package fr.thomas.menard.iproms.Views;
 import static fr.thomas.menard.iproms.Model.InfoFile.*;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +9,9 @@ import android.view.View;
 
 import java.io.File;
 
-import fr.thomas.menard.iproms.Model.MyApplication;
 import fr.thomas.menard.iproms.Model.Patient;
 import fr.thomas.menard.iproms.Utils.DataTransfer;
 import fr.thomas.menard.iproms.Utils.FileManager;
-import fr.thomas.menard.iproms.Utils.LocaleHelper;
 import fr.thomas.menard.iproms.Utils.ReadCSV;
 import fr.thomas.menard.iproms.Utils.WriteCSV;
 import fr.thomas.menard.iproms.Utils.tScore;
@@ -113,9 +110,9 @@ public class SummaryActivity extends BaseActivity {
         if(!FileManager.isResultFileExist(this)){
             double mean_fatigue = (double) Integer.parseInt(avg_score_fatigue) / (Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1);
             String csv_path = FileManager.getResultFilename(this);
-            String idPatient = Patient.getPatient().getPatientId();
-            String caseID = Patient.getPatient().getCaseId();
-            String date = Patient.getPatient().getDate();
+            String idPatient = Patient.getPatient().getPatientId(this);
+            String caseID = Patient.getPatient().getCaseId(this);
+            String date = Patient.getPatient().getDate(this);
 
             writeCSV.createAndWriteResult(csv_path, idPatient, caseID, date,
                     String.valueOf(mean_fatigue),

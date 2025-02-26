@@ -26,12 +26,12 @@ public class DataTransfer {
         this.patientInfo = Patient.getPatient();
         this.mainActivity = mainActivity;
 
-        switch (patientInfo.getClinicId()){
+        switch (patientInfo.getClinicId(mainActivity)){
             case 0:
-                this.minioHelper = new MinioHelper(MINIO_VZ_ENDPOINT, MINIO_VZ_ACCESS, MINIO_VZ_SECRET, MINIO_VZ_BUCKET);
+                this.minioHelper = new MinioHelper(MINIO_VZ_ENDPOINT, MINIO_VZ_ACCESS, MINIO_VZ_SECRET, MINIO_VZ_BUCKET, mainActivity);
                 break;
             case 1:
-                this.minioHelper = new MinioHelper(MINIO_HS_ENDPOINT, MINIO_HS_ACCESS, MINIO_HS_SECRET, MINIO_HS_BUCKET);
+                this.minioHelper = new MinioHelper(MINIO_HS_ENDPOINT, MINIO_HS_ACCESS, MINIO_HS_SECRET, MINIO_HS_BUCKET, mainActivity);
                 break;
         }
     }

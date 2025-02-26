@@ -2,8 +2,8 @@ package fr.thomas.menard.iproms.Views;
 
 import android.view.LayoutInflater;
 
+import fr.thomas.menard.iproms.App.MyApplication;
 import fr.thomas.menard.iproms.Enum.Language;
-import fr.thomas.menard.iproms.Model.MyApplication;
 import fr.thomas.menard.iproms.databinding.ActivityLangueBinding;
 
 public class LanguageActivity extends BaseActivity {

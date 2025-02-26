@@ -474,9 +474,9 @@ public class QualityofLifeActivity extends BaseActivity {
 
         String csv_path = FileManager.getQQLFilename(this);
         boolean exist_file = FileManager.isQQLFileExist(this);
-        String idPatient = Patient.getPatient().getPatientId();
-        String caseID = Patient.getPatient().getCaseId();
-        String date = Patient.getPatient().getDate();
+        String idPatient = Patient.getPatient().getPatientId(this);
+        String caseID = Patient.getPatient().getCaseId(this);
+        String date = Patient.getPatient().getDate(this);
 
         if(!exist_file){
             writeCSVClass.createAndWriteCSV_QOL(csv_path, idPatient,caseID, date, full_qol, String.valueOf(numberQuestion_qol + 1), rating);

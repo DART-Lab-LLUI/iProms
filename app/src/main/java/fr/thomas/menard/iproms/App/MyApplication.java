@@ -1,18 +1,50 @@
 package fr.thomas.menard.iproms.App;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 
+import fr.thomas.menard.iproms.Enum.Language;
+import fr.thomas.menard.iproms.Enum.Type;
 import fr.thomas.menard.iproms.Utils.CustomExceptionHandler;
 
 public class MyApplication extends Application {
+    public static Language language;
+    private static Type type;  // Keep for runtime use
+    private static MyApplication instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
 
-        // Set the crash log file path
-        String crashLogFilePath = getExternalFilesDir(null) + "/crash_log.txt";
+        // Restore type when the app starts
+        type = getStoredType();
+    }
 
-        // Set the custom uncaught exception handler
-        Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(crashLogFilePath));
+    public static MyApplication getInstance() {
+        return instance;
+    }
+
+    // Save type persistently
+    public static void setType(Type newType) {
+        type = newType;
+        SharedPreferences prefs = instance.getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        prefs.edit().putString("type", newType.name()).apply();
+    }
+
+    public static Type getType() {
+        if(type == null){
+            return getStoredType();
+        }
+
+        return type;
+    }
+
+    // Retrieve type when needed
+    public static Type getStoredType() {
+        SharedPreferences prefs = instance.getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        String typeName = prefs.getString("type", null);
+        return typeName != null ? Type.valueOf(typeName) : Type.FIRST; // Default value
     }
 }

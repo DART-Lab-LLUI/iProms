@@ -10,8 +10,9 @@ import android.view.View;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
+
+import fr.thomas.menard.iproms.App.MyApplication;
 import fr.thomas.menard.iproms.Model.InfoFile;
-import fr.thomas.menard.iproms.Model.MyApplication;
 import fr.thomas.menard.iproms.Model.Patient;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.FileManager;
@@ -188,7 +189,7 @@ public class FSMCActivity extends BaseActivity {
         Patient patient = Patient.getPatient();
         String filepath = FileManager.getFSMCFilename(this);
         if(!FileManager.isFSMCFileExist(this)){
-            writeCSVClass.createAndWriteCSV_fatigue(filepath, patient.getPatientId(), patient.getCaseId(), patient.getDate(), String.valueOf(numberQuestion), rating);
+            writeCSVClass.createAndWriteCSV_fatigue(filepath, patient.getPatientId(this), patient.getCaseId(this), patient.getDate(this), String.valueOf(numberQuestion), rating);
         }else{
             writeCSVClass.writeDataCSV_fatigue(filepath, String.valueOf(numberQuestion), rating);
         }
