@@ -2,7 +2,9 @@ package fr.thomas.menard.iproms.Utils;
 
 import android.app.Application;
 
-public class tScore extends Application {
+import fr.thomas.menard.iproms.App.MyApplication;
+
+public class tScore extends MyApplication {
     private static double[][] scoreTable_ability_in_social_roles;
     private static double[][] scoreTable_cognitive_function;
 
