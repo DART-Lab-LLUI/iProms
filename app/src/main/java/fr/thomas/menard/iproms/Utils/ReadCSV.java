@@ -34,12 +34,12 @@ public class ReadCSV {
             int bdiIndex = 13;
             int promisColumnIndex = 17;
             int qolColumnIndex = 22; //21?
-            int oldDate = 2;
+            int oldDate = 2; // "Time" field -> at column index 2
             int sleepIndex = 66;
             int FSMCIndex = 70;
 
             List<String[]> csvEntries = reader.readAll();
-            String[] firstRow = csvEntries.get(1);
+            String[] firstRow = csvEntries.get(1); // after reading CSV file -> get data row
 
             InfoFile.fatigue = firstRow[fatigueColumnIndex];
             InfoFile.depression = firstRow[depressionColumnIndex];
@@ -48,7 +48,8 @@ public class ReadCSV {
             InfoFile.qol = firstRow[qolColumnIndex];
             InfoFile.sleep = firstRow[sleepIndex];
             InfoFile.fsmc = firstRow[FSMCIndex];
-            InfoFile.oldDate = firstRow[oldDate];
+            InfoFile.oldDate = firstRow[oldDate]; // whatever value in column index 2 of CSV ("Time" field) -> stored in InfoFile.oldDate
+            Log.d("ReadCSV", "Loaded oldDate = " + InfoFile.oldDate);
 
             InfoFile.avg_score_fatigue = (firstRow[fatigueColumnIndex+1]);
             InfoFile.avg_score_depression = firstRow[depressionColumnIndex+1];

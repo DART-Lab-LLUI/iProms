@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void checkQuestionnaireDone() {
-        if (fatigue.equals("done") && depression.equals("done") && bdi.equals("done") && promis.equals("done")) {
+        if ("done".equals(fatigue) && "done".equals(depression) && "done".equals(bdi) && "done".equals(promis)) {
             uploadData(FileManager.getInfoFile(this));
 
             binding.btnConfirm.setVisibility(View.GONE);

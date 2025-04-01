@@ -3,6 +3,7 @@ package fr.thomas.menard.iproms.Utils;
 import static fr.thomas.menard.iproms.App.MyApplication.getType;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 
@@ -58,7 +59,9 @@ public class FileManager {
     }
 
     public static String getInfoFilename(Context context) {
-        return getFilename(getInfoFile(context));
+        String path = getFilename(getInfoFile(context));
+        Log.d("FileManager", "getInfoFilename: " + path);
+        return path;
     }
 
     public static boolean isInfoFileExist(Context context){
@@ -215,5 +218,23 @@ public class FileManager {
 
     public static boolean isFSSFileExist(Context context  ){
         return isFileExists(getFSSFile(context));
+    }
+
+    // method to generate an archived filename in FileManager
+    public static String getArchivedFilename (Context context, String oldDate) {
+        // get current info file (e.g., /storage/emulated/0/.../First/infos.csv)
+        // -> retrieve current CSV file (infos.csv)
+        File currentInfoFile = getInfoFile(context);
+
+        // get parent directory of current file (e.g., /storage/emulated/0/.../First)
+        // -> archived file stored in same folder
+        File parentDir = currentInfoFile.getParentFile();
+
+        // construct archived filename in same directory  (e.g. info_oldDate.csv")
+        //-> new file in same directory
+        File archivedFile = new File(parentDir, "info_" + oldDate + " .csv");
+
+        // return absolute path of archived file
+        return archivedFile.getAbsolutePath();
     }
 }

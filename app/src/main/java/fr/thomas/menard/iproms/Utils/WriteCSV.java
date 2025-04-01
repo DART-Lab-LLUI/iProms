@@ -19,8 +19,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import fr.thomas.menard.iproms.Model.Patient;
 
@@ -33,10 +36,15 @@ public class WriteCSV extends ViewModel {
 
     public void initInfos(String path, Context context){
         Patient patientInfo = Patient.getPatient();
+
+        // generate current timestamp in desired format
+        String currentTimestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+
+        // pass currentTimestamp instead of patientInfo.getDate(context)
         createAndWriteInfos(path,
                 patientInfo.getPatientId(context),
                 patientInfo.getCaseId(context),
-                patientInfo.getDate(context),
+                currentTimestamp, // updated timestamp for this new cycle -> used as "Time" field
                 "null", "0", "0", "0",
                 "null", "0", "0", "0", "0", "0",
                 "null", "0", "0", "0",

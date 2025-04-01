@@ -23,6 +23,13 @@ public class InfoFile {
 //            restart_qol5= false, restart_qol6= false, restart_qol7= false, restart_qol8= false, restart_qol9= false,restart_qol10= false;
 
     public static boolean everythingDone(){
-        return fatigue.equals("done") && depression.equals("done") && bdi.equals("done") && promis.equals("done") && sleep.equals("done") && fsmc.equals("done");
+        // compare literals to fields - calling "done".equals is null safe
+        return "done".equals(fatigue) &&
+                "done".equals(depression) &&
+                "done".equals(bdi) &&
+                "done".equals(promis) &&
+                "done".equals(sleep) &&
+                "done".equals(fsmc) &&
+                "done".equals(qol);
     }
 }
