@@ -94,68 +94,72 @@ public class MainActivity extends BaseActivity {
     }
 
     // fatigue button / text
-    private void checkFatigueI(){
-        if (!fatigue.isEmpty()) {
-            restart_fatigue = true;
-            binding.nbrQuestionAnsweredFatigue.setText(questionAnsFatigue);
-            binding.imgFatigueDone.setImageResource(R.drawable.started);
-            binding.imgFatigueDone.setVisibility(View.VISIBLE);
-            binding.txtQuestionsSkippedFatigue.setVisibility(View.INVISIBLE);
+    private void checkFatigueI() {
+        if (fatigue == null || fatigue.isEmpty()) return;
 
-            if("done".equals(fatigue)){
-                binding.imgFatigueDone.setVisibility(View.VISIBLE);
-                binding.txtQuestionsSkippedFatigue.setVisibility(View.VISIBLE);
+        restart_fatigue = true;
+        binding.nbrQuestionAnsweredFatigue.setText(questionAnsFatigue);
 
-                if(!avg_score_fatigue.equals("0")){
-                    // binding.imgFatigueDone.setVisibility(View.VISIBLE);
+        boolean isDone = "done".equals(fatigue);
+        // pick right icon
+        binding.imgFatigueDone.setImageResource(isDone ? R.drawable.questionnaire_done : R.drawable.started);
 
-                    // show average score
-                    if(Integer.parseInt(lastQuestionFatigue) < 5){
-                        double mean_fatigue = (double) Integer.parseInt(avg_score_fatigue) / (Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1);
-                        long final_average_fatigue = Math.round(mean_fatigue);
-                        binding.rdBtnFatigue.setClickable(false);
-                        binding.linearAvgScoreFatigue.setVisibility(View.VISIBLE);
-                        binding.scoreAvgFatigue.setText(String.valueOf(final_average_fatigue));
-                    }else{
-                        binding.linearAvgScoreFatigue.setVisibility(View.VISIBLE);
-                        binding.nbrQuestionAnsweredFatigue.setText(String.valueOf(Integer.parseInt(questionAnsFatigue) - 1));
-                    }
-                }else{
-                    binding.linearFatigue.setVisibility(View.GONE);
-                    binding.txtQuestionnaireSkipped.setVisibility(View.VISIBLE);
-                    binding.imgFatigueDone.setImageResource(R.drawable.questionnaire_done);
-                }
-            }
+        binding.imgFatigueDone.setVisibility(View.VISIBLE);
+        binding.txtQuestionsSkippedFatigue.setVisibility(isDone ? View.VISIBLE : View.INVISIBLE);
+
+        if (!isDone) return;
+
+        // done case
+        if (!avg_score_fatigue.equals("0")) {
+            // show average score UI
+            double mean = (double) Integer.parseInt(avg_score_fatigue) / Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1;
+            long rounded = Math.round(mean);
+
+            binding.rdBtnFatigue.setClickable(false);
+            binding.linearAvgScoreFatigue.setVisibility(View.VISIBLE);
+            binding.scoreAvgFatigue.setText(String.valueOf(rounded));
+
+        } else {
+            // completely skipped all questions
+            binding.linearFatigue.setVisibility(View.GONE);
+            binding.txtQuestionnaireSkipped.setVisibility(View.VISIBLE);
+
         }
     }
 
     // depression button / text
     private void checkDepression() {
-        if(!depression.isEmpty()){
-            restart_dep = true;
-            binding.nbrQuestionAnsweredDep.setText(questionAnsDep);
-            binding.imgDepressionDone.setImageResource(R.drawable.started);
-            binding.imgDepressionDone.setVisibility(View.VISIBLE);
-            binding.txtQuestionsSkippedDepAnx.setVisibility(View.INVISIBLE);
+        if (depression == null || depression.isEmpty()) return;
 
-            if ("done".equals(depression)) {
-                binding.imgDepressionDone.setVisibility(View.VISIBLE);
-                binding.txtQuestionsSkippedDepAnx.setVisibility(View.INVISIBLE);
+        restart_dep = true;
+        binding.nbrQuestionAnsweredDep.setText(questionAnsDep);
 
-                if(!avg_score_depression.equals("0") && !avg_score_anxiety.equals("0") || questionAnsDep.equals("15")){
-                    binding.linearAvgScoreDep.setVisibility(View.VISIBLE);
-                    binding.linearAvgScoreAnx.setVisibility(View.VISIBLE);
-                    binding.txtQuestionsSkippedAnx.setVisibility(View.VISIBLE);
-                    binding.txtQuestionsSkippedDep.setVisibility(View.VISIBLE);
-                    binding.scoreAvgDep.setText(avg_score_depression);
-                    binding.scoreAvgAnx.setText(avg_score_anxiety);
-                    binding.rdBtnDA.setClickable(Integer.parseInt(lastQuestionDep) >= 4 || Integer.parseInt(skipped_question_anx) >= 4);
-                }else{
-                    binding.linearDep.setVisibility(View.GONE);
-                    binding.txtQuestionnaireSkippedDep.setVisibility(View.VISIBLE);
-                    // binding.imgDepressionDone.setImageResource(R.drawable.questionnaire_done);
-                }
-            }
+        boolean isDone = "done".equals(depression);
+        binding.imgDepressionDone.setImageResource(isDone ? R.drawable.questionnaire_done : R.drawable.started);
+        binding.imgDepressionDone.setVisibility(View.VISIBLE);
+        binding.txtQuestionsSkippedDepAnx.setVisibility(isDone ? View.VISIBLE : View.INVISIBLE);
+
+        if (!isDone) return;
+
+        // done case
+        boolean hasScores = !avg_score_depression.equals("0") && !avg_score_anxiety.equals("0");
+        boolean fullyAnswered = questionAnsDep.equals("15");
+
+        if (hasScores || fullyAnswered) {
+            binding.linearAvgScoreDep.setVisibility(View.VISIBLE);
+            binding.linearAvgScoreAnx.setVisibility(View.VISIBLE);
+            binding.txtQuestionsSkippedDep.setVisibility(View.VISIBLE);
+            binding.txtQuestionsSkippedAnx.setVisibility(View.VISIBLE);
+            binding.scoreAvgDep.setText(avg_score_depression);
+            binding.scoreAvgAnx.setText(avg_score_anxiety);
+
+            // prevent re-entry unless they skipped more than 3
+            binding.rdBtnDA.setClickable(Integer.parseInt(lastQuestionDep) >= 4 || Integer.parseInt(skipped_question_anx) >= 4);
+
+        } else {
+            // skipped entire thing
+            binding.linearDep.setVisibility(View.GONE);
+            binding.txtQuestionnaireSkippedDep.setVisibility(View.VISIBLE);
         }
     }
 
