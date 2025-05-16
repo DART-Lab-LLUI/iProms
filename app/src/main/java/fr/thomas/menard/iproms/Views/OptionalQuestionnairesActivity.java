@@ -31,14 +31,20 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
     @Override
     public void init(){
         writeCSV = WriteCSV.getInstance(this);
+
+        // load saved CSV into InfoFile
+        ReadCSV.retrieveInfos(this);
+
+        // immediately show FSMC and sleep status
+        displayFSMC();
+        displaysleep();
+
+        // if both done, drop into the summary table
+        checkQuestionnaireDone();
     }
 
     @Override
     public void listenBtn() {
-        ReadCSV.retrieveInfos(this);
-        displayFSMC();
-        displaysleep();
-        checkQuestionnaireDone();
 
         listenRadioGroup();
         listenBtnConfirm();
@@ -63,9 +69,9 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
 
     @SuppressLint("SetTextI18n")
     private void displayFSMC(){
-        if(!Patient.getPatient().getDiagnosis(this).equals("Stroke")){
+        if(!Patient.getPatient().getDiagnosis().equals("Stroke")){
             if(!fsmc.equals("null")){
-                binding.txtQuestionFatigueFSMC.setText("Question answered : "+ (Integer.parseInt(questionAnsFCSM) -1) +"/ 20 - ("+skipped_question_fsmc+" skipped)" );
+                binding.txtQuestionFatigueFSMC.setText("Question answered : "+ questionAnsFCSM +"/ 20 - ("+skipped_question_fsmc+" skipped)" );
 
                 if(fsmc.equals("done")){
                     binding.imgDoneFsmc.setVisibility(View.VISIBLE);
@@ -90,7 +96,7 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
     @SuppressLint("SetTextI18n")
     private void displaysleep(){
         if(!sleep.equals("null")){
-            binding.txtQuestionFatigueSleep.setText("Question answered : "+ (Integer.parseInt(questionAnsSleep) - 1) +"/ 8  - ("+skipped_question_sleep+" skipped)" );
+            binding.txtQuestionFatigueSleep.setText("Question answered : " + questionAnsSleep + "/ 8  - ("+skipped_question_sleep+" skipped)" );
 
             if(sleep.equals("done")){
                 binding.imgDoneSleep.setVisibility(View.VISIBLE);
@@ -112,24 +118,24 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
 
     private void createResultSleepCSV(){
         Patient patient = Patient.getPatient();
-        String patientID = patient.getPatientId(this);
-        String caseID = patient.getCaseId(this);
-        String date = patient.getDate(this);
+        String patientID = patient.getPatientId();
+        String caseID = patient.getCaseId();
+        String date = patient.getDate();
 
         if(!FileManager.isSleepResultFileExist(this)){
-            writeCSV.createAndWriteSleepResult(FileManager.getSleepResultFile(this).getAbsolutePath(), patientID, caseID, date,score_sleep);
+            writeCSV.createAndWriteSleepResult(FileManager.getSleepResultFile(this).getAbsolutePath(), patientID, caseID, date,score_sleep, sleepQuestionScores);
         }
     }
 
     private void createResultFSMCCSV(){
         Patient patient = Patient.getPatient();
-        String patientID = patient.getPatientId(this);
-        String caseID = patient.getCaseId(this);
-        String date = patient.getDate(this);
+        String patientID = patient.getPatientId();
+        String caseID = patient.getCaseId();
+        String date = patient.getDate();
         Type type = MyApplication.getType();
 
         if(!FileManager.isFSMCResultFileExist(this)){
-            writeCSV.createAndWriteFSMCResult(FileManager.getFSMCResultFile(this).getAbsolutePath(), patientID, caseID, date, scoreFSMC);
+            writeCSV.createAndWriteFSMCResult(FileManager.getFSMCResultFile(this).getAbsolutePath(), patientID, caseID, date, scoreFSMC, fsmcQuestionScores);
         }
     }
 
@@ -251,9 +257,9 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
     private void listenBtnConfirm(){
         binding.btnConfirm.setOnClickListener(v -> {
             if(questionnaire.equals("sleep") || questionnaire.equals("ess_depression") || questionnaire.equals("ess_anxiety")){
-                navigateToNextActivity(SleepActivity.class);
+                navigateToNextActivityWithoutFinish(SleepActivity.class);
             } else if (questionnaire.equals("fsmc")) {
-                navigateToNextActivity(IntroductionFSMCActivity.class);
+                navigateToNextActivityWithoutFinish(IntroductionFSMCActivity.class);
             }
         });
 

@@ -66,7 +66,7 @@ public class MinioHelper {
                 int[] uploadStatus = {1, 0, 0};
                 if(file.exists()){
                     Patient patient = Patient.getPatient();
-                    String customMinioPath = APPNAME + "/" + patient.getClinicIdtoString(context)  + "/" + patient.getCaseId(context) + "/" + patient.getDate(context);
+                    String customMinioPath = APPNAME + "/" + patient.getClinicIdtoString()  + "/" + patient.getCaseId() + "/" + patient.getDate();
                     String objectName = customMinioPath + "/" + file.getName();
                     DebugLogger.debugLog("MINIOTEST", "Uploading: " + objectName);
 
@@ -93,7 +93,7 @@ public class MinioHelper {
                 int[] uploadStatus = {0, 0, 0}; // [totalFiles, successfulUploads, failedUploads]
 
                 if (folder.exists() && folder.isDirectory()) {
-                    String customMinioPath = APPNAME + "/" + patient.getClinicIdtoString(context)  + "/" + patient.getCaseId(context) + "/" + patient.getDate(context);
+                    String customMinioPath = APPNAME + "/" + patient.getClinicIdtoString()  + "/" + patient.getCaseId() + "/" + patient.getDate();
 
                     // Recursively upload all files and subfolders
                     uploadFolderToMinio(folder, folder.getAbsolutePath(), customMinioPath, uploadStatus);

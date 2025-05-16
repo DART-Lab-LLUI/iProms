@@ -14,11 +14,9 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -47,6 +45,18 @@ public class QualityofLifeActivity extends BaseActivity {
 
     private String qol;
 
+    private String[] qolQuestionScore = new String[10];
+    private String[] qol1QuestionScores = new String[8];
+    private String[] qol2QuestionScores = new String[8];
+    private String[] qol3QuestionScores = new String[8];
+    private String[] qol4QuestionScores = new String[8];
+    private String[] qol5QuestionScores = new String[8];
+    private String[] qol6QuestionScores = new String[8];
+    private String[] qol7QuestionScores = new String[9];
+    private String[] qol8QuestionScores = new String[8];
+    private String[] qol9QuestionScores = new String[8];
+    private String[] qol10QuestionScores = new String[8];
+
     private WriteCSV writeCSVClass;
 
     @Override
@@ -55,11 +65,15 @@ public class QualityofLifeActivity extends BaseActivity {
         writeCSVClass = WriteCSV.getInstance(this);
         binding.txtIntro.setText(R.string.txt_intro_depression);
 
-        reinit_questionnaire(qol);
+        reinit_questionnaire();
         retrieveGeneralInfos();
         retrieveInfos(qol);
         displayText();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -93,9 +107,47 @@ public class QualityofLifeActivity extends BaseActivity {
         intent.putExtra("qol", qol);
     }
 
-    private void reinit_questionnaire(String qol){
-        if(redo_questionnaire){
-            String csvFilePath = FileManager.getInfoFilename(this);
+    private void reinit_questionnaire(){
+        if(redo_questionnaire) {
+            WriteCSV.getInstance(this).reinit_questionnaire_QQL(this);
+
+            // reinitialize the individual scores
+            for (int i = 0; i < qolQuestionScore.length; i++) {
+                qolQuestionScore[i] = "0";
+            }
+            for (int i = 0; i < qol1QuestionScores.length; i++) {
+                qol1QuestionScores[i] = "0";
+            }
+            for (int i = 0; i < qol2QuestionScores.length; i++) {
+                qol2QuestionScores[i] = "0";
+            }
+            for (int i = 0; i < qol3QuestionScores.length; i++) {
+                qol3QuestionScores[i] = "0";
+            }
+            for (int i = 0; i < qol4QuestionScores.length; i++) {
+                qol4QuestionScores[i] = "0";
+            }
+            for (int i = 0; i < qol5QuestionScores.length; i++) {
+                qol5QuestionScores[i] = "0";
+            }
+            for (int i = 0; i < qol6QuestionScores.length; i++) {
+                qol6QuestionScores[i] = "0";
+            }
+            for (int i = 0; i < qol7QuestionScores.length; i++) {
+                qol7QuestionScores[i] = "0";
+            }
+            for (int i = 0; i < qol8QuestionScores.length; i++) {
+                qol8QuestionScores[i] = "0";
+            }
+            for (int i = 0; i < qol9QuestionScores.length; i++) {
+                qol9QuestionScores[i] = "0";
+            }
+            for (int i = 0; i < qol10QuestionScores.length; i++) {
+                qol10QuestionScores[i] = "0";
+            }
+        }
+
+            /* String csvFilePath = FileManager.getInfoFilename(this);
 
             try {
                 CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
@@ -165,17 +217,15 @@ public class QualityofLifeActivity extends BaseActivity {
             } catch (IOException | CsvException e) {
                 Log.d("TEST", "infos " + e.getMessage());
                 e.printStackTrace();
-            }
-        }
+            } */
     }
 
     private void finishQuestionnaire(){
         binding.btnSkipQuestionnaire.setOnClickListener(v -> {
-            modifyCSVInfos("done", "0", qol, true, true);
+            modifyCSVInfos("done", "0", qol, true, true, numberQuestion);
             navigateToNextActivity(OptionalQuestionnairesActivity.class);
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -211,8 +261,11 @@ public class QualityofLifeActivity extends BaseActivity {
             question_general_Ans = 1;
         numberQuestion_qol = question_general_Ans;
 
+
         int pourcentage = 100 * numberQuestion_qol / 73;
         binding.txtPoucentageDoneQOL.setText(String.valueOf(pourcentage));
+
+        Log.d("TEST", "retrieveInfos() - numberQuestion: " + numberQuestion + " - skipped_question" + skipped_question);
     }
 
     private void retrieveInfos(String qol){
@@ -266,7 +319,6 @@ public class QualityofLifeActivity extends BaseActivity {
 
             if(numberQuestion==0)
                 numberQuestion = 1;
-
 
             reader.close();
 
@@ -336,6 +388,7 @@ public class QualityofLifeActivity extends BaseActivity {
 
 
     private void listenBtnConfirm(){
+        Log.d("TEST", "listenBtnConfirm() - numberQuestion (before): " + numberQuestion_qol + " - skipped_question" + skipped_question);
         binding.btnConfirm.setOnClickListener(v -> {
             numberQuestion_qol += 1;
             write_csv(rating);
@@ -349,21 +402,26 @@ public class QualityofLifeActivity extends BaseActivity {
             //81 question
             if(qol.equals("qol7")){
                 if(numberQuestion==9){
-                    modifyCSVInfos("done", String.valueOf(total_score_qol), qol, false, false);
+                    Log.d("TEST", "listenBtnConfirm() - numberQuestion (before): " + numberQuestion + " - skipped_question" + skipped_question);
+                    modifyCSVInfos("done", String.valueOf(total_score_qol), qol, false, false, numberQuestion);
                     navigateToNextActivity(OptionalQuestionnairesActivity.class);
                 }
                 else {
-                    modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, false, false);
+                    numberQuestion++;
+                    Log.d("TEST", "skip() - numberQuestion (after): " + numberQuestion + " - skipped_question" + skipped_question);
+                    Log.d("TEST", "skip() - modifyCSVInfos() - numberQuestion: " + numberQuestion + " - skipped_question" + skipped_question);
+                    modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, false, false, numberQuestion);
                     navigateToNextActivity(QualityofLifeActivity.class);
                 }
             }else{
-                if(numberQuestion==8){
-
-                    modifyCSVInfos("done", String.valueOf(total_score_qol), qol, false, false);
+                if(numberQuestion==8) {
+                    Log.d("TEST", "skip() - numberQuestion(after): " + numberQuestion + " - skipped_question" + skipped_question);
+                    Log.d("TEST", "skip() - modifyCSVInfos() - numberQuestion: " + numberQuestion + " - skipped_question" + skipped_question);
+                    modifyCSVInfos("done", String.valueOf(total_score_qol), qol, false, false, numberQuestion);
                     navigateToNextActivity(OptionalQuestionnairesActivity.class);
-                }
-                else {
-                    modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, false, false);
+                } else {
+                    modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, false, false, numberQuestion);
+                    numberQuestion++;
                     navigateToNextActivity(QualityofLifeActivity.class);
                 }
             }
@@ -375,26 +433,32 @@ public class QualityofLifeActivity extends BaseActivity {
     }
 
     private void skip(){
+        skipped_question++;
+        Log.d("TEST", "skip() - numberQuestion (before): " + numberQuestion);
         write_csv("skip");
         numberQuestion_qol += 1;
         modifyCSVGeneralQOL(String.valueOf(total_Score), String.valueOf(question_general_Ans + 1), true);
         if(qol.equals("qol7")){
-            if(numberQuestion==9){
-                modifyCSVInfos("done", String.valueOf(total_score_qol), qol, true, false);
+            if(numberQuestion==9) {
+                modifyCSVInfos("done", String.valueOf(total_score_qol), qol, true, false, numberQuestion);
                 navigateToNextActivity(OptionalQuestionnairesActivity.class);
-            }
-            else {
-                modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, true, false);
+            } else {
+                numberQuestion++;
+                Log.d("TEST", "skip() - numberQuestion (after): " + numberQuestion);
+                Log.d("TEST", "skip() - modifyCSVInfos() - numberQuestion: " + numberQuestion);
+                modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, true, false, numberQuestion);
                 navigateToNextActivity(QualityofLifeActivity.class);
             }
         }else{
             if(numberQuestion==8){
-
-                modifyCSVInfos("done", String.valueOf(total_score_qol), qol, true, false);
+                modifyCSVInfos("done", String.valueOf(total_score_qol), qol, true, false, numberQuestion);
                 navigateToNextActivity(OptionalQuestionnairesActivity.class);
-            }
-            else {
-                modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, true, false);
+            } else {
+                numberQuestion++;
+                Log.d("TEST", "skip() - numberQuestion (after): " + numberQuestion);
+                Log.d("TEST", "skip() - modifyCSVInfos() - numberQuestion: " + numberQuestion);
+                modifyCSVInfos("not finished", String.valueOf(total_score_qol), qol, true, false, numberQuestion);
+
                 navigateToNextActivity(QualityofLifeActivity.class);
             }
         }
@@ -428,12 +492,14 @@ public class QualityofLifeActivity extends BaseActivity {
     }
 
 
-    private void modifyCSVInfos(String done, String  score, String qol, boolean skip, boolean skip_questionnaire){
-        WriteCSV.getInstance(this).modifyCSVInfos_QQL(this, numberQuestion, skipped_question, done, score, qol, skip, skip_questionnaire);
+    private void modifyCSVInfos(String done, String  score, String qol, boolean skip, boolean skip_questionnaire, int numberQuestion){
+        if(!skip_questionnaire) {
+            WriteCSV.getInstance(this).modifyCSVInfos_QQL(this, numberQuestion, skipped_question, done, score, qol, skip, skip_questionnaire, qolQuestionScore, rating);
+        }
     }
 
     private void modifyCSVGeneralQOL(String  score, String answered, boolean skip){
-        WriteCSV.getInstance(this).modifyCSVGeneralQOL(this, skipped_question, "not finished", score, answered, skip);
+        WriteCSV.getInstance(this).modifyCSVGeneralQOL(this, skipped_question, "not finished", score, answered, skip, qolQuestionScore);
     }
 
 
@@ -474,9 +540,9 @@ public class QualityofLifeActivity extends BaseActivity {
 
         String csv_path = FileManager.getQQLFilename(this);
         boolean exist_file = FileManager.isQQLFileExist(this);
-        String idPatient = Patient.getPatient().getPatientId(this);
-        String caseID = Patient.getPatient().getCaseId(this);
-        String date = Patient.getPatient().getDate(this);
+        String idPatient = Patient.getPatient().getPatientId();
+        String caseID = Patient.getPatient().getCaseId();
+        String date = Patient.getPatient().getDate();
 
         if(!exist_file){
             writeCSVClass.createAndWriteCSV_QOL(csv_path, idPatient,caseID, date, full_qol, String.valueOf(numberQuestion_qol + 1), rating);

@@ -19,8 +19,7 @@ public class IdentificationActivity extends BaseActivity {
 
     private void initAttributes(){
         diagnosis  ="";
-        context = LocaleHelper.setLocale(IdentificationActivity.this, MyApplication.language.getLanguage());
-        Resources resources = context.getResources();
+        Resources resources = getResources();
         binding.txtWelcome.setText(resources.getString(R.string.welcome));
         binding.txtSide.setText(resources.getString(R.string.diagnosis));
     }
@@ -41,21 +40,20 @@ public class IdentificationActivity extends BaseActivity {
             String caseID = binding.APatientTxtIdCase.getText().toString().trim();
 
             if(patientID.length()!=7 || caseID.length()!=7){
-                Toast.makeText(context, "Please, write a correct PID & FID", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please, write a correct PID & FID", Toast.LENGTH_SHORT).show();
             } else if (diagnosis.isEmpty()) {
-                Toast.makeText(context, "Please select a diagnosis", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please select a diagnosis", Toast.LENGTH_SHORT).show();
             }else{
                 if(diagnosis.equals("Others")){
                     diagnosis = binding.editOtherDiagnosis.getText().toString();
                 }
 
                 int clinicId = binding.clinicIdSpinner.getSelectedItemPosition();
-                patientInfo.setPatientData(patientID, caseID, diagnosis, clinicId, context);
+                patientInfo.setPatientData(patientID, caseID, diagnosis, clinicId);
                 navigateToNextActivity(IntroductionActivity.class);
             }
         });
     }
-
 
     private void listenDiagnosis(){
         binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {

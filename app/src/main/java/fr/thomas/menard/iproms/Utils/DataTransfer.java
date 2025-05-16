@@ -26,7 +26,7 @@ public class DataTransfer {
         this.patientInfo = Patient.getPatient();
         this.mainActivity = mainActivity;
 
-        switch (patientInfo.getClinicId(mainActivity)){
+        switch (patientInfo.getClinicId()){
             case 0:
                 this.minioHelper = new MinioHelper(MINIO_VZ_ENDPOINT, MINIO_VZ_ACCESS, MINIO_VZ_SECRET, MINIO_VZ_BUCKET, mainActivity);
                 break;

@@ -9,6 +9,7 @@ import android.view.View;
 
 import java.io.File;
 
+import fr.thomas.menard.iproms.Model.InfoFile;
 import fr.thomas.menard.iproms.Model.Patient;
 import fr.thomas.menard.iproms.Utils.DataTransfer;
 import fr.thomas.menard.iproms.Utils.FileManager;
@@ -31,6 +32,14 @@ public class SummaryActivity extends BaseActivity {
 
     private WriteCSV writeCSV;
 
+    private int safeParse(String safe) {
+        if (safe == null || safe.isEmpty()) return 0;
+        try {
+            return Integer.parseInt(safe);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 
     @Override
     public void init(){
@@ -78,30 +87,27 @@ public class SummaryActivity extends BaseActivity {
     }
 
     private void promisTscore(){
-        if(!avg_score_PROMIS_physical.equals("0") && Integer.parseInt(skipped_question_promis) < 4){
-            if (Integer.parseInt(skipped_question_promis) == 10) {
-                tscore_promis_physical = "0";
+        int rawPhys = safeParse(avg_score_PROMIS_physical);
+        int rawMent = safeParse(avg_score_PROMIS_mental);
+        int skipped = safeParse(skipped_question_promis);
 
-            }else {
-                Log.d("TEST", "tes " + tscorePromisPhysical[10][1]);
-                tscore_promis_physical = String.valueOf(tscorePromisPhysical[Integer.parseInt(avg_score_PROMIS_physical) - 4 ][1]);
-
-            }
-
-        }else{
+        // physical
+        if(rawPhys >= 4 && rawPhys <= tscorePromisPhysical.length + 3 && skipped < 4) {
+            int idx = rawPhys - 4;
+            tscore_promis_physical = String.valueOf(tscorePromisPhysical[idx][1]);
+        } else if (skipped == 10) {
+            tscore_promis_physical = "0";
+        } else {
             tscore_promis_physical = "No t-score";
         }
 
-        if(!avg_score_PROMIS_mental.equals("0") && Integer.parseInt(skipped_question_promis) < 4){
-            if (Integer.parseInt(skipped_question_promis) == 10) {
-                tscore_promis_mental = "0";
-
-            }else {
-                tscore_promis_mental = String.valueOf(tscorePromisMental[Integer.parseInt(avg_score_PROMIS_mental ) - 4 ][1]);
-
-            }
-
-        }else{
+        // mental
+        if (rawMent >= 4 && rawMent <= tscorePromisMental.length + 3 && skipped < 4) {
+            int idx = rawMent - 4;
+            tscore_promis_mental = String.valueOf(tscorePromisMental[idx][1]);
+        } else if (skipped == 10) {
+            tscore_promis_mental = "0";
+        }else {
             tscore_promis_mental = "No t-score";
         }
     }
@@ -110,15 +116,17 @@ public class SummaryActivity extends BaseActivity {
         if(!FileManager.isResultFileExist(this)){
             double mean_fatigue = (double) Integer.parseInt(avg_score_fatigue) / (Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1);
             String csv_path = FileManager.getResultFilename(this);
-            String idPatient = Patient.getPatient().getPatientId(this);
-            String caseID = Patient.getPatient().getCaseId(this);
-            String date = Patient.getPatient().getDate(this);
+            String idPatient = Patient.getPatient().getPatientId();
+            String caseID = Patient.getPatient().getCaseId();
+            String date = Patient.getPatient().getDate();
 
             writeCSV.createAndWriteResult(csv_path, idPatient, caseID, date,
-                    String.valueOf(mean_fatigue),
-                    avg_score_depression, avg_score_anxiety, score_bdi,
-                    avg_score_PROMIS_physical, avg_score_PROMIS_mental, scoreQOL1, scoreQOL2, scoreQOL3, scoreQOL4,
-                    scoreQOL5, scoreQOL7, scoreQOL8, scoreQOL9, scoreQOL10);
+                    String.valueOf(mean_fatigue), fatigueQuestionScores,
+                    avg_score_depression, avg_score_anxiety, depressionQuestionScores,
+                    score_bdi, bdiQuestionScores,
+                    avg_score_PROMIS_physical, avg_score_PROMIS_mental, promisQuestionScores,
+                    scoreQOL1, scoreQOL2, scoreQOL3, scoreQOL4, scoreQOL5, scoreQOL6, scoreQOL7, scoreQOL8, scoreQOL9, scoreQOL10, qolQuestionScores,
+                    qol1QuestionScores, qol2QuestionScores, qol3QuestionScores, qol4QuestionScores, qol5QuestionScores, qol6QuestionScores, qol7QuestionScores, qol8QuestionScores, qol9QuestionScores, qol10QuestionScores);
         }
     }
 
@@ -219,7 +227,7 @@ public class SummaryActivity extends BaseActivity {
 
         if(categorie.equals("bdi")){
             String txt_interpretations;
-            if(score_bdi.equals("0") && !questionAnsBDI.equals("22")){
+            if(score_bdi.equals("0") && !questionAnsBDI.equals("21")){
                 txt_interpretations = "Questionnaire skipped";
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};

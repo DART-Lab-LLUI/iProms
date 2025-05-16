@@ -1,7 +1,6 @@
 package fr.thomas.menard.iproms.Utils;
 
 import android.content.Context;
-import android.icu.text.IDNA;
 import android.util.Log;
 
 import com.opencsv.CSVParser;
@@ -17,6 +16,31 @@ import java.util.List;
 import fr.thomas.menard.iproms.Model.InfoFile;
 
 public class ReadCSV {
+    private static int findColumnIndex (String [] headerRow, String columnName) {
+        if (headerRow == null) {
+            return -1;
+        }
+        for (int i = 0; i < headerRow.length; i++) {
+            if (headerRow[i].trim().equalsIgnoreCase(columnName.trim())) {
+                return i;
+            }
+        }
+        return -1; // column not found
+    }
+
+    private static String getValue(String[] row, int index) {
+        if (row == null || index < 0 || index >= row.length || row[index] == null) {
+            return "";
+        }
+
+        String value = row[index].trim();
+        if (value.equalsIgnoreCase("null") || value.equals("-1")) {
+            return "";
+        }
+
+        return value;
+    }
+
     public static void retrieveInfos(Context context){
         String csvFilePath = FileManager.getInfoFilename(context);
 
@@ -28,108 +52,255 @@ public class ReadCSV {
                     .withCSVParser(csvParser)
                     .build();
 
-            // Read the header to get column indices
-            int fatigueColumnIndex = 3;
-            int depressionColumnIndex = 7;
-            int bdiIndex = 13;
-            int promisColumnIndex = 17;
-            int qolColumnIndex = 22; //21?
-            int oldDate = 2; // "Time" field -> at column index 2
-            int sleepIndex = 66;
-            int FSMCIndex = 70;
-
             List<String[]> csvEntries = reader.readAll();
-            String[] firstRow = csvEntries.get(1); // after reading CSV file -> get data row
+            if (csvEntries.size() < 2) {
+                Log.e("ReadCSV", "CSV file is empty or has only header row.");
+                reader.close();
+                return;
+            }
 
-            InfoFile.fatigue = firstRow[fatigueColumnIndex];
-            InfoFile.depression = firstRow[depressionColumnIndex];
-            InfoFile.bdi = firstRow[bdiIndex];
-            InfoFile.promis = firstRow[promisColumnIndex];
-            InfoFile.qol = firstRow[qolColumnIndex];
-            InfoFile.sleep = firstRow[sleepIndex];
-            InfoFile.fsmc = firstRow[FSMCIndex];
-            InfoFile.oldDate = firstRow[oldDate]; // whatever value in column index 2 of CSV ("Time" field) -> stored in InfoFile.oldDate
-            Log.d("ReadCSV", "Loaded oldDate = " + InfoFile.oldDate);
+            String[] headerRow = csvEntries.get(0);
+            String[] firstRow = csvEntries.get(1);
 
-            InfoFile.avg_score_fatigue = (firstRow[fatigueColumnIndex+1]);
-            InfoFile.avg_score_depression = firstRow[depressionColumnIndex+1];
-            InfoFile.avg_score_anxiety = firstRow[depressionColumnIndex + 2];
-            InfoFile.avg_score_PROMIS_physical = firstRow[promisColumnIndex+1];
-            InfoFile.avg_score_PROMIS_mental = firstRow[promisColumnIndex+2];
-            InfoFile.avg_score_qol = (firstRow[qolColumnIndex+1]);
+            // initialize arrays in InfoFile
+            InfoFile.fatigueQuestionScores = new String[9];
+            InfoFile.depressionQuestionScores = new String[14];
+            InfoFile.bdiQuestionScores = new String[21];
+            InfoFile.promisQuestionScores = new String[10];
+            InfoFile.qolQuestionScores = new String[10];
+            // for each subscale use SUB_COUNTS array
+            int[] SUB_COUNTS = {8, 8, 8, 8, 8, 8, 9, 8, 8, 8};
+            InfoFile.qol1QuestionScores = new String[SUB_COUNTS[0]];
+            InfoFile.qol2QuestionScores = new String[SUB_COUNTS[1]];
+            InfoFile.qol3QuestionScores = new String[SUB_COUNTS[2]];
+            InfoFile.qol4QuestionScores = new String[SUB_COUNTS[3]];
+            InfoFile.qol5QuestionScores = new String[SUB_COUNTS[4]];
+            InfoFile.qol6QuestionScores = new String[SUB_COUNTS[5]];
+            InfoFile.qol7QuestionScores = new String[SUB_COUNTS[6]];
+            InfoFile.qol8QuestionScores = new String[SUB_COUNTS[7]];
+            InfoFile.qol9QuestionScores = new String[SUB_COUNTS[8]];
+            InfoFile.qol10QuestionScores = new String[SUB_COUNTS[9]];
 
-            InfoFile.questionAnsFatigue = (firstRow[fatigueColumnIndex+2]);
-            InfoFile.questionAnsDep = (firstRow[depressionColumnIndex+3]);
-            InfoFile.questionAnsBDI = firstRow[bdiIndex+2];
-            InfoFile.questionAnsPROMIS = firstRow[promisColumnIndex+3];
-            InfoFile.questionAnsQol = (firstRow[qolColumnIndex+2]);
+            InfoFile.fsmcQuestionScores = new String[20];
+            InfoFile.sleepQuestionScores = new String[8];
 
-            InfoFile.lastQuestionFatigue = firstRow[fatigueColumnIndex + 3];
-            InfoFile.lastQuestionDep = firstRow[depressionColumnIndex + 4];
-            InfoFile.skipped_question_anx = firstRow[depressionColumnIndex + 5];
-            InfoFile.skipped_question_bdi = firstRow[bdiIndex+3];
-            InfoFile.skipped_question_promis = firstRow[promisColumnIndex+4];
-            InfoFile.skippedQuestionQOL = firstRow[qolColumnIndex+3];
+            // basic column indices (before question scores)
+            int patientIdIndex = findColumnIndex(headerRow, "Patient_ID");
+            int caseIdIndex = findColumnIndex(headerRow, "Case_ID");
+            int oldDate = findColumnIndex(headerRow, "Date"); // "Date" field -> at column index 2
+            int fatigueColumnIndex = findColumnIndex(headerRow, "Fatigue");
+            int depressionColumnIndex = findColumnIndex(headerRow, "Depression_Anxiety");
+            int bdiIndex = findColumnIndex(headerRow, "BDI_II");
+            int promisColumnIndex = findColumnIndex(headerRow, "PROMIS");
+            int qolColumnIndex = findColumnIndex(headerRow, "QOL");
+            int sleepIndex = findColumnIndex(headerRow, "Sleep");
+            int FSMCIndex = findColumnIndex(headerRow, "FSMC");
 
-            InfoFile.score_bdi = firstRow[bdiIndex+1];
+            // read basic info
+            InfoFile.patientId = getValue(firstRow, patientIdIndex);
+            InfoFile.caseId = getValue(firstRow, caseIdIndex);
+            InfoFile.oldDate = getValue(firstRow, oldDate); // whatever value in column index 2 of CSV ("Time" field) -> stored in InfoFile.oldDate
 
-            InfoFile.qol1 = firstRow[qolColumnIndex + 4];
-            InfoFile.scoreQOL1 = firstRow[qolColumnIndex + 5];
-            InfoFile.questionAnsQOL1 = firstRow[qolColumnIndex + 6];
-            InfoFile.skippedQuestionQOL1 = firstRow[qolColumnIndex + 7];
+            Log.d("ReadCSV", "Loaded Date = " + InfoFile.oldDate);
 
-            InfoFile.qol2 = firstRow[qolColumnIndex + 8];
-            InfoFile.scoreQOL2 = firstRow[qolColumnIndex + 9];
-            InfoFile.questionAnsQOL2 = firstRow[qolColumnIndex + 10];
-            InfoFile.skippedQuestionQOL2 = firstRow[qolColumnIndex + 11];
+            // dynamic fatigue block
+            InfoFile.fatigue = getValue(firstRow, fatigueColumnIndex);
+            InfoFile.avg_score_fatigue = getValue(firstRow, findColumnIndex(headerRow, "Score_fatigue"));
+            InfoFile.questionAnsFatigue = getValue(firstRow, findColumnIndex(headerRow, "Question_ans_fatigue"));
+            InfoFile.lastQuestionFatigue = getValue(firstRow, findColumnIndex(headerRow, "Skipped_question_fatigue"));
 
-            InfoFile.qol3 = firstRow[qolColumnIndex + 12];
-            InfoFile.scoreQOL3 = firstRow[qolColumnIndex + 13];
-            InfoFile.questionAnsQOL3 = firstRow[qolColumnIndex + 14];
-            InfoFile.skippedQuestionQOL3 = firstRow[qolColumnIndex + 15];
+            // pull in each indivdiual item
+            for (int i = 0; i < InfoFile.fatigueQuestionScores.length; i++) {
+                String colName = "Fatigue_Q" + (i + 1);
+                int col = findColumnIndex(headerRow, colName);
+                InfoFile.fatigueQuestionScores[i] = getValue(firstRow, col);
+            }
 
-            InfoFile.qol4 = firstRow[qolColumnIndex + 16];
-            InfoFile.scoreQOL4 = firstRow[qolColumnIndex + 17];
-            InfoFile.questionAnsQOL4 = firstRow[qolColumnIndex + 18];
-            InfoFile.skippedQuestionQOL4 = firstRow[qolColumnIndex + 19];
+            // dynamic depression/anxiety block
+            InfoFile.depression = getValue(firstRow, depressionColumnIndex);
+            InfoFile.avg_score_depression = getValue(firstRow, findColumnIndex(headerRow, "Score_depression"));
+            InfoFile.avg_score_anxiety = getValue(firstRow, findColumnIndex(headerRow, "Score_anxiety"));
+            InfoFile.questionAnsDep = getValue(firstRow, findColumnIndex(headerRow, "Question_ans_dep"));
+            InfoFile.lastQuestionDep = getValue(firstRow, findColumnIndex(headerRow, "Skipped_question_dep"));
+            InfoFile.skipped_question_anx = getValue(firstRow, findColumnIndex(headerRow, "Skipped_question_anx"));
 
-            InfoFile.qol5 = firstRow[qolColumnIndex + 20];
-            InfoFile.scoreQOL5 = firstRow[qolColumnIndex + 21];
-            InfoFile.questionAnsQOL5 = firstRow[qolColumnIndex + 22];
-            InfoFile.skippedQuestionQOL5 = firstRow[qolColumnIndex + 23];
+            // pull in each individual item
+            for (int i = 0; i < InfoFile.depressionQuestionScores.length; i++) {
+                String colName = "Depression_Q" + (i + 1);
+                int col = findColumnIndex(headerRow, colName);
+                InfoFile.depressionQuestionScores[i] = getValue(firstRow, col);
+            }
 
-            InfoFile.qol6 = firstRow[qolColumnIndex + 24];
-            InfoFile.scoreQOL6 = firstRow[qolColumnIndex + 25];
-            InfoFile.questionAnsQOL6 = firstRow[qolColumnIndex + 26];
-            InfoFile.skippedQuestionQOL6 = firstRow[qolColumnIndex + 27];
+            // dynamic bdi block
+            InfoFile.bdi = getValue(firstRow, bdiIndex);
+            InfoFile.score_bdi = getValue(firstRow, findColumnIndex(headerRow, "Score_bdi"));
+            InfoFile.questionAnsBDI = getValue(firstRow, findColumnIndex(headerRow, "Question_ans_bdi"));
+            InfoFile.skipped_question_bdi = getValue(firstRow, findColumnIndex(headerRow, "Skipped_question_bdi"));
 
-            InfoFile.qol7 = firstRow[qolColumnIndex + 28];
-            InfoFile.scoreQOL7 = firstRow[qolColumnIndex + 29];
-            InfoFile.questionAnsQOL7 = firstRow[qolColumnIndex + 30];
-            InfoFile.skippedQuestionQOL7 = firstRow[qolColumnIndex + 31];
+            // pull in each individual item
+            for (int i = 0; i < InfoFile.bdiQuestionScores.length; i++) {
+                String colName = "BDI_Q" + (i + 1);
+                int col = findColumnIndex(headerRow, colName);
+                InfoFile.bdiQuestionScores[i] = getValue(firstRow, col);
+            }
 
-            InfoFile.qol8 = firstRow[qolColumnIndex + 32];
-            InfoFile.scoreQOL8 = firstRow[qolColumnIndex + 33];
-            InfoFile.questionAnsQOL8 = firstRow[qolColumnIndex + 34];
-            InfoFile.skippedQuestionQOL8 = firstRow[qolColumnIndex + 35];
+            // dynamic PROMIS block
+            InfoFile.promis = getValue(firstRow, promisColumnIndex);
+            InfoFile.avg_score_PROMIS_mental = getValue(firstRow, findColumnIndex(headerRow, "Score_promis_mental"));
+            InfoFile.avg_score_PROMIS_physical = getValue(firstRow, findColumnIndex(headerRow, "Score_promis_physical"));
+            InfoFile.questionAnsPROMIS = getValue(firstRow, findColumnIndex(headerRow, "Question_ans_promis"));
+            InfoFile.skipped_question_promis = getValue(firstRow, findColumnIndex(headerRow, "Skipped_question_promis"));
 
-            InfoFile.qol9 = firstRow[qolColumnIndex + 36];
-            InfoFile.scoreQOL9 = firstRow[qolColumnIndex + 37];
-            InfoFile.questionAnsQOL9 = firstRow[qolColumnIndex + 38];
-            InfoFile.skippedQuestionQOL9 = firstRow[qolColumnIndex + 39];
+            // pull in each individual item
+            for (int i = 0; i < InfoFile.promisQuestionScores.length; i++) {
+                String colName = "PROMIS_Q" + (i + 1);
+                int col = findColumnIndex(headerRow, colName);
+                InfoFile.promisQuestionScores[i] = getValue(firstRow, col);
+            }
 
-            InfoFile.qol10 = firstRow[qolColumnIndex + 40];
-            InfoFile.scoreQOL10 = firstRow[qolColumnIndex + 41];
-            InfoFile.questionAnsQOL10 = firstRow[qolColumnIndex + 42];
-            InfoFile.skippedQuestionQOL10 = firstRow[qolColumnIndex + 43];
+            // dynamic QOL block
+            InfoFile.qol = getValue(firstRow, qolColumnIndex);
+            InfoFile.avg_score_qol = getValue(firstRow, findColumnIndex(headerRow, "Score_qol"));
+            InfoFile.questionAnsQol = getValue(firstRow, findColumnIndex(headerRow, "Question_ans_qol"));
+            InfoFile.skippedQuestionQOL = getValue(firstRow, findColumnIndex(headerRow, "Skipped_question_qol"));
 
-            InfoFile.scoreFSMC = firstRow[FSMCIndex+1];
-            InfoFile.questionAnsFCSM = firstRow[FSMCIndex+2];
-            InfoFile.skipped_question_fsmc = firstRow[FSMCIndex+3];
+            // all 10 general items
+            for (int i = 0; i < InfoFile.qolQuestionScores.length; i++) {
+                int idx = findColumnIndex(headerRow, "QOL_Q" + (i + 1));
+                InfoFile.qolQuestionScores[i] = getValue(firstRow, idx);
+            }
 
-            InfoFile.score_sleep = firstRow[sleepIndex+1];
-            InfoFile.questionAnsSleep = firstRow[sleepIndex+2];
-            InfoFile.skipped_question_sleep = firstRow[sleepIndex+3];
+            // for each sub-scale
+            for (int n = 1; n <= 10; n++) {
+                String base = "QOL" + n;
+                String lcBase = base.toLowerCase();
+
+                // find summary columns
+                int doneCol = findColumnIndex(headerRow, base);
+                int scoreCol = findColumnIndex(headerRow, "Score_" + lcBase);
+                int ansCol = findColumnIndex(headerRow, "Question_ans_" + lcBase);
+                int skipCol = findColumnIndex(headerRow, "Skipped_question_" + lcBase);
+                int qStart = findColumnIndex(headerRow, base + "_Q1");
+                int count = SUB_COUNTS[n-1];
+
+                // assign into InfoFile via reflection or switch
+                switch (n) {
+                    case 1:
+                        InfoFile.qol1 = getValue(firstRow, doneCol);
+                        InfoFile.scoreQOL1 = getValue(firstRow, scoreCol);
+                        InfoFile.questionAnsQOL1 = getValue(firstRow, ansCol);
+                        InfoFile.skippedQuestionQOL1 = getValue(firstRow, skipCol);
+                        for (int i = 0; i<count; i++) {
+                            InfoFile.qol1QuestionScores[i] = getValue(firstRow, qStart + i);
+                        }
+                        break;
+                    case 2:
+                        InfoFile.qol2 = getValue(firstRow, doneCol);
+                        InfoFile.scoreQOL2 = getValue(firstRow, scoreCol);
+                        InfoFile.questionAnsQOL2 = getValue(firstRow, ansCol);
+                        InfoFile.skippedQuestionQOL2 = getValue(firstRow, skipCol);
+                        for (int i = 0; i<count; i++) {
+                            InfoFile.qol2QuestionScores[i] = getValue(firstRow, qStart + i);
+                        }
+                        break;
+                    case 3:
+                        InfoFile.qol3 = getValue(firstRow, doneCol);
+                        InfoFile.scoreQOL3 = getValue(firstRow, scoreCol);
+                        InfoFile.questionAnsQOL3 = getValue(firstRow, ansCol);
+                        InfoFile.skippedQuestionQOL3 = getValue(firstRow, skipCol);
+                        for (int i = 0; i<count; i++) {
+                            InfoFile.qol3QuestionScores[i] = getValue(firstRow, qStart + i);
+                        }
+                        break;
+                    case 4:
+                        InfoFile.qol4 = getValue(firstRow, doneCol);
+                        InfoFile.scoreQOL4 = getValue(firstRow, scoreCol);
+                        InfoFile.questionAnsQOL4 = getValue(firstRow, ansCol);
+                        InfoFile.skippedQuestionQOL4 = getValue(firstRow, skipCol);
+                        for (int i = 0; i<count; i++) {
+                            InfoFile.qol4QuestionScores[i] = getValue(firstRow, qStart + i);
+                        }
+                        break;
+                    case 5:
+                        InfoFile.qol5 = getValue(firstRow, doneCol);
+                        InfoFile.scoreQOL5 = getValue(firstRow, scoreCol);
+                        InfoFile.questionAnsQOL5 = getValue(firstRow, ansCol);
+                        InfoFile.skippedQuestionQOL5 = getValue(firstRow, skipCol);
+                        for (int i = 0; i<count; i++) {
+                            InfoFile.qol5QuestionScores[i] = getValue(firstRow, qStart + i);
+                        }
+                        break;
+                    case 6:
+                        InfoFile.qol6 = getValue(firstRow, doneCol);
+                        InfoFile.scoreQOL6 = getValue(firstRow, scoreCol);
+                        InfoFile.questionAnsQOL6 = getValue(firstRow, ansCol);
+                        InfoFile.skippedQuestionQOL6 = getValue(firstRow, skipCol);
+                        for (int i = 0; i<count; i++) {
+                            InfoFile.qol6QuestionScores[i] = getValue(firstRow, qStart + i);
+                        }
+                        break;
+                    case 7:
+                        InfoFile.qol7 = getValue(firstRow, doneCol);
+                        InfoFile.scoreQOL7 = getValue(firstRow, scoreCol);
+                        InfoFile.questionAnsQOL7 = getValue(firstRow, ansCol);
+                        InfoFile.skippedQuestionQOL7 = getValue(firstRow, skipCol);
+                        for (int i = 0; i<count; i++) {
+                            InfoFile.qol7QuestionScores[i] = getValue(firstRow, qStart + i);
+                        }
+                        break;
+                    case 8:
+                        InfoFile.qol8 = getValue(firstRow, doneCol);
+                        InfoFile.scoreQOL8 = getValue(firstRow, scoreCol);
+                        InfoFile.questionAnsQOL8 = getValue(firstRow, ansCol);
+                        InfoFile.skippedQuestionQOL8 = getValue(firstRow, skipCol);
+                        for (int i = 0; i<count; i++) {
+                            InfoFile.qol8QuestionScores[i] = getValue(firstRow, qStart + i);
+                        }
+                        break;
+                    case 9:
+                        InfoFile.qol9 = getValue(firstRow, doneCol);
+                        InfoFile.scoreQOL9 = getValue(firstRow, scoreCol);
+                        InfoFile.questionAnsQOL9 = getValue(firstRow, ansCol);
+                        InfoFile.skippedQuestionQOL9 = getValue(firstRow, skipCol);
+                        for (int i = 0; i<count; i++) {
+                            InfoFile.qol9QuestionScores[i] = getValue(firstRow, qStart + i);
+                        }
+                        break;
+                    case 10:
+                        InfoFile.qol10 = getValue(firstRow, doneCol);
+                        InfoFile.scoreQOL10 = getValue(firstRow, scoreCol);
+                        InfoFile.questionAnsQOL10 = getValue(firstRow, ansCol);
+                        InfoFile.skippedQuestionQOL10 = getValue(firstRow, skipCol);
+                        for (int i = 0; i<count; i++) {
+                            InfoFile.qol10QuestionScores[i] = getValue(firstRow, qStart + i);
+                        }
+                        break;
+                }
+            }
+
+            // dynamic FSMC block
+            InfoFile.fsmc = getValue(firstRow, FSMCIndex);
+            InfoFile.scoreFSMC = getValue(firstRow, findColumnIndex(headerRow, "Score_FSMC"));
+            InfoFile.questionAnsFCSM = getValue(firstRow, findColumnIndex(headerRow, "Question_ans_fsmc"));
+            InfoFile.skipped_question_fsmc = getValue(firstRow, findColumnIndex(headerRow, "Skipped_question_fsmc"));
+            for (int i = 0; i < InfoFile.fsmcQuestionScores.length; i++) {
+                String colName = "FSMC_Q" + (i + 1);
+                int col = findColumnIndex(headerRow, colName);
+                InfoFile.fsmcQuestionScores[i] = getValue(firstRow, col);
+            }
+
+            // dynamic sleep block
+            InfoFile.sleep = getValue(firstRow, sleepIndex);
+            InfoFile.score_sleep = getValue(firstRow, findColumnIndex(headerRow, "Score_Sleep"));
+            InfoFile.questionAnsSleep = getValue(firstRow, findColumnIndex(headerRow, "Question_ans_sleep"));
+            InfoFile.skipped_question_sleep = getValue(firstRow, findColumnIndex(headerRow, "Skipped_question_sleep"));
+
+            // pull in each individual item
+            for (int i = 0; i < InfoFile.sleepQuestionScores.length; i++) {
+                String colName = "Sleep_Q" + (i + 1);
+                int col = findColumnIndex(headerRow, colName);
+                InfoFile.sleepQuestionScores[i] = getValue(firstRow, col);
+            }
 
             reader.close();
 

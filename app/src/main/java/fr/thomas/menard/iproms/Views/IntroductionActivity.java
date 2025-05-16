@@ -100,7 +100,7 @@ public class IntroductionActivity extends BaseActivity {
     private boolean isCycleExpired (String oldDate) {
         // if oldDate is null or empty -> file = new (or decide on appropriate behavior)
         if (oldDate == null || oldDate.isEmpty()) {
-            Log.d("ResetCycle", "oldDate is null or empty; assuming file is new");
+            Log.d("ResetCycle", "Date is null or empty; assuming file is new");
             // prevent code from trying to parse null value
             return false;
         }

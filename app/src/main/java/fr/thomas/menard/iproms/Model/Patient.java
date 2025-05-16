@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import fr.thomas.menard.iproms.App.MyApplication;
 import fr.thomas.menard.iproms.Utils.Utils;
 
 /**
@@ -37,7 +38,7 @@ public class Patient {
         return patient;
     }
 
-    public void setPatientData(String patientId, String caseId, String diagnosis, int clinicId, Context context) {
+    public void setPatientData(String patientId, String caseId, String diagnosis, int clinicId) {
         if (patient == null) {
             patient = new Patient();
         }
@@ -48,12 +49,12 @@ public class Patient {
         this.clinicId = clinicId;
         this.date = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
 
-        saveToPreferences(context);
+        saveToPreferences();
     }
 
     // Save patient data to SharedPreferences
-    private void saveToPreferences(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    private void saveToPreferences() {
+        SharedPreferences prefs = MyApplication.getInstance().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
         editor.putString(KEY_PATIENT_ID, patientId);
@@ -66,8 +67,8 @@ public class Patient {
     }
 
     // Load patient data from SharedPreferences if needed
-    private void loadFromPreferences(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    private void loadFromPreferences() {
+        SharedPreferences prefs = MyApplication.getInstance().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
         if (patientId == null) patientId = prefs.getString(KEY_PATIENT_ID, null);
         if (caseId == null) caseId = prefs.getString(KEY_CASE_ID, null);
@@ -76,28 +77,28 @@ public class Patient {
         if (clinicId == 0) clinicId = prefs.getInt(KEY_CLINIC_ID, -1);
     }
 
-    public String getPatientId(Context context) {
-        if (patientId == null) loadFromPreferences(context);
+    public String getPatientId() {
+        if (patientId == null) loadFromPreferences();
         return patientId;
     }
 
-    public String getCaseId(Context context) {
-        if (caseId == null) loadFromPreferences(context);
+    public String getCaseId() {
+        if (caseId == null) loadFromPreferences();
         return caseId;
     }
 
-    public String getDiagnosis(Context context) {
-        if (diagnosis == null) loadFromPreferences(context);
+    public String getDiagnosis() {
+        if (diagnosis == null) loadFromPreferences();
         return diagnosis;
     }
 
-    public int getClinicId(Context context) {
-        if (clinicId == 0) loadFromPreferences(context);
+    public int getClinicId() {
+        if (clinicId == 0) loadFromPreferences();
         return clinicId;
     }
 
-    public String getClinicIdtoString(Context context) {
-        if (clinicId == 0) loadFromPreferences(context);
+    public String getClinicIdtoString() {
+        if (clinicId == 0) loadFromPreferences();
 
         if (clinicId >= 0 && clinicId <= 99) {
             return (clinicId == 1) ? String.format("%02d", clinicId) : String.format("%02d", clinicId + 1);
@@ -106,22 +107,22 @@ public class Patient {
         }
     }
 
-    public String getDate(Context context) {
-        if (date == null) loadFromPreferences(context);
+    public String getDate() {
+        if (date == null) loadFromPreferences();
         return date;
     }
 
-    public String getPointDate(Context context) {
-        return getDate(context).replace('_', '.');
+    public String getPointDate() {
+        return getDate().replace('_', '.');
     }
 
-    public String getFormattedDate(Context context) {
-        return Utils.changeDateFormatFromYMDToDMY(getDate(context));
+    public String getFormattedDate() {
+        return Utils.changeDateFormatFromYMDToDMY(getDate());
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "PID: " + getPatientId(null) + "; CID: " + getCaseId(null) + " " + getFormattedDate(null);
+        return "PID: " + getPatientId() + "; CID: " + getCaseId() + " " + getFormattedDate();
     }
 }
