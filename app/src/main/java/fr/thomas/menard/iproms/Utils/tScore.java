@@ -79,7 +79,6 @@ public class tScore extends MyApplication {
 
         // Initialize the scoreTable here
         scoreTable_emotional_behavioral = initializeScoreTable_emotional_behavioral();
-
         scoreTable_ability_in_social_roles = initializeScoreTable_ability_in_social_roles();
         scoreTable_cognitive_function = initializeScoreTable_cognitive_function();
         scoreTable_sleep = initializeScoreTable_sleep();
@@ -88,6 +87,7 @@ public class tScore extends MyApplication {
         scoreTable_stigma = initializeScoreTable_stigma();
         scoreTable_upper_function = initializeScoreTable_upper_function();
         scoreTable_lower_function = initializeScoreTable_lower_function();
+
         scoreTable_promis_physical = initializeScoreTable_promis_physical();
         scoreTable_promis_mental = initializeScoreTable_promis_mental();
     }
@@ -95,7 +95,7 @@ public class tScore extends MyApplication {
 
     private double[][] initializeScoreTable_promis_physical() {
         return new double[][]{
-                {4, 16.2, 4.8},
+                {4, 16.2, 4.8}, // raw score - Tscore - Standard Error
                 {5, 19.9, 4.8},
                 {6, 23.5, 4.8},
                 {7, 26.7, 4.8},
@@ -489,4 +489,23 @@ public class tScore extends MyApplication {
         };
     }
 
+    // look up t-score for given raw PROMIS-physical total
+    public static double lookupPhsyicalTscore(int raw) {
+        for (double[] row: scoreTable_promis_physical) {
+            if ((int)row[0] == raw) {
+                return row[1];
+            }
+        }
+        throw new IllegalArgumentException("Raw physical PROMIS score out of range: " + raw);
+    }
+
+    // look up t-score for given raw PROMIS-mental total
+    public static double lookupMentalTscore(int raw) {
+        for (double[] row : scoreTable_promis_mental) {
+            if ((int) row[0] == raw) {
+                return row[1];
+            }
+        }
+        throw new IllegalArgumentException("Raw mental PROMIS score out of range: " + raw);
+    }
 }

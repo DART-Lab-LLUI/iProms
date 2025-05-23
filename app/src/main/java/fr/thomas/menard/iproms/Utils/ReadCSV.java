@@ -146,8 +146,8 @@ public class ReadCSV {
 
             // dynamic PROMIS block
             InfoFile.promis = getValue(firstRow, promisColumnIndex);
-            InfoFile.avg_score_PROMIS_mental = getValue(firstRow, findColumnIndex(headerRow, "Score_promis_mental"));
             InfoFile.avg_score_PROMIS_physical = getValue(firstRow, findColumnIndex(headerRow, "Score_promis_physical"));
+            InfoFile.avg_score_PROMIS_mental = getValue(firstRow, findColumnIndex(headerRow, "Score_promis_mental"));
             InfoFile.questionAnsPROMIS = getValue(firstRow, findColumnIndex(headerRow, "Question_ans_promis"));
             InfoFile.skipped_question_promis = getValue(firstRow, findColumnIndex(headerRow, "Skipped_question_promis"));
 

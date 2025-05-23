@@ -71,7 +71,7 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
     private void displayFSMC(){
         if(!Patient.getPatient().getDiagnosis().equals("Stroke")){
             if(!fsmc.equals("null")){
-                binding.txtQuestionFatigueFSMC.setText("Question answered : "+ questionAnsFCSM +"/ 20 - ("+skipped_question_fsmc+" skipped)" );
+                binding.txtQuestionFatigueFSMC.setText(getString(R.string.questions_answered)+ questionAnsFCSM + " / 20 - (" +skipped_question_fsmc + " " + getString(R.string.x_skipped) + ")");
 
                 if(fsmc.equals("done")){
                     binding.imgDoneFsmc.setVisibility(View.VISIBLE);
@@ -83,7 +83,7 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
                         createResultFSMCCSV();
                         uploadData(FileManager.getFSMCResultFile(this));
                         binding.txtQuestionFatigueFSMC.setVisibility(View.VISIBLE);
-                        binding.txtRawValueFsmc.setText("Total score : " + scoreFSMC  +"/ 80");
+                        binding.txtRawValueFsmc.setText(getString(R.string.total_score) + scoreFSMC  + " / 63");
                         binding.txtRawValueFsmc.setVisibility(View.VISIBLE);
                     }
 
@@ -96,7 +96,7 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
     @SuppressLint("SetTextI18n")
     private void displaysleep(){
         if(!sleep.equals("null")){
-            binding.txtQuestionFatigueSleep.setText("Question answered : " + questionAnsSleep + "/ 8  - ("+skipped_question_sleep+" skipped)" );
+            binding.txtQuestionFatigueSleep.setText(getString(R.string.questions_answered) + questionAnsSleep + " / 8  - ("+skipped_question_sleep + " " + getString(R.string.x_skipped) + ")");
 
             if(sleep.equals("done")){
                 binding.imgDoneSleep.setVisibility(View.VISIBLE);
@@ -108,7 +108,7 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
                     createResultSleepCSV();
                     uploadData(FileManager.getSleepResultFile(this));
                     binding.txtQuestionFatigueSleep.setVisibility(View.VISIBLE);
-                    binding.txtRawValueSleep.setText("Total score : " + score_sleep  +"/ 24");
+                    binding.txtRawValueSleep.setText(getString(R.string.total_score) + score_sleep  + " / 24");
                     binding.txtRawValueSleep.setVisibility(View.VISIBLE);
                 }
 
@@ -157,7 +157,7 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
         String text_interpretations;
         if(categorie.equals("sleep")){
             if(score_sleep.equals("0") && !questionAnsSleep.equals("9")){
-                text_interpretations = "Questionnaire skipped";
+                text_interpretations = getString(R.string.skipped_questionniare);
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
                 binding.cellResultSleep.setColorSections(upperlimit, colors);
@@ -166,12 +166,12 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
                 Log.d("TEST",  "HRER");
             }else{
                 if(Integer.parseInt(score_sleep)<4){
-                    text_interpretations = "Good";
+                    text_interpretations = getString(R.string.good);
                 } else if (Integer.parseInt(score_sleep)<10) {
-                    text_interpretations = "Moderate";
+                    text_interpretations = getString(R.string.moderate);
                 }else
                 {
-                    text_interpretations = "Severe";
+                    text_interpretations = getString(R.string.severe);
                 }
                 int[] colors = {android.graphics.Color.GREEN, Color.YELLOW, Color.RED};
 
@@ -196,7 +196,7 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
 
         if(categorie.equals("fsmc")){
             if (scoreFSMC.equals("0") && !questionAnsFCSM.equals("21")) {
-                String txt_interpretations = "Questionnaire skipped";
+                String txt_interpretations = getString(R.string.skipped_questionniare);
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
                 binding.cellFSMCResult.setColorSections(upperlimit, colors);
@@ -206,13 +206,13 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
             }else{
                 String txt_interpretations  ="";
                 if(Integer.parseInt(scoreFSMC)<43){
-                    txt_interpretations = "Good";
+                    txt_interpretations = getString(R.string.good);
                 } else if (Integer.parseInt(scoreFSMC)<53) {
-                    txt_interpretations = "Leichte Fatigue";
+                    txt_interpretations = getString(R.string.mild_fatigue);
                 } else if (Integer.parseInt(scoreFSMC)<63) {
-                    txt_interpretations = "Mittelgradige  Fatigue";
+                    txt_interpretations = getString(R.string.moderate_fatigue);
                 } else if (Integer.parseInt(scoreFSMC)>62) {
-                    txt_interpretations = "Schwere Fatigue";
+                    txt_interpretations = getString(R.string.severe_fatigue);
                 }
                 int[] colors = {android.graphics.Color.GREEN, Color.YELLOW,Color.rgb(255,165,0), Color.RED};
 

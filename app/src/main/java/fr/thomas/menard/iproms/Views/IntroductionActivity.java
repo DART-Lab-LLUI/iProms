@@ -116,13 +116,13 @@ public class IntroductionActivity extends BaseActivity {
             return false;
         }
 
-        // substract 28 days from the current date to set a one-month threshold
+        // substract 14 days from the current date to set a two-weeks threshold (as patients might leave before one-month threshold)
         Calendar calendar = Calendar.getInstance();
 
         // temporarily reduce threshold -> simulate and test reset logic
         //calendar.add(Calendar.MINUTE, -1); // one minute threshold for testing
 
-        calendar.add(Calendar.DAY_OF_YEAR, -28); // adjust threshold if needed
+        calendar.add(Calendar.DAY_OF_YEAR, -14); // adjust threshold if needed
         Date thresholdDate = calendar.getTime();
 
         Log.d("ResetCycle", "Parsed fileDate = " + fileDate +

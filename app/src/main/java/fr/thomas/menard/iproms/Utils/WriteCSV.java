@@ -54,7 +54,7 @@ public class WriteCSV extends ViewModel {
     private String[] createDefaultScores(int numQuestions) {
         String[] scores = new String[numQuestions]; // creates new String array of specified size
         for (int i = 0; i < numQuestions; i++) {
-            scores[i] = "0"; // loop fills each element of array with "0"
+            scores[i] = " "; // loop fills each element of array with " "
         }
         return scores;
     }
@@ -1369,9 +1369,13 @@ public class WriteCSV extends ViewModel {
 
             // update summary fields
             row[colDone] = done;
-            row[colScorePhsyical] = score;
-            row[colScoreMental] = score;
             row[colAns] = String.valueOf(numberQuestion);
+            if ("physical".equals(categorie)) {
+                row[colScorePhsyical] = score;
+
+            } else if ("mental".equals(categorie)) {
+                row[colScoreMental] = score;
+            }
 
             if (skip) row[colSkip] = String.valueOf(skipped_question);
 

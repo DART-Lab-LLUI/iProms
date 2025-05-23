@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import java.io.File;
 
 import fr.thomas.menard.iproms.App.MyApplication;
+import fr.thomas.menard.iproms.Model.InfoFile;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.DataTransfer;
 import fr.thomas.menard.iproms.Utils.DebugLogger;
@@ -59,6 +61,17 @@ public class MainActivity extends BaseActivity {
         checkPromis();
     }
 
+    protected void onResume() {
+        super.onResume();
+        ReadCSV.retrieveInfos(this);
+        checkQuestionnaireDone();
+        skippedQuestion();
+        checkFatigueI();
+        checkDepression();
+        checkBDI();
+        checkPromis();
+    }
+
     @Override
     public void listenBtn() {
         listenBtnStart();
@@ -76,11 +89,19 @@ public class MainActivity extends BaseActivity {
     @SuppressLint("SetTextI18n")
     private void skippedQuestion(){
         if(!lastQuestionDep.equals("null") && !questionAnsDep.equals("null")) {
-            binding.txtQuestionsSkippedDep.setText("(" + lastQuestionDep + "  skipped)");
-            binding.txtQuestionsSkippedAnx.setText("(" + skipped_question_anx + "  skipped)");
+            binding.txtQuestionsSkippedDep.setText("(" + lastQuestionDep + " " + getString(R.string.x_skipped));
+            binding.txtQuestionsSkippedAnx.setText("(" + skipped_question_anx + " " + getString(R.string.x_skipped));
         }
         if(!lastQuestionFatigue.equals("null") && !questionAnsFatigue.equals("null")) {
-            binding.txtQuestionsSkippedFatigue.setText("(" + lastQuestionFatigue + "  skipped)");
+            binding.txtQuestionsSkippedFatigue.setText("(" + lastQuestionFatigue + " " + getString(R.string.x_skipped));
+        }
+
+        if(!skipped_question_promis.equals("null") && !questionAnsPROMIS.equals("null")) {
+            binding.txtQuestionsSkippedPROMIS.setText("(" + skipped_question_promis + " " + getString(R.string.x_skipped));
+        }
+
+        if(!skipped_question_bdi.equals("null") && !questionAnsBDI.equals("null")) {
+            binding.txtQuestionsSkippedBDI.setText("(" + skipped_question_bdi + " " + getString(R.string.x_skipped));
         }
     }
 
@@ -143,7 +164,7 @@ public class MainActivity extends BaseActivity {
 
         // done case
         boolean hasScores = !avg_score_depression.equals("0") && !avg_score_anxiety.equals("0");
-        boolean fullyAnswered = questionAnsDep.equals("15");
+        boolean fullyAnswered = questionAnsDep.equals("14");
 
         if (hasScores || fullyAnswered) {
             binding.linearAvgScoreDep.setVisibility(View.VISIBLE);
@@ -165,46 +186,71 @@ public class MainActivity extends BaseActivity {
 
     // bdi button / text
     private void checkBDI(){
-        if(!bdi.isEmpty()){
-            restart_bdi = true;
-            binding.txtQuestionBDI.setText("Question answered : "+ questionAnsBDI +"/ 21  - ("+skipped_question_bdi+" skipped)" );
+        if (bdi == null || bdi.isEmpty()) return;
+        restart_bdi = true;
+        binding.nbrQuestionAnsweredBDI.setText(questionAnsBDI);
 
-            if("done".equals(bdi)){
-                binding.imgBDIDone.setVisibility(View.VISIBLE);
+        boolean isDone = "done".equals(bdi);
+        binding.imgBDIDone.setImageResource(isDone ? R.drawable.questionnaire_done : R.drawable.started);
+        binding.imgBDIDone.setVisibility(View.VISIBLE);
+        binding.txtQuestionsSkippedBDI.setVisibility(isDone ? View.VISIBLE : View.INVISIBLE);
 
-                if(score_bdi.equals("0") && !questionAnsBDI.equals("21")) {
-                    binding.txtQuestionnaireSkippedBdi.setVisibility(View.VISIBLE);
-                    binding.txtQuestionBDI.setVisibility(View.GONE);
-                }else{
-                    binding.rdBtnBDI.setClickable(false);
-                    uploadData(FileManager.getResultBDIFile(this));
-                    binding.txtQuestionBDI.setVisibility(View.VISIBLE);
-                    binding.txtRawValueBDI.setText("Total score : " + score_bdi  +"/ 63");
-                    binding.txtRawValueBDI.setVisibility(View.VISIBLE);
-                }
-            }
+        if (!isDone) return;
+
+        // done case
+        boolean hasScores = !score_bdi.equals("0");
+        boolean fullyAnswered = questionAnsBDI.equals("21");
+
+        if (hasScores || fullyAnswered) {
+            binding.linearScoreBDI.setVisibility(View.VISIBLE);
+            binding.txtQuestionsSkippedBDI.setVisibility(View.VISIBLE);
+            binding.txtRawValueBDI.setText(score_bdi);
+
+            // prevent re-entry undless skipped more than 3
+            binding.rdBtnBDI.setClickable(Integer.parseInt(skipped_question_bdi) >= 4);
+        } else {
+            // skipped entire thing
+            binding.txtQuestionBDI.setVisibility(View.GONE);
+            binding.txtQuestionnaireSkippedBdi.setVisibility(View.VISIBLE);
         }
     }
 
     // PROMIS button / text
     private void checkPromis(){
-        if(!promis.isEmpty()){
-            restart_promis = true;
-            binding.txtQuestionPROMIS.setText("Question answered : " + questionAnsPROMIS + "/ 10  - (" + skipped_question_promis + " skipped)" );
+        if (promis == null || promis.isEmpty()) return;
 
-            if("done".equals(promis)) {
-                binding.imgPromisDone.setVisibility(View.VISIBLE);
+        restart_promis = true;
+        binding.nbrQuestionAnsweredPROMIS.setText(questionAnsPROMIS);
 
-                if(avg_score_PROMIS_mental.equals("0")){
-                    binding.txtQuestionPROMIS.setVisibility(View.GONE);
-                }else{
-                    binding.rdBtnPROMIS.setClickable(false);
-                    binding.txtRawValueMentalPROMIS.setText("Total score : " + avg_score_PROMIS_mental  +"/ 20");
-                    binding.txtRawValuePhysicalPROMIS.setText("Total score : " + avg_score_PROMIS_physical  +"/ 20");
-                    binding.txtRawValuePhysicalPROMIS.setVisibility(View.VISIBLE);
-                    binding.txtRawValueMentalPROMIS.setVisibility(View.VISIBLE);
-                }
-            }
+        boolean isDone = "done".equals(promis);
+        binding.imgPromisDone.setImageResource(isDone ? R.drawable.questionnaire_done : R.drawable.started);
+        binding.imgPromisDone.setVisibility(View.VISIBLE);
+        binding.txtQuestionsSkippedPROMIS.setVisibility(isDone ? View.VISIBLE : View.INVISIBLE);
+
+        if (!isDone) return;
+
+        Log.d("PROMIS", "SummaryActivity: PhyTxt="
+                + InfoFile.avg_score_PROMIS_physical
+                + "  MenTxt=" + InfoFile.avg_score_PROMIS_mental);
+
+        // done hase
+        boolean hasScores = !avg_score_PROMIS_mental.equals("0") && !avg_score_PROMIS_physical.equals("0");
+        boolean fullyAnswered = questionAnsPROMIS.equals("10");
+
+        if (hasScores || fullyAnswered) {
+            binding.linearScoreMentalPROMIS.setVisibility(View.VISIBLE);
+            binding.linearScorePhysicalPROMIS.setVisibility(View.VISIBLE);
+            binding.txtQuestionsSkippedPROMIS.setVisibility(View.VISIBLE);
+            binding.txtRawValuePhysicalPROMIS.setText(avg_score_PROMIS_physical);
+            binding.txtRawValueMentalPROMIS.setText(avg_score_PROMIS_mental);
+
+            // prevent re-entry unless they skipped more than 3
+            binding.rdBtnPROMIS.setClickable(Integer.parseInt(skipped_question_promis) >= 4 || Integer.parseInt(skipped_question_promis) >= 4);
+
+        } else {
+            // skipped entire thing
+            binding.linearPROMIS.setVisibility(View.GONE);
+            binding.txtQuestionnaireSkippedPROMIS.setVisibility(View.VISIBLE);
         }
     }
 

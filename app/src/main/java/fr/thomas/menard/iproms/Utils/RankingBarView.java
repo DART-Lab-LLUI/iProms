@@ -7,19 +7,39 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
+import java.util.Locale;
+
 public class RankingBarView extends View {
+    private float[] upperLimits = new float[0];
+
+    private float plotHeight = 40f;
     private float userScore = 0; // Default user score
-    private int plotHeight = 25; // Height of the plot bar
+
     private String userText = ""; // Text to be displayed below user score
 
-    private float[] upperLimits; // Upper limits for color sections
     private int[] colors = {Color.GREEN, Color.YELLOW, Color.rgb(255, 165, 0), Color.RED}; // Colors for each section
     private String[] texts = {"Low", "Medium", "High", "Very High"}; // Texts for each section
 
     public RankingBarView(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+    /*
+    @param upperLimits fractions between 0..6f where each color segment ends
+    @param colors       matching color for each segment
+    */
+
+    public void setColorSections(float[] upperLimits, int[] colors) {
+        // sanity check lengths
+        if (upperLimits == null || colors == null || upperLimits.length != colors.length) {
+            Log.e("RankingBarView", "setColorSections: invalid arrays");
+            return;
+        }
+        this.upperLimits = upperLimits;
+        this.colors = colors;
+        invalidate();  // trigger redraw
     }
 
     @Override
@@ -44,13 +64,10 @@ public class RankingBarView extends View {
             }
         }
 
-
-
         // Draw user score indicator
         paint.setColor(Color.BLACK);
         float indicatorX = (userScore / 6f) * getWidth();
         canvas.drawCircle(indicatorX, getHeight() / 2f, 10, paint);
-
 
         paint.setColor(Color.BLACK);
         paint.setTextSize(30);
@@ -102,14 +119,5 @@ public class RankingBarView extends View {
         invalidate(); // Trigger redraw
     }
 
-    // Method to set up color sections dynamically
-    public void setColorSections(float[] upperLimits, int[] colors) {
-        if (upperLimits.length != colors.length) {
-            throw new IllegalArgumentException("Arrays length must be equal.");
-        }
-        this.upperLimits = upperLimits;
-        this.colors = colors;
-        invalidate(); // Trigger redraw
-    }
 }
 
