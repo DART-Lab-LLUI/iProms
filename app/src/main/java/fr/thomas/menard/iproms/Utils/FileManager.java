@@ -3,6 +3,7 @@ package fr.thomas.menard.iproms.Utils;
 import static fr.thomas.menard.iproms.App.MyApplication.getType;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 
@@ -38,8 +39,8 @@ public class FileManager {
         Patient patient = Patient.getPatient();
 
         // Construct the session path
-        DebugLogger.debugLog("SessionFolder", baseDir.getAbsolutePath() + patient.getPatientId(context));
-        return createFolder(baseDir, patient.getPatientId(context));
+        DebugLogger.debugLog("SessionFolder", baseDir.getAbsolutePath() + patient.getPatientId());
+        return createFolder(baseDir, patient.getPatientId());
     }
 
     public static File getCrashLogFile(Context context, Patient patient){
@@ -58,7 +59,9 @@ public class FileManager {
     }
 
     public static String getInfoFilename(Context context) {
-        return getFilename(getInfoFile(context));
+        String path = getFilename(getInfoFile(context));
+        Log.d("FileManager", "getInfoFilename: " + path);
+        return path;
     }
 
     public static boolean isInfoFileExist(Context context){
@@ -77,7 +80,7 @@ public class FileManager {
 
     public static File getFSMCFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_FSMC.csv";
+        String filename = Patient.getPatient().getPatientId() + "_FSMC.csv";
         return new File(folder, filename);
     }
 
@@ -91,7 +94,7 @@ public class FileManager {
 
     public static File getFSMCResultFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_result_fsmc.csv";
+        String filename = Patient.getPatient().getPatientId() + "_result_fsmc.csv";
         return new File(folder, filename);
     }
 
@@ -101,7 +104,7 @@ public class FileManager {
 
     public static File getSleepResultFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_result_sleep.csv";
+        String filename = Patient.getPatient().getPatientId() + "_result_sleep.csv";
         return new File(folder, filename);
     }
 
@@ -111,7 +114,7 @@ public class FileManager {
 
     public static File getBDIResultFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_result_bdi.csv";
+        String filename = Patient.getPatient().getPatientId() + "_result_bdi.csv";
         return new File(folder, filename);
     }
 
@@ -121,7 +124,7 @@ public class FileManager {
 
     public static File getPromisFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_Promis.csv";
+        String filename = Patient.getPatient().getPatientId() + "_Promis.csv";
         return new File(folder, filename);
     }
 
@@ -135,7 +138,7 @@ public class FileManager {
 
     public static File getQQLFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_QQL.csv";
+        String filename = Patient.getPatient().getPatientId() + "_QQL.csv";
         return new File(folder, filename);
     }
 
@@ -149,7 +152,7 @@ public class FileManager {
 
     public static File getESSFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_ESS.csv";
+        String filename = Patient.getPatient().getPatientId() + "_ESS.csv";
         return new File(folder, filename);
     }
 
@@ -163,7 +166,7 @@ public class FileManager {
 
     public static File getResultFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_result.csv";
+        String filename = Patient.getPatient().getPatientId() + "_result.csv";
         return new File(folder, filename);
     }
 
@@ -177,7 +180,7 @@ public class FileManager {
 
     public static File getBDIFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_BDI.csv";
+        String filename = Patient.getPatient().getPatientId() + "_BDI.csv";
         return new File(folder, filename);
     }
 
@@ -191,7 +194,7 @@ public class FileManager {
 
     public static File getHADSFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_HADS.csv";
+        String filename = Patient.getPatient().getPatientId() + "_HADS.csv";
         return new File(folder, filename);
     }
 
@@ -205,7 +208,7 @@ public class FileManager {
 
     public static File getFSSFile(Context context  ){
         File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId(context) + "_FSS.csv";
+        String filename = Patient.getPatient().getPatientId() + "_FSS.csv";
         return new File(folder, filename);
     }
 
@@ -215,5 +218,23 @@ public class FileManager {
 
     public static boolean isFSSFileExist(Context context  ){
         return isFileExists(getFSSFile(context));
+    }
+
+    // method to generate an archived filename in FileManager
+    public static String getArchivedFilename (Context context, String oldDate) {
+        // get current info file (e.g., /storage/emulated/0/.../First/infos.csv)
+        // -> retrieve current CSV file (infos.csv)
+        File currentInfoFile = getInfoFile(context);
+
+        // get parent directory of current file (e.g., /storage/emulated/0/.../First)
+        // -> archived file stored in same folder
+        File parentDir = currentInfoFile.getParentFile();
+
+        // construct archived filename in same directory  (e.g. info_oldDate.csv")
+        //-> new file in same directory
+        File archivedFile = new File(parentDir, "info_" + oldDate + " .csv");
+
+        // return absolute path of archived file
+        return archivedFile.getAbsolutePath();
     }
 }

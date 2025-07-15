@@ -52,13 +52,22 @@ public abstract class BaseActivity extends AppCompatActivity implements IIntentH
 
     public void navigateToNextActivityWithoutFinish(Class<?> nextClass) {
         Intent intent = new Intent(this, nextClass);
+        this.startActivity(intent);
+    }
+
+    public void navigateToNextActivityWithoutFinish(Intent intent) {
+        // If you still want prepareIntent(...) to run (e.g. to
+        // add common extras), leave the next line in. Otherwise you
+        // can omit it and just startActivity(intent).
         prepareIntent(intent);
         this.startActivity(intent);
     }
 
     protected void retrieveIntent() {
         Intent intent = this.getIntent();
-        processReceivedIntent(intent);
+        if (intent != null) {
+            processReceivedIntent(intent);
+        }
     }
 
 

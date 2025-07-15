@@ -17,7 +17,7 @@
             android:layout_below="@id/tableLayout"
             android:layout_centerHorizontal="true"
             android:textAlignment="center"
-            android:text="Based on your results, we would suggest the following additional tests. \n\nSomeone from the clinical team will also discuss the results with you."
+            android:text="@string/based_on_your_results_clinical_team"
             android:textColor="@color/black"
             android:layout_marginEnd="30dp"
             android:layout_marginTop="20dp"
@@ -50,7 +50,7 @@
                 android:textSize="18sp"
                 android:fontFamily="@font/montserratregular"
                 android:textColor="@color/green_clock"
-                android:text="Data uploaded"/>
+                android:text="@string/data_uploaded"/>
         </LinearLayout>
 
 
@@ -65,7 +65,7 @@
             android:fontFamily="@font/montserratregular"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
-            android:text="Your results"/>
+            android:text="@string/your_results"/>
 
 
         <TableLayout
@@ -86,7 +86,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Categorie"
+                    android:text="@string/category"
                     android:textSize="25sp"
                     android:padding="10dp"
                     android:textColor="@color/colorPrimary"
@@ -96,7 +96,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Score"
+                    android:text="@string/score"
                     android:textSize="25sp"
                     android:padding="10dp"
                     android:textColor="@color/colorPrimary"
@@ -104,7 +104,7 @@
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="Description"
+                    android:text="@string/description"
                     android:textSize="25sp"
                     android:textColor="@color/colorPrimary"
                     android:layout_gravity="center"/>
@@ -124,7 +124,7 @@
                     android:textSize="18sp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/montserratregular"
-                    android:text="Fatigue"/>
+                    android:text="@string/fatigue"/>
 
 
 
@@ -197,7 +197,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="Anxiety"
+                    android:text="@string/anxiety"
                     android:layout_gravity="center"
                     android:padding="5dp"
                     android:textSize="18sp"
@@ -279,8 +279,8 @@
                     android:fontFamily="@font/montserratregular"/>
 
                 <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
                     android:id="@+id/cellPromis_physicalScore"
                     android:text="Cell1"
                     android:layout_gravity="center"
@@ -316,8 +316,8 @@
                     android:fontFamily="@font/montserratregular"/>
 
                 <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
                     android:id="@+id/cellPromis_mentalScore"
                     android:text="Cell1"
                     android:layout_gravity="center"
@@ -347,7 +347,7 @@
             android:background="@drawable/bg_button"
             android:layout_below="@id/txtSummaryDescription"
             android:textSize="20sp"
-            android:text="Go to questionnaires"
+            android:text="@string/go_to_questionnaires"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"/>
 

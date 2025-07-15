@@ -22,24 +22,60 @@
 
     <string name="we_suggest_you_to_complete_the_following_questionnaires">We suggest you to complete the following questionnaires</string>
     <string name="thank_you_for_completing_our_questionnaires_n_you_can_now_look_at_your_results">Thank you for completing our questionnaires \n You can now look at your results</string>
+    <string name="based_on_your_results">Based on your results we ask you to complete the following questionnaires.</string>
+    <string name="based_on_your_results_clinical_team">Based on your results, we would suggest the following additional tests. \n\nSomeone from the clinical team will also discuss the results with you.</string>
+    <string name="please_select_questionnaire">Please select a questionnaire.</string>
+    <string name="data_uploaded">Data uploaded</string>
+    <string name="your_results">Your results</string>
+    <string name="category">Category</string>
+    <string name="score">Score</string>
+    <string name="description">Description</string>
+
     <string name="fatigue">Fatigue</string>
+    <string name="sleep">Sleep: </string>
+    <string name="question_fatigue">Question Fatigue</string>
+
+    <string name="question">Question</string>
     <string name="questions_answered">Questions answered :</string>
     <string name="average_score">Average score :</string>
+    <string name="skipped_questionniare">Skipped questionnaire</string>
+    <string name="additional_questionnaires">Additional questionnaires</string>
+
     <string name="depression_and_anxiety">Depression and Anxiety</string>
+    <string name="anxiety">Anxiety</string>
     <string name="questionnaire">Questionnaire :</string>
+    <string name="depression_score">Depression score:</string>
+    <string name="anxiety_score">Anxiety score:</string>
+
+    <string name="total_score">Total score: </string>
+    <string name="physical_total_score">Physical Total Score: </string>
+    <string name="mental_total_score">Mental Total Score: </string>
+
     <string name="your_rating">Your rating : </string>
+    <string name="btn_confirm"> Confirm</string>
+    <string name="btn_go_to_results">Go to Results</string>
+    <string name="btn_finish_questionnaire">Finish questionnaire</string>
+    <string name="btn_skip_question">Skip question</string>
+    <string name="x_skipped"> skipped)</string>
+
     <string name="txt_intro_depression">Tick the box beside the reply that is closest to how you have been feeling in the past week. \n \n Don’t take too long over you replies: your immediate is best.\n</string>
+    <string name="percentage_completed_after_this_questionnaire">Percentage completed after this question: </string>
+    <string name="past_two_weeks"> - In the past two weeks including today</string>
+
     <string name="never">Never\n</string>
     <string name="always">Always\n</string>
+
     <string name="info_seek_WEIMus_0">Almost never</string>
     <string name="info_seek_WEIMus_1">Rarely</string>
     <string name="info_seek_WEIMus_2">Sometimes</string>
     <string name="info_seek_WEIMus_3">Often</string>
     <string name="info_seek_WEIMus_4">Almost always</string>
+
     <string name="instructions">INSTRUCTIONS</string>
     <string name="intro_fsmc">The following questionnaire is about problems in everyday life which are directly associated with an extreme form of tiredness (fatigue). This extreme form of tiredness refers to an overwhelming state of lethargy, exhaustion and lack of energy which comes on abruptly and is unrelated to any obvious external causes. It does not mean the sort of isolated episodes which everyone might experience in the course of the day, after exertion, or after a sleepless night! \n\n Please read each statement carefully. Then decide to what extent each statement applies to you and your everyday life. Please try not to base your answers on the way you are feeling at the moment; instead try to give us a picture of the way you feel in normal day-to-day life. Please put a cross in the appropriate circle (only one cross per statement please!).</string>
     <string name="summary_text">You have completed all the screening measures.\n \n
         If you are interested in sharing more details about your health situation with us, there are some optional, more detailed questionnaires coming up next.</string>
+    <string name="btn_start_questionnaire">Start questionnaire</string>
 
 
     <string name="intro_question_fatigue">During the past week, I have found that :</string>
@@ -463,10 +499,10 @@
     <string name="promis_4">In general, how would you rate your mental health, including your mood and your ability to think ? </string>
     <string name="promis_5">In general, how would you rate your satisfaction with your social activities and relationships ? </string>
     <string name="promis_9">In general, please rate how well you carry out your usual social activities and roles. (This includes activities at home, at work and in your community, and responsibilities as a parent, child, spouse, employee, friend, etc.)</string>
-    <string name="promis_7">How would you rate your pain on average ? </string>
-    <string name="promis_8">How would you rate your fatigue on average ?</string>
     <string name="promis_6">To what extent are you able to carry out your everyday physical activities such as walking, climbing stairs, carrying groceries, or moving a chair ? </string>
     <string name="promis_10">How often have you been bothered by emotional problems such as feeling anxious, depressed or irritable ?</string>
+    <string name="promis_8">How would you rate your fatigue on average ?</string>
+    <string name="promis_7">How would you rate your pain on average ? </string>
 
     <string name="promis_legend_1to59_1">Poor</string>
     <string name="promis_legend_1to59_2">Fair</string>
@@ -474,15 +510,35 @@
     <string name="promis_legend_1to59_4">Very good</string>
     <string name="promis_legend_1to59_5">Excellent</string>
 
-    <string name="promis_legend_6to10_1">Not at all</string>
-    <string name="promis_legend_6to10_2">A little</string>
-    <string name="promis_legend_6to10_3">Moderately</string>
-    <string name="promis_legend_6to10_4">Mostly</string>
-    <string name="promis_legend_6to10_5">Completely</string>
+    <string name="promis_legend_6_1">Not at all</string>
+    <string name="promis_legend_6_2">A little</string>
+    <string name="promis_legend_6_3">Moderately</string>
+    <string name="promis_legend_6_4">Mostly</string>
+    <string name="promis_legend_6_5">Completely</string>
 
+    <string name="promis_legend_10_1">Always</string>
+    <string name="promis_legend_10_2">Often</string>
+    <string name="promis_legend_10_3">Sometimes</string>
+    <string name="promis_legend_10_4">Rarely</string>
+    <string name="promis_legend_10_5">Never</string>
 
+    <string name="promis_legend_8_1">Very severe</string>
+    <string name="promis_legend_8_2">Severe</string>
+    <string name="promis_legend_8_3">Moderate</string>
+    <string name="promis_legend_8_4">Mild</string>
+    <string name="promis_legend_8_5">None</string>
 
-
+    <string name="promis_legend_7_0">No Pain</string>
+    <string name="promis_legend_7_1">1</string>
+    <string name="promis_legend_7_2">2</string>
+    <string name="promis_legend_7_3">3</string>
+    <string name="promis_legend_7_4">4</string>
+    <string name="promis_legend_7_5">5</string>
+    <string name="promis_legend_7_6">6</string>
+    <string name="promis_legend_7_7">7</string>
+    <string name="promis_legend_7_8">8</string>
+    <string name="promis_legend_7_9">9</string>
+    <string name="promis_legend_7_10">Worst pain imaginable</string>
 
     <string name="patient_id_7_characters">Patient ID (7 characters)</string>
     <string name="stroke">Stroke</string>
@@ -496,4 +552,24 @@
     <string name="disagree">Disagree</string>
     <string name="agree">Agree</string>
     <string name="promis">PROMIS</string>
+    <string name="severely_increased">severely increased</string>
+    <string name="severe">severe</string>
+    <string name="impaired">impaired</string>
+    <string name="good">good</string>
+    <string name="moderate">moderate</string>
+    <string name="mild_fatigue">Mild fatigue</string>
+    <string name="moderate_fatigue">Moderate fatigue</string>
+    <string name="severe_fatigue">Severe fatigue</string>
+    <string name="within_normal_limits">Within normal limits</string>
+    <string name="borderline_case">Borderline case</string>
+    <string name="inconspicuous">Inconspicuous</string>
+    <string name="mild_depressive">Mild depressive</string>
+    <string name="moderate_depressive">Moderate depressive</string>
+    <string name="severe_depressive">Severe depressive</string>
+    <string name="very_high">Very high</string>
+    <string name="high">High</string>
+    <string name="average">Average</string>
+    <string name="low">Low</string>
+    <string name="very_low">Very low</string>
+
 </resources>

@@ -3,6 +3,7 @@ package fr.thomas.menard.iproms.Views;
 import androidx.annotation.NonNull;
 
 import android.content.Intent;
+import android.icu.text.IDNA;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,22 +25,24 @@ public class DepressionAnxietyActivity extends BaseActivity {
     private String rating, categorie;
     private int numberQuestion;
     private int total_Score;
-    private int skipped_question;
-
-    private int questionAns = 0;
-
-    private WriteCSV writeCSVClass;
-
+    private int questionAns, skipped_question;
+    private String[] depressionQuestionScores = new String[14];
     private boolean touched = false, redo_questionnaire = false;
-
+    private WriteCSV writeCSVClass;
 
     @Override
     public void init(){
         writeCSVClass = WriteCSV.getInstance(this);
         binding.txtIntro.setText(R.string.txt_intro_depression);
         ReadCSV.retrieveInfos(this);
+        retrieveInfos();
         reinit_questionnaire();
         getQuestion();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         displayText();
     }
 
@@ -71,6 +74,42 @@ public class DepressionAnxietyActivity extends BaseActivity {
         intent.putExtra("questionAnswered", questionAns + 1);
     }
 
+    private void retrieveInfos() {
+        if (InfoFile.questionAnsDep == null || InfoFile.questionAnsDep.isEmpty())
+            numberQuestion = 1;
+        else {
+            try {
+                numberQuestion = Integer.parseInt(InfoFile.questionAnsDep);
+            } catch (NumberFormatException e) {
+                Log.e("DepressionAnxietyActivity", "Error parsing questionAnsDep: " + e.getMessage());
+                numberQuestion = 1; // default 1 if parsing fails
+            }
+        }
+
+        if (InfoFile.lastQuestionDep == null || InfoFile.lastQuestionDep.isEmpty()) {
+            skipped_question = 0; // default 0 if empty
+        } else {
+            try {
+                skipped_question = Integer.parseInt(InfoFile.lastQuestionDep);
+            } catch (NumberFormatException e) {
+                Log.e("DepressionAnxietyActivity", "Error parsing lastQuestionDep: " + e.getMessage());
+                skipped_question = 0; // default 0 if parsing fails
+            }
+        }
+
+        // retrieve individual scores
+        for (int i = 0; i < depressionQuestionScores.length; i++) {
+            depressionQuestionScores[i] = InfoFile.depressionQuestionScores[i];
+        }
+
+        if(numberQuestion==0) numberQuestion = 1;
+        if (numberQuestion > 14) numberQuestion = 14;
+
+        int pourcentage = 100 * numberQuestion / 14;
+        binding.txtPoucentageDoneDep.setText(String.valueOf(pourcentage));
+        Log.d("TEST", "retrieveInfos() - numberQuestion: " + numberQuestion + " - skippped_question: " + skipped_question);
+
+    }
     private void getQuestion(){
         numberQuestion = Integer.parseInt(InfoFile.questionAnsDep);
         if(numberQuestion==0)
@@ -89,18 +128,29 @@ public class DepressionAnxietyActivity extends BaseActivity {
         skipped_question = Integer.parseInt(InfoFile.lastQuestionDep);
     }
 
+    private void reinit_questionnaire(){
+        if(redo_questionnaire){
+            WriteCSV.getInstance(this).reinit_questionnaire_Depression(this);
+
+            // reinitialize individual scores
+            for (int i = 0; i < depressionQuestionScores.length; i++) {
+                depressionQuestionScores[i] = "0";
+            }
+        }
+    }
+
+    private void finishQuestionnaire(){
+        binding.btnSkipQuestionnaire.setOnClickListener(v -> {
+            modifyCSVInfos("done", "0", "skip", false, true, numberQuestion);
+            navigateToNextActivity(MainActivity.class);
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.actionbar, menu);
         return true;
-    }
-
-    private void finishQuestionnaire(){
-        binding.btnSkipQuestionnaire.setOnClickListener(v -> {
-            modifyCSVInfos("done", "0", "skip", true, true);
-            navigateToNextActivity(MainActivity.class);
-        });
     }
 
     @Override
@@ -109,7 +159,7 @@ public class DepressionAnxietyActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
-            write_csv("exit");
+            // write_csv("exit");
             navigateToNextActivity(MainActivity.class);
             return true;
         } else if (id == R.id.action_skip) {
@@ -120,14 +170,7 @@ public class DepressionAnxietyActivity extends BaseActivity {
 
     }
 
-    private void reinit_questionnaire(){
-        if(redo_questionnaire){
-            WriteCSV.getInstance(this).reinit_questionnaire_Depression(this);
-        }
-    }
-
     private void displayText() {
-
         Integer questionID = getResources().getIdentifier("question_HADS_" + numberQuestion, "string", getPackageName());
         Integer info0 = getResources().getIdentifier("question_HADS_" + numberQuestion +"_0", "string", getPackageName());
         Integer info1 = getResources().getIdentifier("question_HADS_" + numberQuestion +"_1", "string", getPackageName());
@@ -144,47 +187,50 @@ public class DepressionAnxietyActivity extends BaseActivity {
         binding.txtPoucentageDoneDep.setText(String.valueOf(pourcentage));
 
         Log.d("TEST", "number question" + numberQuestion + pourcentage);
-
     }
 
     private void listenBtnConfirm(){
+        Log.d("TEST", "listenBtnConfirm() - numberQuestion (before): " + numberQuestion + " - skipped_question" + skipped_question);
         binding.btnConfirm.setOnClickListener(v -> {
             write_csv(rating);
             total_Score += Integer.parseInt(rating);
 
-            Intent intent;
-            if(numberQuestion==14){
-                modifyCSVInfos("done", String.valueOf(total_Score), categorie, false, false);
+            // store current rating in array
+            depressionQuestionScores[numberQuestion - 1] = rating; // numberQuestion starts at 1, array index starts at 0
+
+            if(numberQuestion==14) {
+                modifyCSVInfos("done", String.valueOf(total_Score), categorie, false, false, numberQuestion);
                 navigateToNextActivity(MainActivity.class);
-            }else {
-                modifyCSVInfos("not finished", String.valueOf(total_Score), categorie, false, false);
+            } else {
+                numberQuestion++;
+                modifyCSVInfos("not finished", String.valueOf(total_Score), categorie, false, false, numberQuestion);
                 navigateToNextActivityWithoutFinish(DepressionAnxietyActivity.class);
             }
         });
     }
 
-
     private void listenBtnSkip(){
         binding.btnSkip.setOnClickListener(v -> skip());
     }
     private void skip(){
+        // record skip
+        depressionQuestionScores[numberQuestion - 1] = "-1";
+        skipped_question++; // increment skipped question number
         write_csv("skip");
-        Intent intent;
 
-        if(numberQuestion==14){
-            modifyCSVInfos("done", String.valueOf(total_Score), categorie, true, false);
+        if(numberQuestion==14) {
+            modifyCSVInfos("done", String.valueOf(total_Score), categorie, true, false, numberQuestion);
             navigateToNextActivity(MainActivity.class);
-        }else {
-            modifyCSVInfos("not finished", String.valueOf(total_Score), categorie, true, false);
+        } else {
+            numberQuestion++;
+            modifyCSVInfos("not finished", String.valueOf(total_Score), categorie, true, false, numberQuestion);
             navigateToNextActivityWithoutFinish(DepressionAnxietyActivity.class);
         }
     }
 
-
-    private void modifyCSVInfos(String done, String  score, String category, boolean skip, boolean skip_questionnaire){
-        WriteCSV.getInstance(this).modifyCSVInfos_Depression(this, numberQuestion, skipped_question, done, score, category, skip, skip_questionnaire);
+    private void modifyCSVInfos(String done, String  score, String category, boolean skip, boolean skip_questionnaire, int numberQuestion){
+        WriteCSV.getInstance(this).modifyCSVInfos_Depression(this, numberQuestion, skipped_question, done, score, category, skip, skip_questionnaire, depressionQuestionScores, rating);
     }
-
 
     private void listenSeekbar(){
         binding.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -215,15 +261,29 @@ public class DepressionAnxietyActivity extends BaseActivity {
 
     private void write_csv(String rating){
         String csv_path = FileManager.getHADSFilename(this);
-        String idPatient = Patient.getPatient().getPatientId(this);
-        String caseID = Patient.getPatient().getCaseId(this);
-        String date = Patient.getPatient().getDate(this);
+        String idPatient = Patient.getPatient().getPatientId();
+        String caseID = Patient.getPatient().getCaseId();
+        String date = Patient.getPatient().getDate();
 
         if(!FileManager.isHADSFileExist(this)){
-            writeCSVClass.createAndWriteCSV_fatigue(csv_path, idPatient,caseID, date, String.valueOf(numberQuestion), rating);
+            writeCSVClass.createAndWriteCSV_depression(csv_path, idPatient,caseID, date, String.valueOf(numberQuestion), rating);
         }else{
-            writeCSVClass.writeDataCSV_fatigue(csv_path, String.valueOf(numberQuestion), rating);
+            writeCSVClass.writeDataCSV_depression(csv_path, String.valueOf(numberQuestion), rating, depressionQuestionScores);
         }
     }
 
+    public static int getNbAnsweredQuestions () {
+        int count = 0;
+        for (String score : InfoFile.depressionQuestionScores) {
+            if (score != null && !score.trim().isEmpty()) {
+                try {
+                    int value = Integer.parseInt(score.trim());
+                    if (value >= 0) count++;
+                } catch (NumberFormatException e) {
+
+                }
+            }
+        }
+        return count;
+    }
 }

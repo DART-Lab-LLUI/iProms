@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Percentage completed after this question: "
+            android:text="@string/percentage_completed_after_this_questionnaire"
             android:fontFamily="@font/montserratregular"
             android:textColor="@color/black"
             android:textSize="18sp"/>
@@ -73,7 +73,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="400dp"
         android:fontFamily="@font/montserratregular"
-        android:text="question_fatigue"
+        android:text="@string/question_fatigue"
         android:textColor="@color/black"
         android:textAlignment="center"
         android:layout_marginStart="30dp"
@@ -204,7 +204,7 @@
         android:background="@drawable/bg_button"
         android:visibility="invisible"
         android:fontFamily="@font/montserratregular"
-        android:text="Confirm"/>
+        android:text="@string/btn_confirm"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -217,7 +217,7 @@
         android:background="@drawable/bg_circle_button"
         android:visibility="visible"
         android:fontFamily="@font/montserratregular"
-        android:text="Skip question"/>
+        android:text="@string/btn_skip_question"/>
 
 
 
@@ -232,5 +232,5 @@
         android:background="@drawable/bg_circle_button"
         android:visibility="visible"
         android:fontFamily="@font/montserratregular"
-        android:text="Finish\nquestionnaire"/>
+        android:text="@string/btn_finish_questionnaire"/>
 </RelativeLayout>

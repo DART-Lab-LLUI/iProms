@@ -1,11 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">iProms</string>
-    <string name="welcome">Welcome to iProms (DE)</string>
+    <string name="welcome">Willkommen zu iPROMS(DE)</string>
+    <string name="intro_text">
+        Auf der nächsten Seite finden Sie verschiedene Fragebögen, die uns helfen sollen, Ihr körperliches und emotionales Wohlbefinden besser zu verstehen. Ihre Antworten geben uns wichtige Einblicke in Ihre Lebensqualität und ermöglichen es Ihrem Rehabilitationsteam, Ihre Behandlung auf festgestellte Probleme oder Bedürfnisse zuzuschneiden, um Ihren Genesungsprozess zu verbessern und Ihre langfristige Gesundheit zu unterstützen. \n\n
+        Bitte beantworten Sie alle Fragen so vollständig wie möglich. Wenn eine Frage unklar ist, interpretieren Sie sie nach bestem Wissen und Gewissen und wählen Sie dann die Antwort aus, die Ihnen am zutreffendsten erscheint. Es gibt keine richtigen oder falschen Antworten; wir wollen nur Ihre Sichtweise verstehen. Wenn Sie unsicher sind oder sich nicht in der Lage fühlen zu antworten, können Sie die Frage überspringen.\n\n
+        Am Ende erhalten Sie eine Zusammenfassung Ihrer Ergebnisse, die Sie mit Ihrem Rehabilitationsteam besprechen können. Dies unterstützt die gemeinsame Entscheidungsfindung und hilft Ihrem Team, Ihren Pflegeplan auf das abzustimmen, was Ihnen am wichtigsten ist. \n\n
+        Wenn Sie Hilfe brauchen, zögern Sie nicht, unsere Krankenschwestern, Therapeuten oder Ärzte zu fragen.
+    </string>
 
-    <string name="summary_text">You have completed all the screening measures.\n
-        If you are interested in sharing more details about your health situation with us, there are some optional, more detailed questionnaires coming up next.</string>
+    <string name = "diagnosis">Diagnose</string>
+    <string name = "case_id_7_characters">Fall-ID (7 Zeichen)</string>
+    <string name = "patient_id">Patient-ID :</string>
+    <string name = "diagnosis__">Diagnose :</string>"
+    <string name = "clinic_id">Klinik: </string>
 
+    <string name="we_suggest_you_to_complete_the_following_questionnaires">Wir empfehlen Ihnen, die folgenden Fragebögen auszufüllen</string>
+    <string name="thank_you_for_completing_our_questionnaires_n_you_can_now_look_at_your_results">Vielen Dank, dass Sie unsere Fragebögen ausgefüllt haben   Sie können nun Ihre Ergebnisse einsehen</string>
+    <string name="based_on_your_results">Aufgrund Ihrer Ergebnisse bitten wir Sie, die folgenden Fragebögen auszufüllen.</string>
+    <string name="based_on_your_results_clinical_team">Aufgrund Ihrer Ergebnisse würden wir die folgenden zusätzlichen Tests vorschlagen. \Jemand aus dem klinischen Team wird die Ergebnisse auch mit Ihnen besprechen.</string>
+    <string name="please_select_questionnaire">Bitte wählen Sie einen Fragebogen aus.</string>
+    <string name="data_uploaded">Ergebnisse \n hochgeladet</string>
+    <string name="your_results">Deine Ergebnisse</string>
+    <string name="category">Kategorie</string>
+    <string name="score">Ergebnis</string>
+    <string name="description">Beschreibung</string>
+
+    <string name="fatigue">Müdigkeit</string>
+    <string name="sleep">Schlaf: </string>
+    <string name="question_fatigue">Frage zu Müdigkeit</string>
+
+    <string name="question">Frage</string>
+    <string name="questions_answered">Beantwortete Fragen: </string>
+    <string name="average_score">Durchschnittliche Bewertung: </string>
+    <string name="skipped_questionniare">Fragebogen übersprungen</string>
+    <string name="additional_questionnaires">Zusätzliche Fragebögen</string>
+
+    <string name="depression_score">Depression Wert: </string>
+    <string name="anxiety_score">Angststörung Wert: </string>
+    <string name="total_score">Gesamtbewertung: </string>
+    <string name="physical_total_score">Physikalische Gesamtbewertung: </string>
+    <string name="mental_total_score">Mentale Gesamtbewertung: </string>
+
+    <string name="depression_and_anxiety">Depression und Angststörungen</string>
+    <string name="anxiety">Angststörung</string>
+    <string name="questionnaire">Fragebogen: </string>
+    <string name="your_rating">Ihre Bewertung: </string>
+    <string name="btn_confirm">Bestätigen</string>
+    <string name="btn_go_to_results">Zu den Ergebnissen</string>
+    <string name="btn_finish_questionnaire">Fragebogen beendend</string>
+    <string name="btn_skip_question">Frage überspringen</string>
+    <string name="x_skipped">  übersprungen)</string>
+
+
+    <string name="txt_intro_depression">Kreuzen Sie das Kästchen neben der Antwort an, die Ihren Gefühlen in der letzten Woche am ehesten entspricht. \n \n Lassen Sie sich mit Ihren Antworten nicht zu viel Zeit: Am besten ist es, wenn Sie sofort antworten.</string>
+    <string name="percentage_completed_after_this_questionnaire">Prozentsatz, der nach dieser Frage ausgefüllt wurde: </string>
+    <string name="past_two_weeks"> - In den letzten zwei Wochen einschliesslich heute</string>
+
+    <string name="never">Nie\n</string>
+    <string name="always">Immer\n</string>
+    <string name="info_seek_WEIMus_0">Fast nie</string>
+    <string name="info_seek_WEIMus_1">Selten</string>
+    <string name="info_seek_WEIMus_2">Manchmal</string>
+    <string name="info_seek_WEIMus_3">Häufig</string>
+    <string name="info_seek_WEIMus_4">Fast immer</string>
+
+    <string name="instructions">Anleitungen</string>
+    <string name="intro_fsmc">Der folgende Fragebogen bezieht sich auf Alltagsprobleme, die in direktem Zusammenhang mit einer starken Form von Müdigkeit stehen. Intensive Form der Müdigkeit" ist ein unkontrollierbarer Zustand, der durch Abgeschlagenheit, Erschöpfung und Energiemangel gekennzeichnet ist und plötzlich und unabhängig von erkennbaren äußeren Ursachen auftritt. Es handelt sich nicht um einzelne Episoden, die jeder im Laufe des Tages, nach einer Anstrengung oder einer durchwachten Nacht erleben kann! Lesen Sie jeden Satz sorgfältig durch. Entscheiden Sie dann, inwieweit jeder Satz auf Ihre Situation in Bezug auf Ihr tägliches Leben zutrifft. Wenn möglich, versuchen Sie bitte, uns zu beschreiben, wie Sie sich im Alltag fühlen, ohne dabei zu berücksichtigen, wie Sie sich im Moment fühlen. Bitte kreuzen Sie das Kästchen an, das Ihrer Antwort entspricht.</string>
+    <string name="summary_text">Sie haben alle Fragebogen abgeschlossen.           Wenn Sie daran interessiert sind, uns mehr Einzelheiten über Ihre gesundheitliche Situation mitzuteilen, stehen Ihnen demnächst einige optionale, detailliertere Fragebögen zur Verfügung.</string>
+    <string name="btn_start_questionnaire">Fragebogen starten</string>
 
     <string name="intro_question_fatigue">In der vergangenen Woche habe ich festgestellt, dass :</string>
     <string name="question1_fatigue">Ich habe weniger Motivation, wenn ich erschöpft bin.</string>
@@ -19,14 +82,7 @@
     <string name="question9_fatigue">Die Erschöpfung hat Einfluss auf meine Arbeit, meine Familie bzw. mein soziales Leben.</string>
 
 
-    <string name="info_seek_WEIMus_0">fast nie</string>
-    <string name="info_seek_WEIMus_1">selten</string>
-    <string name="info_seek_WEIMus_2">manchmal</string>
-    <string name="info_seek_WEIMus_3">häufig</string>
-    <string name="info_seek_WEIMus_4">fast immer</string>
-
-
-    <string name="question_intro_HADS"> Intro question HADS in german</string>
+    <string name="question_intro_HADS">Intro Fragen HADS</string>
     <string name="question_HADS_1">Ich fühle mich angespannt oder überreizt</string>
     <string name="question_HADS_1_0">überhaupt nicht</string>
     <string name="question_HADS_1_1">gelegentlich</string>
@@ -126,25 +182,6 @@
     <string name="txt_info_ess_2">würde möglicherweise einschlafen</string>
     <string name="txt_info_ess_3">würde mit grosser Wahrscheinlichkeit einschlafen</string>
 
-
-    <string name="fatigue">Fatigue</string>
-    <string name="questionnaire">Questionnaire :</string>
-
-    <string name="depression_and_anxiety">Depression and Anxiety</string>
-
-
-    <string name="intro_text">
-        Auf der nächsten Seite finden Sie verschiedene Fragebögen, die uns helfen sollen, Ihr körperliches und emotionales Wohlbefinden besser zu verstehen. Ihre Antworten geben uns wichtige Einblicke in Ihre Lebensqualität und ermöglichen es Ihrem Rehabilitationsteam, Ihre Behandlung auf festgestellte Probleme oder Bedürfnisse zuzuschneiden, um Ihren Genesungsprozess zu verbessern und Ihre langfristige Gesundheit zu unterstützen. \n\n
-        Bitte beantworten Sie alle Fragen so vollständig wie möglich. Wenn eine Frage unklar ist, interpretieren Sie sie nach bestem Wissen und Gewissen und wählen Sie dann die Antwort aus, die Ihnen am zutreffendsten erscheint. Es gibt keine richtigen oder falschen Antworten; wir wollen nur Ihre Sichtweise verstehen. Wenn Sie unsicher sind oder sich nicht in der Lage fühlen zu antworten, können Sie die Frage überspringen.\n\n
-        Am Ende erhalten Sie eine Zusammenfassung Ihrer Ergebnisse, die Sie mit Ihrem Rehabilitationsteam besprechen können. Dies unterstützt die gemeinsame Entscheidungsfindung und hilft Ihrem Team, Ihren Pflegeplan auf das abzustimmen, was Ihnen am wichtigsten ist. \n\n
-        Wenn Sie Hilfe brauchen, zögern Sie nicht, unsere Krankenschwestern, Therapeuten oder Ärzte zu fragen.
-    </string>
-    <string name="diagnosis">Diagnose</string>
-    <string name="txt_intro_depression">Kreuzen Sie das Kästchen neben der Antwort an, die Ihren Gefühlen in der letzten Woche am ehesten entspricht. \n \n Lassen Sie sich mit Ihren Antworten nicht zu viel Zeit: Am besten ist es, wenn Sie sofort antworten.</string>
-    <string name="your_rating">Ihre Bewertung : </string>
-
-
-
     <string name="emotional_behavioral_dyscontrol">Emotional and Behavioral Dyscontrol</string>
     <string name="in_the_past_7_days">"In the past 7 days"</string>
     <string name="question_qol1_1">I had trouble controlling my temper.</string>
@@ -155,8 +192,6 @@
     <string name="question_qol1_6">I was bothered by little things.</string>
     <string name="question_qol1_7">I became easily upset.</string>
     <string name="question_qol1_8">I was in conflict with others.</string>
-    <string name="never">Never\n</string>
-    <string name="always">Always\n</string>
 
 
     <string name="sleep_disturbance">Sleep Disturbance</string>
@@ -260,12 +295,10 @@
     <string name="question_qol10_6">Are you able to run errands and shop?</string>
     <string name="question_qol10_7">Are you able to get up off the floor from lying on your back without help?</string>
     <string name="question_qol10_8">Are you able to go for a walk of at least 15 minutes?</string>
-    <string name="severely_increased">severely increased</string>
-    <string name="impaired">impaired</string>
-    <string name="severe">severe</string>
+    <string name="severely_increased">stark erhöht</string>
+    <string name="impaired">beeinträchtigt</string>
+    <string name="severe">schwerwiegend</string>
 
-
-    <string name="intro_fsmc">Der folgende Fragebogen bezieht sich auf Alltagsprobleme, die in direktem Zusammenhang mit einer starken Form von Müdigkeit stehen. Intensive Form der Müdigkeit" ist ein unkontrollierbarer Zustand, der durch Abgeschlagenheit, Erschöpfung und Energiemangel gekennzeichnet ist und plötzlich und unabhängig von erkennbaren äußeren Ursachen auftritt. Es handelt sich nicht um einzelne Episoden, die jeder im Laufe des Tages, nach einer Anstrengung oder einer durchwachten Nacht erleben kann! Lesen Sie jeden Satz sorgfältig durch. Entscheiden Sie dann, inwieweit jeder Satz auf Ihre Situation in Bezug auf Ihr tägliches Leben zutrifft. Wenn möglich, versuchen Sie bitte, uns zu beschreiben, wie Sie sich im Alltag fühlen, ohne dabei zu berücksichtigen, wie Sie sich im Moment fühlen. Bitte kreuzen Sie das Kästchen an, das Ihrer Antwort entspricht.</string>
     <string name="question_fsmc_1">Wenn ich mich lange genug konzentriere, bin ich schneller erschöpft als andere in meinem Alter.</string>
     <string name="question_fsmc_2">Während meiner Erschöpfungsphasen werden meine Bewegungen deutlich ungeschickter und weniger koordiniert</string>
     <string name="question_fsmc_3">Heute muss ich wegen meiner Erschöpfungsphasen häufiger und/oder länger als früher Pausen machen, wenn ich mich körperlich betätige.</string>
@@ -438,43 +471,82 @@
     <string name="bdi_ii_21_3">Ich habe das Interesse an Sexualität völlig verloren.</string>
 
 
-    <string name="promis_1">In general, would you say your health is: </string>
-    <string name="promis_2">In general, would you say your quality of life is: </string>
-    <string name="promis_3">In general, how would you rate your physical health ? </string>
-    <string name="promis_4">In general, how would you rate your mental health, including your mood and your ability to think ? </string>
-    <string name="promis_5">In general, how would you rate your satisfaction with your social activities and relationships ? </string>
-    <string name="promis_9">In general, please rate how well you carry out your usual social activities and roles. (This includes activities at home, at work and in your community, and responsibilities as a parent, child, spouse, employee, friend, etc.)</string>
-    <string name="promis_7">How would you rate your pain on average ? </string>
-    <string name="promis_8">How would you rate your fatigue on average ?</string>
-    <string name="promis_6">To what extent are you able to carry out your everyday physical activities such as walking, climbing stairs, carrying groceries, or moving a chair ? </string>
-    <string name="promis_10">How often have you been bothered by emotional problems such as feeling anxious, depressed or irritable ?</string>
+    <string name="promis_1">Wie würden Sie Ihren Gesundheitszustand insgesamt beschreiben ?</string>
+    <string name="promis_2">Wie würden Sie Ihre Lebensqualität insgesamt beschreiben ?</string>
+    <string name="promis_3">Wie würden Sie Ihren körperlichen Gesundheitszustand insgesamt beschreiben ?</string>
+    <string name="promis_4">"Wie würden Sie Ihre psychische Verfassung insgesamt beschreiben ? Dazu zählen Ihre Stimmung und Ihre Fähigkeit, klar zu denken. "</string>
+    <string name="promis_5">Wie zufrieden sind Sie insgesamt mit Ihren Aktivitäten mit anderen Menschen und mit Ihren Beziehungen zu anderen ?</string>
+    <string name="promis_9">Wie gut sind Sie insgesamt in der Lage, Aktivitäten mit anderen Menschen nachzugehen und Ihre Rollen im Alltag und in der Gemeinschaft auszufüllen ? (Dazu zählen Aktivitäten zu Hause, am Arbeitsplatz, in Ihrem Umfeld sowie Ihre Aufgaben als Elternteil, Sohn, Tochter, Lebenspartner/-in, im Berufsleben, in Ihrem Freundeskreis usw.)</string>
+    <string name="promis_7">Wie würden Sie Ihre Schmerzen im Allgemeinen einschätzen ?</string>
+    <string name="promis_8">Wie ausgeprägt war Ihre Müdigkeit im Allgemeinen ?</string>
+    <string name="promis_6">Inwieweit sind Sie in der Lage, alltägliche körperliche Aktivitäten auszuführen, z. B. Gehen, Treppensteigen, Einkäufe tragen oder Stühle verschieben ?</string>
+    <string name="promis_10">"Wie oft haben Ihnen seelische Probleme zu schafen gemacht, wie z. B. Angstgefühle, Traurigkeit, Niedergeschlagenheit oder Reizbarkeit ? "</string>
 
-    <string name="promis_legend_1to59_1">Poor</string>
-    <string name="promis_legend_1to59_2">Fair</string>
-    <string name="promis_legend_1to59_3">Good</string>
-    <string name="promis_legend_1to59_4">Very good</string>
-    <string name="promis_legend_1to59_5">Excellent</string>
+    <string name="promis_legend_1to59_1">Schlecht</string>
+    <string name="promis_legend_1to59_2">Einigermassen</string>
+    <string name="promis_legend_1to59_3">Gut</string>
+    <string name="promis_legend_1to59_4">Sehr Gut</string>
+    <string name="promis_legend_1to59_5">Ausgezeichnet</string>
 
-    <string name="promis_legend_6to10_1">Not at all</string>
-    <string name="promis_legend_6to10_2">A little</string>
-    <string name="promis_legend_6to10_3">Moderately</string>
-    <string name="promis_legend_6to10_4">Mostly</string>
-    <string name="promis_legend_6to10_5">Completely</string>
+    <string name="promis_legend_6_1">Überhaupt nicht</string>
+    <string name="promis_legend_6_2">Ein wenig</string>
+    <string name="promis_legend_6_3">Halbwegs</string>
+    <string name="promis_legend_6_4">Grösstenteils</string>
+    <string name="promis_legend_6_5">Vollständig</string>
+
+    <string name="promis_legend_10_1">Immer</string>
+    <string name="promis_legend_10_2">Oft</string>
+    <string name="promis_legend_10_3">Manchmal</string>
+    <string name="promis_legend_10_4">Selten</string>
+    <string name="promis_legend_10_5">Nie</string>
+
+    <string name="promis_legend_8_1">Sehr stark</string>
+    <string name="promis_legend_8_2">Stark</string>
+    <string name="promis_legend_8_3">Mässig</string>
+    <string name="promis_legend_8_4">Schwach</string>
+    <string name="promis_legend_8_5">Keine Müdigkeit</string>
+
+    <string name="promis_legend_7_0">Keine Schmerzen</string>
+    <string name="promis_legend_7_1">" 1"</string>
+    <string name="promis_legend_7_2">" 2"</string>
+    <string name="promis_legend_7_3">" 3"</string>
+    <string name="promis_legend_7_4">" 4"</string>
+    <string name="promis_legend_7_5">"5 "</string>
+    <string name="promis_legend_7_6">" 6"</string>
+    <string name="promis_legend_7_7">" 7"</string>
+    <string name="promis_legend_7_8">" 8"</string>
+    <string name="promis_legend_7_9">" 9"</string>
+    <string name="promis_legend_7_10">Schlimmste vorstellbare Schmerzen</string>
 
 
-    <string name="instructions">INSTRUKTIONEN</string>
-    <string name="patient_id_7_characters">Patient ID (7 characters)</string>
-    <string name="stroke">Stroke</string>
+    <string name="patient_id_7_characters">Patient ID (7 Zeichen)</string>
+    <string name="stroke">Schlaganfall</string>
     <string name="parkinson">Parkinson</string>
     <string name="ms">MS</string>
-    <string name="other">Other</string>
-    <string name="precise_your_diagnosis">Precise your diagnosis</string>
-    <string name="confirm">Confirm</string>
-    <string name="introduction">Introduction</string>
-    <string name="go_to_questionnaires">Go to questionnaires</string>
-    <string name="disagree">Disagree</string>
-    <string name="agree">Agree</string>
+    <string name="other">Anderes</string>
+    <string name="precise_your_diagnosis">Genaue Diagnose</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="introduction">Einleitung</string>
+    <string name="go_to_questionnaires">Zu den Fragebögen</string>
+    <string name="disagree">Stimme nicht zu</string>
+    <string name="agree">Stimme zu</string>
     <string name="promis">PROMIS</string>
+    <string name="good">good</string>
+    <string name="moderate">mässig</string>
+    <string name="mild_fatigue">Leichte Müdigkeit</string>
+    <string name="moderate_fatigue">Mittelgradige Müdigkeit</string>
+    <string name="severe_fatigue">Schwere Müdigkeit</string>
+    <string name="within_normal_limits">Innerhalb normaler Grenzwerte</string>
+    <string name="borderline_case">Grenzfall</string>
+    <string name="inconspicuous">Unauffällig</string>
+    <string name="mild_depressive">Leichte Depression</string>
+    <string name="moderate_depressive">Mittelgradige Depression</string>
+    <string name="severe_depressive">Schwere Depression</string>"
+    <string name="very_high">sehr hoch</string>
+    <string name="high">Hoch</string>
+    <string name="average">Mittelmässig</string>
+    <string name="low">Niedrig</string>
+    <string name="very_low">Sehr niedrig</string>
 
 
 </resources>

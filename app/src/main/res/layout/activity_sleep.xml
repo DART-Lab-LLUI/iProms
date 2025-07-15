@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Questionnaire : "
+            android:text="@string/questionnaire"
             style="@style/Titleblue"/>
 
         <TextView
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Percentage completed after this question: "
+            android:text="@string/percentage_completed_after_this_questionnaire"
             android:fontFamily="@font/montserratregular"
             android:textColor="@color/black"
             android:textSize="18sp"/>
@@ -100,7 +100,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your rating : "
+            android:text="@string/your_rating"
             android:textSize="18sp"
             android:textColor="@color/colorPrimary"/>
         <TextView
@@ -196,7 +196,7 @@
         android:layout_marginTop="10dp"
         android:visibility="invisible"
         android:background="@drawable/bg_button"
-        android:text="Confirm"
+        android:text="@string/btn_confirm"
         />
 
     <Button
@@ -210,7 +210,7 @@
         android:background="@drawable/bg_circle_button"
         android:visibility="visible"
         android:fontFamily="@font/montserratregular"
-        android:text="Skip question"/>
+        android:text="@string/btn_skip_question"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -223,7 +223,7 @@
         android:background="@drawable/bg_circle_button"
         android:visibility="visible"
         android:fontFamily="@font/montserratregular"
-        android:text="Finish\nquestionnaire"/>
+        android:text="@string/btn_finish_questionnaire"/>
 
 
 
