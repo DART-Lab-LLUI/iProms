@@ -29,41 +29,6 @@ public class IntroductionActivity extends BaseActivity {
         });
     }
 
-    /* private boolean suptwoWeeks(String oldDate) {
-        // Parse the timestamp
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-        Date fileDate = null;
-        try {
-            fileDate = sdf.parse(oldDate);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Calculate the difference between the current date and the file date
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, +14); // Two weeks ago
-        Date twoWeeksAgo = calendar.getTime();
-
-        // Return true if the file date is before two weeks ago
-        return fileDate == null || fileDate.before(twoWeeksAgo);
-    }
-    */
-
-    /*
-    private Type checkTypeScreening() {
-        ReadCSV.retrieveInfos(this);
-
-        if (InfoFile.everythingDone()) {
-                return Type.SECOND;
-            } else if (!suptwoWeeks(InfoFile.oldDate)) {
-                return Type.SECOND;
-            }
-         else {
-            return Type.FIRST;
-        }
-    }
-    */
-
     // checkUser() -> rely solely on isCycleExpired; without using checkTypeScreening
     private void checkUser() {
         // load current CSV data into InfoFile; ensures that all static fields in InfoFile = set from existing CSV file
