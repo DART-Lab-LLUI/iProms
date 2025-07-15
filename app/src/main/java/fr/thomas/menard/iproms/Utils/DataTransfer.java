@@ -21,6 +21,7 @@ public class DataTransfer {
     private MinioHelper minioHelper;
     private final BaseActivity mainActivity;
     private final Patient patientInfo;
+    private boolean testing;
 
     public DataTransfer(BaseActivity mainActivity) {
         this.patientInfo = Patient.getPatient();
@@ -33,6 +34,9 @@ public class DataTransfer {
             case 1:
                 this.minioHelper = new MinioHelper(MINIO_HS_ENDPOINT, MINIO_HS_ACCESS, MINIO_HS_SECRET, MINIO_HS_BUCKET, mainActivity);
                 break;
+            case 2:
+                testing = true;
+                break;
         }
     }
 
@@ -41,6 +45,9 @@ public class DataTransfer {
     }
 
     public void uploadFile(File file){
+
+        if(testing) return;
+
         try {
             minioHelper.sendFileToMinio(file, uploadStatus -> {
                 mainActivity.runOnUiThread(() -> {
@@ -64,6 +71,8 @@ public class DataTransfer {
     }
 
     private void runMinio(){
+        if (testing) return;
+
         try{
             minioHelper.sendFolderToMinio(getSessionFolder(mainActivity), patientInfo, uploadStatus -> {
                 mainActivity.runOnUiThread(() -> {

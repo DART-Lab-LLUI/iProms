@@ -1,7 +1,5 @@
 package fr.thomas.menard.iproms.Views;
 
-import static android.os.Build.VERSION_CODES.R;
-
 import androidx.annotation.NonNull;
 import android.content.Intent;
 import android.util.Log;
