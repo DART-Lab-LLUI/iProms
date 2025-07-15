@@ -1,5 +1,6 @@
 package fr.thomas.menard.iproms.Views;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,6 +14,7 @@ import fr.thomas.menard.iproms.databinding.ActivityLangueBinding;
 public class LanguageActivity extends BaseActivity {
 
     private ActivityLangueBinding binding;
+    private String langCode;
 
 
     // method to load language from SharedPreferences
@@ -26,17 +28,15 @@ public class LanguageActivity extends BaseActivity {
 
     private void listenBtnLanguage(){
         binding.btnDe.setOnClickListener(v -> {
-            MyApplication.language = Language.GERMAN;
-            saveLanguagePreference(Language.GERMAN);
+            saveLanguagePreference("de");
 
-            // before navigateToNextAcitvity(), ensuring locale set correctly before next activity stars
             LocaleHelper.setLocale(this, Language.GERMAN.getLanguage());
             navigateToNextActivity(IdentificationActivity.class);
         });
 
         binding.btnEn.setOnClickListener(v -> {
             MyApplication.language = Language.ENGLISH;
-            saveLanguagePreference(Language.ENGLISH);
+            saveLanguagePreference("en");
 
             // before navigateToNextAcitvity(), ensuring locale set correctly before next activity stars
             LocaleHelper.setLocale(this, Language.ENGLISH.getLanguage());
@@ -59,14 +59,14 @@ public class LanguageActivity extends BaseActivity {
     }
 
     // save selected language to SharedPreferences
-    private void saveLanguagePreference(Language language) {
+    private void saveLanguagePreference(String langCode) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit().putString("language", language.name().toLowerCase()).apply();
+        prefs.edit().putString("language", langCode).apply();
     }
 
     @Override
     public void init() {
-
+        loadlanguagePreference();
     }
 
     @Override

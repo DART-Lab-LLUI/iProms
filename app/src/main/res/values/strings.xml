@@ -571,5 +571,6 @@
     <string name="average">Average</string>
     <string name="low">Low</string>
     <string name="very_low">Very low</string>
+    <string name="please_select_your_language" translatable="false">Please select your language</string>
 
 </resources>

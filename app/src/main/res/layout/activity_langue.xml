@@ -14,7 +14,7 @@
         android:layout_marginTop="300dp"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/montserratregular"
-        android:text="Please select your language"
+        android:text="@string/please_select_your_language"
         android:textColor="@color/colorPrimary"
         android:textSize="35sp" />
 
