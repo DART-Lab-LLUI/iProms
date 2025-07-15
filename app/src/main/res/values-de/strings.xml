@@ -48,7 +48,7 @@
     <string name="your_rating">Ihre Bewertung: </string>
     <string name="btn_confirm">Bestätigen</string>
     <string name="btn_go_to_results">Zu den Ergebnissen</string>
-    <string name="btn_finish_questionnaire">Fragebogen beendend</string>
+    <string name="btn_finish_questionnaire">Fragebogen beenden</string>
     <string name="btn_skip_question">Frage überspringen</string>
     <string name="x_skipped">  übersprungen)</string>
 
