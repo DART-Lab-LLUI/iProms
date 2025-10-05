@@ -573,4 +573,9 @@
     <string name="very_low">Very low</string>
     <string name="please_select_your_language" translatable="false">Please select your language</string>
 
+    <string name="redo_questionaire">Redo Questionnaire %1$s?</string>
+    <string name="redo_questionaire_message">The questionaire has been already completed. Are you sure you want to redo it?</string>
+    <string name="redo">Redo</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

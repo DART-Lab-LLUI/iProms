@@ -620,10 +620,11 @@ public class WriteCSV extends ViewModel {
             data.add(new String[] { "Question number", "Rating" });
 
             // check if rating is skip and write "-1" instead
+            String full_question_number = "Fatigue_Q" + num_question;
             if (rating.equals("skip")) {
-                data.add(new String[] {num_question, "-1"});
+                data.add(new String[] {full_question_number, "-1"});
             } else {
-                data.add(new String[] { num_question, rating});
+                data.add(new String[] { full_question_number, rating});
             }
             writer.writeAll(data);
 
@@ -1963,14 +1964,15 @@ public class WriteCSV extends ViewModel {
                 row[qStart + i] = depressionQuestionScores[i];
             }
 
-            // 6) Compute the “next” pointer (0 when done)
-            boolean finished = "done".equals(done);
-            int nextQ = finished ? 0 : Math.min(currentQ + 1, maxQ);
-
             // update the summary fields
             row[colDone] = done;
-            row[colScoreDep] = score;
-            row[colScoreAnx] = score;
+
+            // depression
+            if(category.equals("depression"))
+                row[colScoreDep] = score;
+            else //anxiety
+                row[colScoreAnx] = score;
+
             row[colAns] = String.valueOf(numberQuestion);
 
             if (skip) {

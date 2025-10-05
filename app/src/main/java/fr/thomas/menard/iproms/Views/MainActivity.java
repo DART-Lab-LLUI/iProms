@@ -5,6 +5,7 @@ import static fr.thomas.menard.iproms.Model.InfoFile.*;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -18,7 +19,6 @@ import fr.thomas.menard.iproms.App.MyApplication;
 import fr.thomas.menard.iproms.Model.InfoFile;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.DataTransfer;
-import fr.thomas.menard.iproms.Utils.DebugLogger;
 import fr.thomas.menard.iproms.Utils.FileManager;
 import fr.thomas.menard.iproms.Utils.LocaleHelper;
 import fr.thomas.menard.iproms.Utils.ReadCSV;
@@ -31,10 +31,10 @@ public class MainActivity extends BaseActivity {
     private Context context;
     private String questionnaire;
     private boolean redo_questionnaire;
-    private boolean restart_fatigue = false;
-    private boolean restart_dep = false;
-    private boolean restart_promis = false;
-    private boolean restart_bdi = false;
+    private boolean restart_fatigue = false, done_fatigue = false;
+    private boolean restart_dep = false, done_dep = false;
+    private boolean restart_promis = false, done_promis = false;
+    private boolean restart_bdi = false, done_bdi = false;
 
     private int safeParse(String safe) {
         if (safe == null || safe.isEmpty()) return 0;
@@ -121,14 +121,15 @@ public class MainActivity extends BaseActivity {
         restart_fatigue = true;
         binding.nbrQuestionAnsweredFatigue.setText(questionAnsFatigue);
 
-        boolean isDone = "done".equals(fatigue);
+        done_fatigue = "done".equals(fatigue);
+
         // pick right icon
-        binding.imgFatigueDone.setImageResource(isDone ? R.drawable.questionnaire_done : R.drawable.started);
+        binding.imgFatigueDone.setImageResource(done_fatigue ? R.drawable.questionnaire_done : R.drawable.started);
 
         binding.imgFatigueDone.setVisibility(View.VISIBLE);
-        binding.txtQuestionsSkippedFatigue.setVisibility(isDone ? View.VISIBLE : View.INVISIBLE);
+        binding.txtQuestionsSkippedFatigue.setVisibility(done_fatigue ? View.VISIBLE : View.INVISIBLE);
 
-        if (!isDone) return;
+        if (!done_fatigue) return;
 
         // done case
         if (!avg_score_fatigue.equals("0")) {
@@ -136,10 +137,9 @@ public class MainActivity extends BaseActivity {
             double mean = (double) Integer.parseInt(avg_score_fatigue) / Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1;
             long rounded = Math.round(mean);
 
-            binding.rdBtnFatigue.setClickable(false);
+//            binding.rdBtnFatigue.setClickable(false);
             binding.linearAvgScoreFatigue.setVisibility(View.VISIBLE);
             binding.scoreAvgFatigue.setText(String.valueOf(rounded));
-
         } else {
             // completely skipped all questions
             binding.linearFatigue.setVisibility(View.GONE);
@@ -155,12 +155,12 @@ public class MainActivity extends BaseActivity {
         restart_dep = true;
         binding.nbrQuestionAnsweredDep.setText(questionAnsDep);
 
-        boolean isDone = "done".equals(depression);
-        binding.imgDepressionDone.setImageResource(isDone ? R.drawable.questionnaire_done : R.drawable.started);
+        done_dep = "done".equals(depression);
+        binding.imgDepressionDone.setImageResource(done_dep ? R.drawable.questionnaire_done : R.drawable.started);
         binding.imgDepressionDone.setVisibility(View.VISIBLE);
-        binding.txtQuestionsSkippedDepAnx.setVisibility(isDone ? View.VISIBLE : View.INVISIBLE);
+        binding.txtQuestionsSkippedDepAnx.setVisibility(done_dep ? View.VISIBLE : View.INVISIBLE);
 
-        if (!isDone) return;
+        if (!done_dep) return;
 
         // done case
         boolean hasScores = !avg_score_depression.equals("0") && !avg_score_anxiety.equals("0");
@@ -175,7 +175,7 @@ public class MainActivity extends BaseActivity {
             binding.scoreAvgAnx.setText(avg_score_anxiety);
 
             // prevent re-entry unless they skipped more than 3
-            binding.rdBtnDA.setClickable(Integer.parseInt(lastQuestionDep) >= 4 || Integer.parseInt(skipped_question_anx) >= 4);
+//            binding.rdBtnDA.setClickable(Integer.parseInt(lastQuestionDep) >= 4 || Integer.parseInt(skipped_question_anx) >= 4);
 
         } else {
             // skipped entire thing
@@ -190,12 +190,12 @@ public class MainActivity extends BaseActivity {
         restart_bdi = true;
         binding.nbrQuestionAnsweredBDI.setText(questionAnsBDI);
 
-        boolean isDone = "done".equals(bdi);
-        binding.imgBDIDone.setImageResource(isDone ? R.drawable.questionnaire_done : R.drawable.started);
+        done_bdi = "done".equals(bdi);
+        binding.imgBDIDone.setImageResource(done_bdi ? R.drawable.questionnaire_done : R.drawable.started);
         binding.imgBDIDone.setVisibility(View.VISIBLE);
-        binding.txtQuestionsSkippedBDI.setVisibility(isDone ? View.VISIBLE : View.INVISIBLE);
+        binding.txtQuestionsSkippedBDI.setVisibility(done_bdi ? View.VISIBLE : View.INVISIBLE);
 
-        if (!isDone) return;
+        if (!done_bdi) return;
 
         // done case
         boolean hasScores = !score_bdi.equals("0");
@@ -207,7 +207,7 @@ public class MainActivity extends BaseActivity {
             binding.txtRawValueBDI.setText(score_bdi);
 
             // prevent re-entry undless skipped more than 3
-            binding.rdBtnBDI.setClickable(Integer.parseInt(skipped_question_bdi) >= 4);
+//            binding.rdBtnBDI.setClickable(Integer.parseInt(skipped_question_bdi) >= 4);
         } else {
             // skipped entire thing
             binding.txtQuestionBDI.setVisibility(View.GONE);
@@ -222,12 +222,12 @@ public class MainActivity extends BaseActivity {
         restart_promis = true;
         binding.nbrQuestionAnsweredPROMIS.setText(questionAnsPROMIS);
 
-        boolean isDone = "done".equals(promis);
-        binding.imgPromisDone.setImageResource(isDone ? R.drawable.questionnaire_done : R.drawable.started);
+        done_promis = "done".equals(promis);
+        binding.imgPromisDone.setImageResource(done_promis ? R.drawable.questionnaire_done : R.drawable.started);
         binding.imgPromisDone.setVisibility(View.VISIBLE);
-        binding.txtQuestionsSkippedPROMIS.setVisibility(isDone ? View.VISIBLE : View.INVISIBLE);
+        binding.txtQuestionsSkippedPROMIS.setVisibility(done_promis ? View.VISIBLE : View.INVISIBLE);
 
-        if (!isDone) return;
+        if (!done_promis) return;
 
         Log.d("PROMIS", "SummaryActivity: PhyTxt="
                 + InfoFile.avg_score_PROMIS_physical
@@ -245,7 +245,7 @@ public class MainActivity extends BaseActivity {
             binding.txtRawValueMentalPROMIS.setText(avg_score_PROMIS_mental);
 
             // prevent re-entry unless they skipped more than 3
-            binding.rdBtnPROMIS.setClickable(Integer.parseInt(skipped_question_promis) >= 4 || Integer.parseInt(skipped_question_promis) >= 4);
+//            binding.rdBtnPROMIS.setClickable(Integer.parseInt(skipped_question_promis) >= 4 || Integer.parseInt(skipped_question_promis) >= 4);
 
         } else {
             // skipped entire thing
@@ -290,10 +290,40 @@ public class MainActivity extends BaseActivity {
         binding.btnConfirm.setOnClickListener(v -> {
             if(questionnaire == null) {
                 Toast.makeText(this, "Please select a questionnaire", Toast.LENGTH_SHORT).show();
+            }
+
+            if(checkIfSelectedQuestionaireIsDone(questionnaire)){
+                new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.redo_questionaire, questionnaire))
+                        .setMessage(getString(R.string.redo_questionaire_message))
+                        .setPositiveButton(getString(R.string.redo), (dialog, which) -> {
+                            redo_questionnaire = true;
+                            startActivity(questionnaire);
+                        })
+                        .setNegativeButton(getString(R.string.cancel), (dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .setCancelable(true)
+                        .show();
             } else {
                 startActivity(questionnaire);
             }
         });
+    }
+
+    private boolean checkIfSelectedQuestionaireIsDone(String questionnaire){
+        switch (questionnaire) {
+            case "fatigue":
+                return done_fatigue;
+            case "depression":
+                return done_dep;
+            case "promis":
+                return done_promis;
+            case "bdi":
+                return done_bdi;
+            default:
+                return false;
+        }
     }
 
     private void listenBtnResult(){
@@ -346,7 +376,6 @@ public class MainActivity extends BaseActivity {
     // pasts redo and restart into next activity
     @Override
     public void prepareIntent(Intent intent) {
-
         intent.putExtra("redo_questionnaire", redo_questionnaire);
         intent.putExtra("restart", getRestartFlag(questionnaire));
     }

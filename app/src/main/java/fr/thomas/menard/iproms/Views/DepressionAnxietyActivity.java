@@ -192,7 +192,7 @@ public class DepressionAnxietyActivity extends BaseActivity {
     private void listenBtnConfirm(){
         Log.d("TEST", "listenBtnConfirm() - numberQuestion (before): " + numberQuestion + " - skipped_question" + skipped_question);
         binding.btnConfirm.setOnClickListener(v -> {
-            write_csv(rating);
+            //write_csv(rating);
             total_Score += Integer.parseInt(rating);
 
             // store current rating in array

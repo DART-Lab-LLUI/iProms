@@ -60,6 +60,7 @@ public class FatigueQuestionnaire extends BaseActivity {
     public void processReceivedIntent(Intent intent) {
         super.processReceivedIntent(intent);
         redo_questionnaire = intent.getBooleanExtra("redo_questionnaire", false);
+        Log.d("TESTSSS", redo_questionnaire + " ");
     }
 
     private void translateText(){
@@ -118,6 +119,7 @@ public class FatigueQuestionnaire extends BaseActivity {
 
     // reinitialize the questionnaire; reinitialize summary information
     private void reinit_questionnaire(){
+
         if(redo_questionnaire){
             WriteCSV.getInstance(this).reinit_questionnaire_Fatigue(this);
 
@@ -169,11 +171,11 @@ public class FatigueQuestionnaire extends BaseActivity {
             fatigueQuestionScores[numberQuestion-1] = rating; // numberQuestion starts at 1, array index at 0
 
             if(numberQuestion==9) {
-                modifyCSVInfos("done", String.valueOf(total_Score), false, false, numberQuestion);
+                modifyCSVInfos("done", String.valueOf(total_Score/9), false, false, numberQuestion);
                 navigateToNextActivity(MainActivity.class);
             } else {
                 numberQuestion++; // increment question number
-                modifyCSVInfos("not finished", String.valueOf(total_Score), false, false, numberQuestion);
+                modifyCSVInfos("not finished", String.valueOf(total_Score/(numberQuestion-1)), false, false, numberQuestion);
                 navigateToNextActivity(FatigueQuestionnaire.class);
             }
         });

@@ -77,6 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IIntentH
 
     public void navigateToNextActivityWithoutFinish(Class<?> nextClass) {
         Intent intent = new Intent(this, nextClass);
+        prepareIntent(intent);
         this.startActivity(intent);
     }
 

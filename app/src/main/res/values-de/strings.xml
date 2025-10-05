@@ -48,7 +48,7 @@
     <string name="your_rating">Ihre Bewertung: </string>
     <string name="btn_confirm">Bestätigen</string>
     <string name="btn_go_to_results">Zu den Ergebnissen</string>
-    <string name="btn_finish_questionnaire">Fragebogen beenden</string>
+    <string name="btn_finish_questionnaire">Fragebogen überspringen</string>
     <string name="btn_skip_question">Frage überspringen</string>
     <string name="x_skipped">  übersprungen)</string>
 
@@ -548,5 +548,9 @@
     <string name="low">Niedrig</string>
     <string name="very_low">Sehr niedrig</string>
 
+    <string name="redo_questionaire">Fragebogen %1$s wiederholen?</string>
+    <string name="redo_questionaire_message">Der Fragebogen wurde bereits ausgefüllt. Sind Sie sicher, dass Sie ihn erneut ausfüllen möchten?</string>
+    <string name="redo">Erneut starten</string>
+    <string name="cancel">Abbrechen</string>
 
 </resources>
