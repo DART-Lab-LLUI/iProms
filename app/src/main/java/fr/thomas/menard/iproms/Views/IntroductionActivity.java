@@ -52,7 +52,7 @@ public class IntroductionActivity extends BaseActivity {
         }
 
         // if cycle not expired but all questionnaires done: SECOND
-        else if (InfoFile.everythingDone()) {
+        else if (InfoFile.everythingDone(this)) {
             setType(Type.SECOND);
         }
 

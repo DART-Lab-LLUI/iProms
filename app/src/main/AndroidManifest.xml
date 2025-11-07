@@ -51,7 +51,7 @@
             android:name=".Views.DepressionAnxietyActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.FatigueQuestionnaire"
+            android:name=".Views.FatigueQuestionnaireView"
             android:exported="false" />
         <activity
             android:name=".Views.IntroductionActivity"

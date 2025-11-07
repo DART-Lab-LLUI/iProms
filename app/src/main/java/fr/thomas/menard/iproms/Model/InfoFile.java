@@ -1,5 +1,11 @@
 package fr.thomas.menard.iproms.Model;
 
+import android.content.Context;
+
+import java.util.List;
+
+import fr.thomas.menard.iproms.Enum.QuestionnaireType;
+
 public class InfoFile {
 
     public static String patientId;
@@ -44,9 +50,12 @@ public class InfoFile {
 //    public static boolean restart_fatigue =false, restart_dep = false, restart_promis, restart_qol1 = false, restart_qol2= false, restart_qol3= false, restart_qol4= false,
 //            restart_qol5= false, restart_qol6= false, restart_qol7= false, restart_qol8= false, restart_qol9= false,restart_qol10= false;
 
-    public static boolean everythingDone(){
+    public static boolean everythingDone(Context context){
         // compare literals to fields - calling "done".equals is null safe
-        return "done".equals(fatigue) &&
+
+        fatigue = Questionnaires.get(context, QuestionnaireType.FATIGUE).getProgressStatus().toString();
+
+        return "Completed".equals(fatigue) &&
                 "done".equals(depression) &&
                 "done".equals(bdi) &&
                 "done".equals(promis) &&

@@ -16,7 +16,9 @@ import android.widget.Toast;
 import java.io.File;
 
 import fr.thomas.menard.iproms.App.MyApplication;
+import fr.thomas.menard.iproms.Enum.QuestionnaireType;
 import fr.thomas.menard.iproms.Model.InfoFile;
+import fr.thomas.menard.iproms.Model.Questionnaires;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.DataTransfer;
 import fr.thomas.menard.iproms.Utils.FileManager;
@@ -49,6 +51,11 @@ public class MainActivity extends BaseActivity {
     public void init() {
         // load all CSV backed fields into InfoFile.*
         ReadCSV.retrieveInfos(this);
+
+        fatigue = Questionnaires.get(this, QuestionnaireType.FATIGUE).getProgressStatus().toString();
+        if (fatigue.equals("Completed")){
+            fatigue = "done";
+        }
 
         // apply localization, then refresh UI
         LocaleHelper.setLocale(this, MyApplication.language.getLanguage());
@@ -335,7 +342,7 @@ public class MainActivity extends BaseActivity {
     private void startActivity(String questionnaire){
         switch (questionnaire) {
             case  "fatigue":
-                navigateToNextActivityWithoutFinish(FatigueQuestionnaire.class);
+                navigateToNextActivityWithoutFinish(FatigueQuestionnaireView.class);
                 break;
             case "depression":
                 navigateToNextActivityWithoutFinish(DepressionAnxietyActivity.class);
