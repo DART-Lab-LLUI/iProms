@@ -1,6 +1,5 @@
 package fr.thomas.menard.iproms.Views;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,14 +10,14 @@ import androidx.annotation.NonNull;
 
 import fr.thomas.menard.iproms.Enum.QuestionnaireType;
 import fr.thomas.menard.iproms.FileWriter.AbstractQuestionnaire;
-import fr.thomas.menard.iproms.FileWriter.FSMCQuestionnaire;
+import fr.thomas.menard.iproms.FileWriter.SleepQuestionnaire;
 import fr.thomas.menard.iproms.Model.Questionnaires;
 import fr.thomas.menard.iproms.R;
-import fr.thomas.menard.iproms.databinding.ActivityFsmcactivityBinding;
+import fr.thomas.menard.iproms.databinding.ActivitySleepBinding;
 
-public class FSMCActivity extends BaseActivity {
+public class SleepView extends BaseActivity {
 
-    ActivityFsmcactivityBinding binding;
+    private ActivitySleepBinding binding;
     private String rating;
     private boolean touched = false, redo_questionnaire = false;
     private AbstractQuestionnaire questionnaire;
@@ -27,11 +26,11 @@ public class FSMCActivity extends BaseActivity {
     @Override
     public void init(){
         if(redo_questionnaire){
-            AbstractQuestionnaire newQuestionnaire = new FSMCQuestionnaire();
-            Questionnaires.setNewQuestionnaire(QuestionnaireType.FSMC, newQuestionnaire);
+            AbstractQuestionnaire newQuestionnaire = new SleepQuestionnaire();
+            Questionnaires.setNewQuestionnaire(QuestionnaireType.SLEEP, newQuestionnaire);
         }
 
-        questionnaire = Questionnaires.get(this, QuestionnaireType.FSMC);
+        questionnaire = Questionnaires.get(this, QuestionnaireType.SLEEP);
         currentQuestionNr = questionnaire.getCurrentQuestion();
         updateView();
     }
@@ -39,14 +38,14 @@ public class FSMCActivity extends BaseActivity {
     @Override
     public void listenBtn() {
         listenSeekbar();
-        listenBtnSkip();
         listenBtnConfirm();
+        listenBtnSkip();
         finishQuestionnaire();
     }
 
     @Override
     public void setBinding() {
-        binding = ActivityFsmcactivityBinding.inflate(LayoutInflater.from(this));
+        binding = ActivitySleepBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
     }
 
@@ -60,10 +59,9 @@ public class FSMCActivity extends BaseActivity {
         binding.txtinfo1.setText(answers[1]);
         binding.txtinfo2.setText(answers[2]);
         binding.txtinfo3.setText(answers[3]);
-        binding.txtinfo4.setText(answers[4]);
     }
 
-    private void finishQuestionnaire() {
+    private void finishQuestionnaire(){
         binding.btnSkipQuestionnaire.setOnClickListener(v -> {
             questionnaire.skipQuestionnaire(this);
             navigateToNextActivity(OptionalQuestionnairesActivity.class);
@@ -72,7 +70,6 @@ public class FSMCActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.actionbar, menu);
         return true;
     }
@@ -81,9 +78,7 @@ public class FSMCActivity extends BaseActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
-            // write_csv("exit");
             navigateToNextActivity(OptionalQuestionnairesActivity.class);
             return true;
         } else if (id == R.id.action_skip) {
@@ -91,7 +86,6 @@ public class FSMCActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
 
     private void listenBtnConfirm(){
@@ -101,12 +95,13 @@ public class FSMCActivity extends BaseActivity {
         });
     }
 
+
     private void listenBtnSkip(){
         binding.btnSkip.setOnClickListener(v -> skip());
     }
 
     private void skip(){
-        questionnaire.skipQuestionnaire(this);
+        questionnaire.skipQuestion(this);
         goToNextActivity();
     }
 
@@ -114,7 +109,7 @@ public class FSMCActivity extends BaseActivity {
         if(questionnaire.isQuestionnaireDone()) {
             navigateToNextActivity(OptionalQuestionnairesActivity.class);
         } else {
-            navigateToNextActivity(FSMCActivity.class);
+            navigateToNextActivity(SleepView.class);
         }
     }
 
@@ -122,6 +117,7 @@ public class FSMCActivity extends BaseActivity {
         binding.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
                 rating = String.valueOf(progress);
                 binding.txtRating.setText(rating);
                 binding.btnConfirm.setVisibility(View.VISIBLE);
@@ -131,7 +127,7 @@ public class FSMCActivity extends BaseActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 binding.btnConfirm.setVisibility(View.VISIBLE);
                 if(!touched){
-                    rating = String.valueOf(2);
+                    rating = String.valueOf(1);
                     binding.txtRating.setText(rating);
                     touched = true;
                 }
@@ -142,15 +138,5 @@ public class FSMCActivity extends BaseActivity {
 
             }
         });
-    }
-
-    @Override
-    public void prepareIntent(Intent intent) {
-        super.prepareIntent(intent);
-    }
-
-    @Override
-    public void processReceivedIntent(Intent intent) {
-        super.processReceivedIntent(intent);
     }
 }

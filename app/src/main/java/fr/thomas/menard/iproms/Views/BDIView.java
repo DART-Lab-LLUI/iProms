@@ -1,6 +1,5 @@
 package fr.thomas.menard.iproms.Views;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,14 +10,15 @@ import androidx.annotation.NonNull;
 
 import fr.thomas.menard.iproms.Enum.QuestionnaireType;
 import fr.thomas.menard.iproms.FileWriter.AbstractQuestionnaire;
-import fr.thomas.menard.iproms.FileWriter.FSMCQuestionnaire;
+import fr.thomas.menard.iproms.FileWriter.BDIQuestionnaire;
+import fr.thomas.menard.iproms.FileWriter.FatigueQuestionnaire;
 import fr.thomas.menard.iproms.Model.Questionnaires;
 import fr.thomas.menard.iproms.R;
-import fr.thomas.menard.iproms.databinding.ActivityFsmcactivityBinding;
+import fr.thomas.menard.iproms.databinding.ActivityBdiBinding;
 
-public class FSMCActivity extends BaseActivity {
+public class BDIView extends BaseActivity {
 
-    ActivityFsmcactivityBinding binding;
+    private ActivityBdiBinding binding;
     private String rating;
     private boolean touched = false, redo_questionnaire = false;
     private AbstractQuestionnaire questionnaire;
@@ -27,11 +27,11 @@ public class FSMCActivity extends BaseActivity {
     @Override
     public void init(){
         if(redo_questionnaire){
-            AbstractQuestionnaire newQuestionnaire = new FSMCQuestionnaire();
-            Questionnaires.setNewQuestionnaire(QuestionnaireType.FSMC, newQuestionnaire);
+            AbstractQuestionnaire newQuestionnaire = new BDIQuestionnaire();
+            Questionnaires.setNewQuestionnaire(QuestionnaireType.BDI, newQuestionnaire);
         }
 
-        questionnaire = Questionnaires.get(this, QuestionnaireType.FSMC);
+        questionnaire = Questionnaires.get(this, QuestionnaireType.BDI);
         currentQuestionNr = questionnaire.getCurrentQuestion();
         updateView();
     }
@@ -46,27 +46,14 @@ public class FSMCActivity extends BaseActivity {
 
     @Override
     public void setBinding() {
-        binding = ActivityFsmcactivityBinding.inflate(LayoutInflater.from(this));
+        binding = ActivityBdiBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
-    }
-
-    private void updateView(){
-        int pourcentage = 100 * (currentQuestionNr+1) / questionnaire.getQuestionIdsLength();
-        binding.txtPoucentageDone.setText(String.valueOf(pourcentage));
-        binding.txtQuestion.setText(questionnaire.getCurrentQuestionId());
-
-        String[] answers = questionnaire.getAnswerOptions(this, 0);
-        binding.txtinfo0.setText(answers[0]);
-        binding.txtinfo1.setText(answers[1]);
-        binding.txtinfo2.setText(answers[2]);
-        binding.txtinfo3.setText(answers[3]);
-        binding.txtinfo4.setText(answers[4]);
     }
 
     private void finishQuestionnaire() {
         binding.btnSkipQuestionnaire.setOnClickListener(v -> {
             questionnaire.skipQuestionnaire(this);
-            navigateToNextActivity(OptionalQuestionnairesActivity.class);
+            navigateToNextActivity(MainActivity.class);
         });
     }
 
@@ -83,15 +70,26 @@ public class FSMCActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
-            // write_csv("exit");
-            navigateToNextActivity(OptionalQuestionnairesActivity.class);
+            navigateToNextActivity(MainActivity.class);
             return true;
         } else if (id == R.id.action_skip) {
             skip();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
 
+    private void updateView(){
+        binding.txtQuestion.setText(questionnaire.getCurrentQuestionId());
+        String[] answers = questionnaire.getAnswerOptions(this);
+        binding.txtinfo0.setText(answers[0]);
+        binding.txtinfo1.setText(answers[1]);
+        binding.txtinfo2.setText(answers[2]);
+        binding.txtinfo3.setText(answers[3]);
+
+
+        int pourcentage = 100 * (currentQuestionNr+1) / questionnaire.getQuestionIdsLength();
+        binding.txtPoucentageDone.setText(String.valueOf(pourcentage));
     }
 
     private void listenBtnConfirm(){
@@ -106,15 +104,15 @@ public class FSMCActivity extends BaseActivity {
     }
 
     private void skip(){
-        questionnaire.skipQuestionnaire(this);
+        questionnaire.skipQuestion(this);
         goToNextActivity();
     }
 
     private void goToNextActivity(){
         if(questionnaire.isQuestionnaireDone()) {
-            navigateToNextActivity(OptionalQuestionnairesActivity.class);
+            navigateToNextActivity(MainActivity.class);
         } else {
-            navigateToNextActivity(FSMCActivity.class);
+            navigateToNextActivity(BDIView.class);
         }
     }
 
@@ -122,6 +120,7 @@ public class FSMCActivity extends BaseActivity {
         binding.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
                 rating = String.valueOf(progress);
                 binding.txtRating.setText(rating);
                 binding.btnConfirm.setVisibility(View.VISIBLE);
@@ -131,7 +130,7 @@ public class FSMCActivity extends BaseActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 binding.btnConfirm.setVisibility(View.VISIBLE);
                 if(!touched){
-                    rating = String.valueOf(2);
+                    rating = String.valueOf(1);
                     binding.txtRating.setText(rating);
                     touched = true;
                 }
@@ -144,13 +143,4 @@ public class FSMCActivity extends BaseActivity {
         });
     }
 
-    @Override
-    public void prepareIntent(Intent intent) {
-        super.prepareIntent(intent);
-    }
-
-    @Override
-    public void processReceivedIntent(Intent intent) {
-        super.processReceivedIntent(intent);
-    }
 }

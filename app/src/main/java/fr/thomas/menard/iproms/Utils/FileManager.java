@@ -1,13 +1,10 @@
 package fr.thomas.menard.iproms.Utils;
 
-import static fr.thomas.menard.iproms.App.MyApplication.getType;
-
 import android.content.Context;
 import android.util.Log;
 
 import java.io.File;
 
-import fr.thomas.menard.iproms.App.MyApplication;
 import fr.thomas.menard.iproms.Model.Patient;
 
 public class FileManager {
@@ -53,93 +50,23 @@ public class FileManager {
     }
 
     public static File getInfoFile(Context context){
-        File folder = createFolder(getSessionFolder(context), getType().getType());
         String filename = "infos.csv";
-        return new File(folder, filename);
-    }
-
-    public static String getInfoFilename(Context context) {
-        String path = getFilename(getInfoFile(context));
-        Log.d("FileManager", "getInfoFilename: " + path);
-        return path;
-    }
-
-    public static boolean isInfoFileExist(Context context){
-        return isFileExists(getInfoFile(context));
-    }
-
-    public static File getResultBDIFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = "result_bdi.csv";
-        return new File(folder, filename);
-    }
-
-    public static String getResultBDIFFilename(Context context) {
-        return getFilename(getResultBDIFile(context));
+        return new File(getSessionFolder(context), filename);
     }
 
     public static File getFSMCFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
         String filename = Patient.getPatient().getPatientId() + "_FSMC.csv";
-        return new File(folder, filename);
-    }
-
-    public static String getFSMCFilename(Context context  ) {
-        return getFilename(getFSMCFile(context));
-    }
-
-    public static boolean isFSMCFileExist(Context context  ){
-        return isFileExists(getFSMCFile(context));
-    }
-
-    public static File getFSMCResultFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId() + "_result_fsmc.csv";
-        return new File(folder, filename);
-    }
-
-    public static boolean isFSMCResultFileExist(Context context  ){
-        return isFileExists(getFSMCResultFile(context));
-    }
-
-    public static File getSleepResultFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId() + "_result_sleep.csv";
-        return new File(folder, filename);
-    }
-
-    public static boolean isSleepResultFileExist(Context context  ){
-        return isFileExists(getSleepResultFile(context));
-    }
-
-    public static File getBDIResultFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
-        String filename = Patient.getPatient().getPatientId() + "_result_bdi.csv";
-        return new File(folder, filename);
-    }
-
-    public static boolean isBDIResultFileExist(Context context  ){
-        return isFileExists(getBDIResultFile(context));
+        return new File(getSessionFolder(context), filename);
     }
 
     public static File getPromisFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
         String filename = Patient.getPatient().getPatientId() + "_Promis.csv";
-        return new File(folder, filename);
-    }
-
-    public static String getPromisFilename(Context context){
-        return getFilename(getPromisFile(context));
-    }
-
-    public static boolean isPromisFileExist(Context context  ){
-        return isFileExists(getPromisFile(context));
+        return new File(getSessionFolder(context), filename);
     }
 
     public static File getQQLFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
         String filename = Patient.getPatient().getPatientId() + "_QQL.csv";
-        return new File(folder, filename);
+        return new File(getSessionFolder(context), filename);
     }
 
     public static String getQQLFilename(Context context){
@@ -151,90 +78,27 @@ public class FileManager {
     }
 
     public static File getESSFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
         String filename = Patient.getPatient().getPatientId() + "_ESS.csv";
-        return new File(folder, filename);
-    }
-
-    public static String getESSFilename(Context context){
-        return getFilename(getESSFile(context));
-    }
-
-    public static boolean isESSFileExist(Context context  ){
-        return isFileExists(getESSFile(context));
+        return new File(getSessionFolder(context), filename);
     }
 
     public static File getResultFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
         String filename = Patient.getPatient().getPatientId() + "_result.csv";
-        return new File(folder, filename);
-    }
-
-    public static String getResultFilename(Context context){
-        return getFilename(getResultFile(context));
-    }
-
-    public static boolean isResultFileExist(Context context  ){
-        return isFileExists(getResultFile(context));
+        return new File(getSessionFolder(context), filename);
     }
 
     public static File getBDIFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
         String filename = Patient.getPatient().getPatientId() + "_BDI.csv";
-        return new File(folder, filename);
-    }
-
-    public static String getBDIFilename(Context context){
-        return getFilename(getBDIFile(context));
-    }
-
-    public static boolean isBDIFileExist(Context context  ){
-        return isFileExists(getBDIFile(context));
+        return new File(getSessionFolder(context), filename);
     }
 
     public static File getHADSFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
         String filename = Patient.getPatient().getPatientId() + "_HADS.csv";
-        return new File(folder, filename);
-    }
-
-    public static String getHADSFilename(Context context){
-        return getFilename(getHADSFile(context));
-    }
-
-    public static boolean isHADSFileExist(Context context  ){
-        return isFileExists(getHADSFile(context));
+        return new File(getSessionFolder(context), filename);
     }
 
     public static File getFSSFile(Context context  ){
-        File folder = createFolder(getSessionFolder(context),   getType().getType());
         String filename = Patient.getPatient().getPatientId() + "_FSS.csv";
-        return new File(folder, filename);
-    }
-
-    public static String getFSSFilename(Context context){
-        return getFilename(getFSSFile(context));
-    }
-
-    public static boolean isFSSFileExist(Context context  ){
-        return isFileExists(getFSSFile(context));
-    }
-
-    // method to generate an archived filename in FileManager
-    public static String getArchivedFilename (Context context, String oldDate) {
-        // get current info file (e.g., /storage/emulated/0/.../First/infos.csv)
-        // -> retrieve current CSV file (infos.csv)
-        File currentInfoFile = getInfoFile(context);
-
-        // get parent directory of current file (e.g., /storage/emulated/0/.../First)
-        // -> archived file stored in same folder
-        File parentDir = currentInfoFile.getParentFile();
-
-        // construct archived filename in same directory  (e.g. info_oldDate.csv")
-        //-> new file in same directory
-        File archivedFile = new File(parentDir, "info_" + oldDate + " .csv");
-
-        // return absolute path of archived file
-        return archivedFile.getAbsolutePath();
+        return new File(getSessionFolder(context), filename);
     }
 }

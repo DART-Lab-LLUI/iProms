@@ -7,45 +7,46 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
 
 import fr.thomas.menard.iproms.Enum.QuestionnaireType;
 import fr.thomas.menard.iproms.FileWriter.AbstractQuestionnaire;
-import fr.thomas.menard.iproms.FileWriter.FatigueQuestionnaire;
+import fr.thomas.menard.iproms.FileWriter.PromisQuestionnaire;
 import fr.thomas.menard.iproms.Model.Questionnaires;
 import fr.thomas.menard.iproms.R;
-import fr.thomas.menard.iproms.databinding.ActivityFatigueQuestionnaireBinding;
+import fr.thomas.menard.iproms.databinding.ActivityPromisBinding;
 
-public class FatigueQuestionnaireView extends BaseActivity {
-
-    private ActivityFatigueQuestionnaireBinding binding;
+public class PromisView extends BaseActivity {
+    private ActivityPromisBinding binding;
     private String rating;
-    private boolean touched = false, redo_questionnaire=false;
     private AbstractQuestionnaire questionnaire;
     private int currentQuestionNr = 0;
+    private boolean touched = false, redo_questionnaire=false;
 
     @Override
-    public void init() {
+    public void init(){
         if(redo_questionnaire){
-            AbstractQuestionnaire newQuestionnaire = new FatigueQuestionnaire();
-            Questionnaires.setNewQuestionnaire(QuestionnaireType.FATIGUE, newQuestionnaire);
+            AbstractQuestionnaire newQuestionnaire = new PromisQuestionnaire();
+            Questionnaires.setNewQuestionnaire(QuestionnaireType.PROMIS, newQuestionnaire);
         }
 
-        questionnaire = Questionnaires.get(this, QuestionnaireType.FATIGUE);
+        questionnaire = Questionnaires.get(this, QuestionnaireType.PROMIS);
         currentQuestionNr = questionnaire.getCurrentQuestion();
         updateView();
     }
 
     @Override
     public void listenBtn() {
-        listenSeekbar();
         listenBtnConfirm();
+        listenSeekbar();
         listenBtnSkip();
         finishQuestionnaire();
     }
 
     @Override
     public void setBinding() {
-        binding = ActivityFatigueQuestionnaireBinding.inflate(LayoutInflater.from(this));
+        binding = ActivityPromisBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
     }
 
@@ -53,12 +54,6 @@ public class FatigueQuestionnaireView extends BaseActivity {
     public void processReceivedIntent(Intent intent) {
         super.processReceivedIntent(intent);
         redo_questionnaire = intent.getBooleanExtra("redo_questionnaire", false);
-    }
-
-    private void updateView(){
-        int pourcentage = 100 * (currentQuestionNr+1) / questionnaire.getQuestionIdsLength();
-        binding.txtPoucentageDone.setText(String.valueOf(pourcentage));
-        binding.txtQuestion.setText(questionnaire.getCurrentQuestionId());
     }
 
     private void finishQuestionnaire(){
@@ -109,7 +104,48 @@ public class FatigueQuestionnaireView extends BaseActivity {
         if(questionnaire.isQuestionnaireDone()) {
             navigateToNextActivity(MainActivity.class);
         } else {
-            navigateToNextActivity(FatigueQuestionnaireView.class);
+            navigateToNextActivity(PromisView.class);
+        }
+    }
+
+    private void updateView(){
+        binding.txtQuestion.setText(questionnaire.getCurrentQuestionId());
+
+        int pourcentage = 100 * (currentQuestionNr+1) / questionnaire.getQuestionIdsLength();
+        binding.txtPoucentageDone.setText(String.valueOf(pourcentage));
+
+        displayLegend();
+    }
+
+    private void displayLegend(){
+        int count;
+        if(questionnaire.getCurrentQuestion() == 6) {
+            count = 11;
+            binding.seekbar.setMin(0);
+            binding.seekbar.setMax(10);
+        } else {
+            count = 5;
+        }
+
+        // tell the seekbar how many ticks
+        binding.seekbar.setMin(0);
+        binding.seekbar.setMax(count-1);
+
+        // for each of 11 textViews, either hide or show:
+        TextView[] labels = new TextView[]{
+                binding.txt00, binding.txt0, binding.txt1,
+                binding.txt2, binding.txt3, binding.txt4,
+                binding.txt5, binding.txt6, binding.txt7,
+                binding.txt8, binding.txt9};
+
+        for (int i=0; i < labels.length; i++) {
+            labels[i].setVisibility(i < count ? View.VISIBLE : View.GONE);
+        }
+
+        String[] answers = questionnaire.getAnswerOptions(this);
+
+        for (int i = 0; i < Math.min(count, answers.length); i++) {
+            labels[i].setText(answers[i]);
         }
     }
 
@@ -117,8 +153,11 @@ public class FatigueQuestionnaireView extends BaseActivity {
         binding.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-                rating = String.valueOf(progress + 1);
+                if (questionnaire.getCurrentQuestion() == 6) {
+                    rating = String.valueOf(progress);
+                }  else {
+                    rating = String.valueOf(progress + 1);
+                }
                 binding.txtRating.setText(rating);
                 binding.btnConfirm.setVisibility(View.VISIBLE);
             }
@@ -127,7 +166,7 @@ public class FatigueQuestionnaireView extends BaseActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 binding.btnConfirm.setVisibility(View.VISIBLE);
                 if(!touched){
-                    rating = String.valueOf(4);
+                    rating = String.valueOf(1);
                     binding.txtRating.setText(rating);
                     touched = true;
                 }

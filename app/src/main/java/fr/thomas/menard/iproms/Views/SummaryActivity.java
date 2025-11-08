@@ -1,62 +1,32 @@
 package fr.thomas.menard.iproms.Views;
-import static fr.thomas.menard.iproms.Model.InfoFile.*;
-
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import java.io.File;
 import java.util.Locale;
 
-import fr.thomas.menard.iproms.Model.InfoFile;
-import fr.thomas.menard.iproms.Model.Patient;
+import fr.thomas.menard.iproms.Enum.QuestionnaireType;
+import fr.thomas.menard.iproms.FileWriter.BDIQuestionnaire;
+import fr.thomas.menard.iproms.FileWriter.DepressionAnxietyQuestionnaire;
+import fr.thomas.menard.iproms.FileWriter.FatigueQuestionnaire;
+import fr.thomas.menard.iproms.FileWriter.PromisQuestionnaire;
+import fr.thomas.menard.iproms.Model.Questionnaires;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.DataTransfer;
 import fr.thomas.menard.iproms.Utils.FileManager;
 import fr.thomas.menard.iproms.Utils.RankingBarView;
-import fr.thomas.menard.iproms.Utils.ReadCSV;
-import fr.thomas.menard.iproms.Utils.WriteCSV;
 import fr.thomas.menard.iproms.Utils.tScore;
 import fr.thomas.menard.iproms.databinding.ActivitySummaryBinding;
 
 public class SummaryActivity extends BaseActivity {
 
     private ActivitySummaryBinding binding;
-    String categorie;
-    private void retrieveCategorie(int numberQuestion){
-        if(numberQuestion == 3 || numberQuestion == 6 ||numberQuestion == 7 ||numberQuestion == 8)
-            categorie = "physical";
-        else if(numberQuestion == 2 || numberQuestion == 4||numberQuestion == 5 ||numberQuestion == 10)
-            categorie = "mental";
-        else
-            categorie = "raw";
-    }
-
-    private String tscore_promis_physical, tscore_promis_mental;
-
-    private double[][] tscorePromisPhysical = tScore.getScoreTable_promis_physical();
-    private double[][] tscorePromisMental = tScore.getScoreTable_promis_mental();
-
-    private File folderSRC;
     private String txt_interpretations;
-
-    private WriteCSV writeCSV;
-
-    private int safeParse(String safe) {
-        if (safe == null || safe.isEmpty()) return 0;
-        try {
-            return Integer.parseInt(safe);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
 
     @Override
     public void init(){
-        writeCSV = WriteCSV.getInstance(this);
-        ReadCSV.retrieveInfos(this);
         initTab();
         initPromisSummary();
         createResultCSV();
@@ -76,21 +46,27 @@ public class SummaryActivity extends BaseActivity {
     }
 
     private void initTab(){
-        double mean_fatigue = (double) Integer.parseInt(avg_score_fatigue) / (Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1);
+        FatigueQuestionnaire fatigueQuestionnaire = (FatigueQuestionnaire) Questionnaires.get(this, QuestionnaireType.FATIGUE);
+        DepressionAnxietyQuestionnaire depressionAnxietyQuestionnaire = (DepressionAnxietyQuestionnaire) Questionnaires.get(this, QuestionnaireType.DEPRESSIONANXIETY);
+        BDIQuestionnaire bdiQuestionnaire = (BDIQuestionnaire) Questionnaires.get(this, QuestionnaireType.BDI);
+
+
+        double mean_fatigue = (double) fatigueQuestionnaire.getScore() / (fatigueQuestionnaire.getAnsweredQues());
         String mean_sfatigue = String.valueOf(Math.round(mean_fatigue));
         binding.cellScoreFatiue.setText(mean_sfatigue+ " / 7");
         displayInterpretations("fatigue");
-        binding.cellDepressionScore.setText(avg_score_depression + " / 21");
+        binding.cellDepressionScore.setText(depressionAnxietyQuestionnaire.getDepressionScore() + " / 21");
         displayInterpretations("depression");
-        binding.cellAnxietyScore.setText(avg_score_anxiety+ " / 21");
+        binding.cellAnxietyScore.setText(depressionAnxietyQuestionnaire.getAnxietyScore()+ " / 21");
         displayInterpretations("anxiety");
-        binding.cellBDIScore.setText(score_bdi+" / 63");
+        binding.cellBDIScore.setText(bdiQuestionnaire.getTotalScore() +" / 63");
         displayInterpretations("bdi");
     }
     private void initPromisSummary() {
         // 1) Sum up your raw‐score buckets
-        int rawP = sumPromisRaw("physical");
-        int rawM = sumPromisRaw("mental");
+        PromisQuestionnaire promisQuestionnaire = (PromisQuestionnaire) Questionnaires.get(this, QuestionnaireType.PROMIS);
+        int rawP = promisQuestionnaire.getPhysicalRawScore();
+        int rawM = promisQuestionnaire.getMentalRawScore();
 
         // 2) Turn them into T−scores
         String sP = String.format(Locale.getDefault(), "%.1f",
@@ -98,63 +74,14 @@ public class SummaryActivity extends BaseActivity {
         String sM = String.format(Locale.getDefault(), "%.1f",
                 tScore.lookupMentalTscore(rawM));
 
-        Log.d("PROMIS", "SummaryActivity: PhyTxt="
-                + InfoFile.avg_score_PROMIS_physical
-                + "  MenTxt=" + InfoFile.avg_score_PROMIS_mental);
-
         // 3) Show the text in your “Score” column
-        binding.cellPromisPhysicalScore.setText(avg_score_PROMIS_physical + " / 80");
-        binding.cellPromisMentalScore .setText(avg_score_PROMIS_mental   + " / 80");
+        binding.cellPromisPhysicalScore.setText(rawP + " / 20");
+        binding.cellPromisMentalScore .setText(rawM   + " / 20");
 
         // 4) Finally color & size your bars
         //    Use two‐arg displayInterpretations that you add below:
-        displayInterpretations("promis_physical", avg_score_PROMIS_physical);
-        displayInterpretations("promis_mental",   avg_score_PROMIS_mental);
-    }
-
-    private int sumPromisRaw(String domain) {
-        int sum = 0;
-        // InfoFile.promisQuestionScores[] is a String[] of length 10
-        for (int q = 1; q <= 10; q++) {
-            retrieveCategorie(q);
-            if (categorie.equals(domain)) {
-                String raw = InfoFile.promisQuestionScores[q - 1];
-                if (raw != null && !raw.isEmpty()) {
-                    try {
-                        sum += Integer.parseInt(raw);
-                    } catch (NumberFormatException e) {
-                        // skip bad entries
-                    }
-                }
-            }
-        }
-        return sum;
-    }
-
-    private void promisTscore(){
-        int rawPhys = safeParse(avg_score_PROMIS_physical);
-        int rawMent = safeParse(avg_score_PROMIS_mental);
-        int skipped = safeParse(skipped_question_promis);
-
-        // physical
-        if(rawPhys >= 4 && rawPhys <= tscorePromisPhysical.length + 3 && skipped < 4) {
-            int idx = rawPhys - 4;
-            tscore_promis_physical = String.valueOf(tscorePromisPhysical[idx][1]);
-        } else if (skipped == 10) {
-            tscore_promis_physical = "0";
-        } else {
-            tscore_promis_physical = "No t-score";
-        }
-
-        // mental
-        if (rawMent >= 4 && rawMent <= tscorePromisMental.length + 3 && skipped < 4) {
-            int idx = rawMent - 4;
-            tscore_promis_mental = String.valueOf(tscorePromisMental[idx][1]);
-        } else if (skipped == 10) {
-            tscore_promis_mental = "0";
-        }else {
-            tscore_promis_mental = "No t-score";
-        }
+        displayInterpretations("promis_physical", sP);
+        displayInterpretations("promis_mental", sM);
     }
 
     private void listnenBtn(){
@@ -164,21 +91,21 @@ public class SummaryActivity extends BaseActivity {
     }
 
     private void createResultCSV(){
-        if(!FileManager.isResultFileExist(this)){
-            double mean_fatigue = (double) Integer.parseInt(avg_score_fatigue) / (Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1);
-            String csv_path = FileManager.getResultFilename(this);
-            String idPatient = Patient.getPatient().getPatientId();
-            String caseID = Patient.getPatient().getCaseId();
-            String date = Patient.getPatient().getDate();
-
-            writeCSV.createAndWriteResult(csv_path, idPatient, caseID, date,
-                    String.valueOf(mean_fatigue), fatigueQuestionScores,
-                    avg_score_depression, avg_score_anxiety, depressionQuestionScores,
-                    score_bdi, bdiQuestionScores,
-                    avg_score_PROMIS_physical, avg_score_PROMIS_mental, promisQuestionScores,
-                    scoreQOL1, scoreQOL2, scoreQOL3, scoreQOL4, scoreQOL5, scoreQOL6, scoreQOL7, scoreQOL8, scoreQOL9, scoreQOL10, qolQuestionScores,
-                    qol1QuestionScores, qol2QuestionScores, qol3QuestionScores, qol4QuestionScores, qol5QuestionScores, qol6QuestionScores, qol7QuestionScores, qol8QuestionScores, qol9QuestionScores, qol10QuestionScores);
-        }
+//        if(!FileManager.isResultFileExist(this)){
+//            double mean_fatigue = (double) Integer.parseInt(avg_score_fatigue) / (Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1);
+//            String csv_path = FileManager.getResultFilename(this);
+//            String idPatient = Patient.getPatient().getPatientId();
+//            String caseID = Patient.getPatient().getCaseId();
+//            String date = Patient.getPatient().getDate();
+//
+//            writeCSV.createAndWriteResult(csv_path, idPatient, caseID, date,
+//                    String.valueOf(mean_fatigue), fatigueQuestionScores,
+//                    avg_score_depression, avg_score_anxiety, depressionQuestionScores,
+//                    score_bdi, bdiQuestionScores,
+//                    avg_score_PROMIS_physical, avg_score_PROMIS_mental, promisQuestionScores,
+//                    scoreQOL1, scoreQOL2, scoreQOL3, scoreQOL4, scoreQOL5, scoreQOL6, scoreQOL7, scoreQOL8, scoreQOL9, scoreQOL10, qolQuestionScores,
+//                    qol1QuestionScores, qol2QuestionScores, qol3QuestionScores, qol4QuestionScores, qol5QuestionScores, qol6QuestionScores, qol7QuestionScores, qol8QuestionScores, qol9QuestionScores, qol10QuestionScores);
+//        }
     }
 
     private void uploadResultCSV(){
@@ -190,9 +117,10 @@ public class SummaryActivity extends BaseActivity {
 
     @SuppressLint("ResourceAsColor")
     private String displayInterpretations(String categorie){
+        FatigueQuestionnaire fatigueQuestionnaire = (FatigueQuestionnaire) Questionnaires.get(this, QuestionnaireType.FATIGUE);
 
         if(categorie.equals("fatigue")){
-            if(avg_score_fatigue.equals("0")){
+            if(fatigueQuestionnaire.getScore() == 0){
                 txt_interpretations = getString(R.string.skipped_questionniare);
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
@@ -200,7 +128,7 @@ public class SummaryActivity extends BaseActivity {
                 binding.cellResultFatigue.setUserScore(2.75f);
                 binding.cellResultFatigue.setUserText(txt_interpretations);
             }else{
-                double mean_fatigue = (double) Integer.parseInt(avg_score_fatigue) / (Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1);
+                double mean_fatigue = (double) fatigueQuestionnaire.getScore() / (fatigueQuestionnaire.getAnsweredQues() - fatigueQuestionnaire.getSkippedQues());
                 if(mean_fatigue < 4){
                     txt_interpretations = getString(R.string.within_normal_limits);
                 }else{
@@ -217,8 +145,12 @@ public class SummaryActivity extends BaseActivity {
 
         }
 
+        DepressionAnxietyQuestionnaire depressionAnxietyQuestionnaire = (DepressionAnxietyQuestionnaire) Questionnaires.get(this, QuestionnaireType.DEPRESSIONANXIETY);
         if(categorie.equals("depression")){
-            if(Integer.parseInt(avg_score_depression)==0 && !questionAnsDep.equals("15")){
+            int avgScoreDepression = depressionAnxietyQuestionnaire.getDepressionScore();
+            int questionAnsDep = depressionAnxietyQuestionnaire.getDepressionQuestionAnswered();
+
+            if(avgScoreDepression==0 && questionAnsDep != 15){
                 txt_interpretations = getString(R.string.skipped_questionniare);
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
@@ -226,10 +158,10 @@ public class SummaryActivity extends BaseActivity {
                 binding.cellDepressionResult.setUserScore(2.75f);
                 binding.cellDepressionResult.setUserText(txt_interpretations);
             }else{
-                if(Integer.parseInt(avg_score_depression)<7){
+                if(avgScoreDepression<7){
                     txt_interpretations = getString(R.string.within_normal_limits);
 
-                } else if (Integer.parseInt(avg_score_depression)<11) {
+                } else if (avgScoreDepression<11) {
                     txt_interpretations = getString(R.string.borderline_case);
 
                 }
@@ -241,7 +173,7 @@ public class SummaryActivity extends BaseActivity {
                 float[] upperLimits_dep = {(float) (7.0f/4), (float) (11.0f/4), (float) (21.0f/4)};
                 int[] colors_dep = {android.graphics.Color.GREEN, Color.YELLOW, Color.RED};
                 binding.cellDepressionResult.setColorSections(upperLimits_dep, colors_dep);
-                binding.cellDepressionResult.setUserScore((float) ((float) Integer.parseInt(avg_score_depression)/4));
+                binding.cellDepressionResult.setUserScore((float) ((float) avgScoreDepression/4));
                 binding.cellDepressionResult.setUserText(txt_interpretations);
             }
 
@@ -249,7 +181,10 @@ public class SummaryActivity extends BaseActivity {
 
 
         if(categorie.equals("anxiety")){
-            if(avg_score_anxiety.equals("0") && !questionAnsDep.equals("15")){
+            int avgScoreAnx = depressionAnxietyQuestionnaire.getAnxietyScore();
+            int questionAnsDep = depressionAnxietyQuestionnaire.getAnxietyQuestionAnswered();
+
+            if(avgScoreAnx==0 && questionAnsDep!= 15){
                 txt_interpretations = getString(R.string.skipped_questionniare);
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
@@ -257,10 +192,10 @@ public class SummaryActivity extends BaseActivity {
                 binding.cellAnxietyResult.setUserScore(2.75f);
                 binding.cellAnxietyResult.setUserText(txt_interpretations);
             }else{
-                if(Integer.parseInt(avg_score_anxiety)<7) {
+                if(avgScoreAnx<7) {
                     txt_interpretations = getString(R.string.within_normal_limits);
 
-                }else if (Integer.parseInt(avg_score_anxiety)<11) {
+                }else if (avgScoreAnx<11) {
                     txt_interpretations = getString(R.string.borderline_case);
 
                 }else{
@@ -270,15 +205,18 @@ public class SummaryActivity extends BaseActivity {
                 float[] upperLimits_dep = {(float) (7.0f/4), (float) (11.0f/4), (float) (21.0f/4)};
                 int[] colors_dep = {android.graphics.Color.GREEN, Color.YELLOW, Color.RED};
                 binding.cellAnxietyResult.setColorSections(upperLimits_dep, colors_dep);
-                binding.cellAnxietyResult.setUserScore((float) ((float) Integer.parseInt(avg_score_anxiety)/4));
+                binding.cellAnxietyResult.setUserScore((float) ((float) avgScoreAnx/4));
                 binding.cellAnxietyResult.setUserText(txt_interpretations);
             }
 
         }
 
         if(categorie.equals("bdi")){
+            BDIQuestionnaire bdiQuestionnaire = (BDIQuestionnaire) Questionnaires.get(this, QuestionnaireType.BDI);
+            int scoreBDI = bdiQuestionnaire.getTotalScore();
+            int questionAnsBDI = bdiQuestionnaire.getQuestionAnswered();
             String txt_interpretations;
-            if(score_bdi.equals("0") && !questionAnsBDI.equals("21")){
+            if(scoreBDI == 0 && questionAnsBDI != 21){
                 txt_interpretations = getString(R.string.skipped_questionniare);
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
@@ -286,11 +224,11 @@ public class SummaryActivity extends BaseActivity {
                 binding.cellBDIResult.setUserScore(2.75f);
                 binding.cellBDIResult.setUserText(txt_interpretations);
             }else{
-                if(Integer.parseInt(score_bdi)<14){
+                if(scoreBDI<14){
                     txt_interpretations = getString(R.string.inconspicuous);
-                } else if (Integer.parseInt(score_bdi)<20) {
+                } else if (scoreBDI<20) {
                     txt_interpretations = getString(R.string.mild_depressive);
-                } else if (Integer.parseInt(score_bdi)<29) {
+                } else if (scoreBDI<29) {
                     txt_interpretations = getString(R.string.moderate_depressive);
                 }else {
                     txt_interpretations = getString(R.string.severe_depressive);
@@ -309,8 +247,7 @@ public class SummaryActivity extends BaseActivity {
                         binding.cellBDIResult.rescaleValue(orangeEnd, min,redEnd, 40.0f),
                         binding.cellBDIResult.rescaleValue(redEnd, min,redEnd, 40.0f)};
 
-                float user_score = Float.parseFloat(score_bdi);
-                float user_score_rescale = binding.cellBDIResult.rescaleValue(user_score,min,redEnd, 40.0f);
+                float user_score_rescale = binding.cellBDIResult.rescaleValue((float) scoreBDI,min,redEnd, 40.0f);
 
                 binding.cellBDIResult.setColorSections(upperlimit, colors);
                 binding.cellBDIResult.setUserScore(user_score_rescale);
@@ -323,6 +260,8 @@ public class SummaryActivity extends BaseActivity {
     }
     // * new: handles only the two PROMIS rows, given the T-score string
     private void displayInterpretations(String kind, String tscore) {
+        PromisQuestionnaire promisQuestionnaire = (PromisQuestionnaire) Questionnaires.get(this, QuestionnaireType.PROMIS);
+
         boolean isPhysical = kind.equals("promis_physical");
         RankingBarView bar = isPhysical
                 ? binding.cellPromisPhysicalResult
@@ -336,7 +275,7 @@ public class SummaryActivity extends BaseActivity {
 
         // decide interpretation
         final String label;
-        if (tscore.equals("No t-score") || Integer.parseInt(skipped_question_promis) > 3) {
+        if (tscore.equals("No t-score") || promisQuestionnaire.getQuestionSkipped() > 3) {
             label = getString(R.string.skipped_questionniare);
             bar.setColorSections(new float[]{5.5f}, new int[]{0xFF888888});
             bar.setUserScore(2.75f);
@@ -368,7 +307,10 @@ public class SummaryActivity extends BaseActivity {
 
 
     private void checkScoreforOthersQuestionnaires() {
-        if ((Integer.parseInt(avg_score_fatigue) / 9 > 3) || (Integer.parseInt(avg_score_depression) > 7) || (Integer.parseInt(avg_score_anxiety) > 7)) {
+        FatigueQuestionnaire fatigueQuestionnaire = (FatigueQuestionnaire) Questionnaires.get(this, QuestionnaireType.FATIGUE);
+        DepressionAnxietyQuestionnaire hadsQuestionnaire = (DepressionAnxietyQuestionnaire) Questionnaires.get(this, QuestionnaireType.DEPRESSIONANXIETY);
+
+        if ((fatigueQuestionnaire.getScore() / 9 > 3) || (hadsQuestionnaire.getDepressionScore() > 7) || (hadsQuestionnaire.getAnxietyScore() > 7)) {
             binding.txtDescriptionOthers.setVisibility(View.VISIBLE);
         } else {
             binding.txtSummaryDescription.setVisibility(View.VISIBLE);

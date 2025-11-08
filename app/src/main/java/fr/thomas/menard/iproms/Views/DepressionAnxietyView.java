@@ -1,5 +1,7 @@
 package fr.thomas.menard.iproms.Views;
 
+import androidx.annotation.NonNull;
+
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,18 +9,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 
-import androidx.annotation.NonNull;
-
 import fr.thomas.menard.iproms.Enum.QuestionnaireType;
 import fr.thomas.menard.iproms.FileWriter.AbstractQuestionnaire;
-import fr.thomas.menard.iproms.FileWriter.FSMCQuestionnaire;
+import fr.thomas.menard.iproms.FileWriter.DepressionAnxietyQuestionnaire;
 import fr.thomas.menard.iproms.Model.Questionnaires;
 import fr.thomas.menard.iproms.R;
-import fr.thomas.menard.iproms.databinding.ActivityFsmcactivityBinding;
+import fr.thomas.menard.iproms.databinding.ActivityDepressionAnxietyBinding;
 
-public class FSMCActivity extends BaseActivity {
-
-    ActivityFsmcactivityBinding binding;
+public class DepressionAnxietyView extends BaseActivity {
+    private ActivityDepressionAnxietyBinding binding;
     private String rating;
     private boolean touched = false, redo_questionnaire = false;
     private AbstractQuestionnaire questionnaire;
@@ -26,47 +25,45 @@ public class FSMCActivity extends BaseActivity {
 
     @Override
     public void init(){
-        if(redo_questionnaire){
-            AbstractQuestionnaire newQuestionnaire = new FSMCQuestionnaire();
-            Questionnaires.setNewQuestionnaire(QuestionnaireType.FSMC, newQuestionnaire);
+        if(redo_questionnaire) {
+            AbstractQuestionnaire newQuestionnaire = new DepressionAnxietyQuestionnaire();
+            Questionnaires.setNewQuestionnaire(QuestionnaireType.DEPRESSIONANXIETY, newQuestionnaire);
         }
 
-        questionnaire = Questionnaires.get(this, QuestionnaireType.FSMC);
+        questionnaire = Questionnaires.get(this, QuestionnaireType.DEPRESSIONANXIETY);
         currentQuestionNr = questionnaire.getCurrentQuestion();
         updateView();
     }
 
     @Override
     public void listenBtn() {
-        listenSeekbar();
-        listenBtnSkip();
-        listenBtnConfirm();
         finishQuestionnaire();
+        listenSeekbar();
+        listenBtnConfirm();
+        listenBtnSkip();
     }
 
     @Override
     public void setBinding() {
-        binding = ActivityFsmcactivityBinding.inflate(LayoutInflater.from(this));
+        binding = ActivityDepressionAnxietyBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
     }
 
-    private void updateView(){
-        int pourcentage = 100 * (currentQuestionNr+1) / questionnaire.getQuestionIdsLength();
-        binding.txtPoucentageDone.setText(String.valueOf(pourcentage));
-        binding.txtQuestion.setText(questionnaire.getCurrentQuestionId());
-
-        String[] answers = questionnaire.getAnswerOptions(this, 0);
-        binding.txtinfo0.setText(answers[0]);
-        binding.txtinfo1.setText(answers[1]);
-        binding.txtinfo2.setText(answers[2]);
-        binding.txtinfo3.setText(answers[3]);
-        binding.txtinfo4.setText(answers[4]);
+    @Override
+    public void processReceivedIntent(Intent intent) {
+        super.processReceivedIntent(intent);
+        redo_questionnaire = intent.getBooleanExtra("redo_questionnaire",false);
     }
 
-    private void finishQuestionnaire() {
+    @Override
+    public void prepareIntent(Intent intent) {
+        super.prepareIntent(intent);
+    }
+
+    private void finishQuestionnaire(){
         binding.btnSkipQuestionnaire.setOnClickListener(v -> {
             questionnaire.skipQuestionnaire(this);
-            navigateToNextActivity(OptionalQuestionnairesActivity.class);
+            navigateToNextActivity(MainActivity.class);
         });
     }
 
@@ -84,7 +81,7 @@ public class FSMCActivity extends BaseActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
             // write_csv("exit");
-            navigateToNextActivity(OptionalQuestionnairesActivity.class);
+            navigateToNextActivity(MainActivity.class);
             return true;
         } else if (id == R.id.action_skip) {
             skip();
@@ -92,6 +89,20 @@ public class FSMCActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    private void updateView() {
+        binding.txtIntro.setText(R.string.txt_intro_depression);
+        binding.txtQuestion.setText(questionnaire.getCurrentQuestionId());
+
+        String[] answers = questionnaire.getAnswerOptions(this);
+        binding.txtinfo0.setText(answers[0]);
+        binding.txtinfo1.setText(answers[1]);
+        binding.txtinfo2.setText(answers[2]);
+        binding.txtinfo3.setText(answers[3]);
+
+        int pourcentage = 100 * (currentQuestionNr+1) / questionnaire.getQuestionIdsLength();
+        binding.txtPoucentageDoneDep.setText(String.valueOf(pourcentage));
     }
 
     private void listenBtnConfirm(){
@@ -106,19 +117,19 @@ public class FSMCActivity extends BaseActivity {
     }
 
     private void skip(){
-        questionnaire.skipQuestionnaire(this);
+        questionnaire.skipQuestion(this);
         goToNextActivity();
     }
 
     private void goToNextActivity(){
         if(questionnaire.isQuestionnaireDone()) {
-            navigateToNextActivity(OptionalQuestionnairesActivity.class);
+            navigateToNextActivity(MainActivity.class);
         } else {
-            navigateToNextActivity(FSMCActivity.class);
+            navigateToNextActivity(DepressionAnxietyView.class);
         }
     }
 
-    private void listenSeekbar() {
+    private void listenSeekbar(){
         binding.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -135,6 +146,7 @@ public class FSMCActivity extends BaseActivity {
                     binding.txtRating.setText(rating);
                     touched = true;
                 }
+
             }
 
             @Override
@@ -142,15 +154,5 @@ public class FSMCActivity extends BaseActivity {
 
             }
         });
-    }
-
-    @Override
-    public void prepareIntent(Intent intent) {
-        super.prepareIntent(intent);
-    }
-
-    @Override
-    public void processReceivedIntent(Intent intent) {
-        super.processReceivedIntent(intent);
     }
 }

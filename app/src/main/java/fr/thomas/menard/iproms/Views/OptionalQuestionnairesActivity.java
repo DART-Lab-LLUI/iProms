@@ -1,7 +1,6 @@
 package fr.thomas.menard.iproms.Views;
 
 import android.annotation.SuppressLint;
-import static fr.thomas.menard.iproms.Model.InfoFile.*;
 import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
@@ -10,42 +9,50 @@ import android.view.View;
 
 import java.io.File;
 
-import fr.thomas.menard.iproms.App.MyApplication;
-import fr.thomas.menard.iproms.Enum.Type;
+import fr.thomas.menard.iproms.Enum.QuestionnaireStatus;
+import fr.thomas.menard.iproms.Enum.QuestionnaireType;
+import fr.thomas.menard.iproms.FileWriter.FSMCQuestionnaire;
+import fr.thomas.menard.iproms.FileWriter.SleepQuestionnaire;
 import fr.thomas.menard.iproms.Model.Patient;
+import fr.thomas.menard.iproms.Model.Questionnaires;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.DataTransfer;
-import fr.thomas.menard.iproms.Utils.FileManager;
-import fr.thomas.menard.iproms.Utils.ReadCSV;
-import fr.thomas.menard.iproms.Utils.WriteCSV;
 import fr.thomas.menard.iproms.databinding.ActivityOptionnalQuestionnairesBinding;
 
 public class OptionalQuestionnairesActivity extends BaseActivity {
 
     private ActivityOptionnalQuestionnairesBinding binding;
     private String questionnaire;
-    private WriteCSV writeCSV;
-
-    boolean redo_questionnaire;
+    private boolean redo_questionnaire;
+    private SleepQuestionnaire sleepQuestionnaire;
+    private FSMCQuestionnaire fsmcQuestionnaire;
+    private boolean isStrokePatient;
 
     @Override
-    public void init(){
-        writeCSV = WriteCSV.getInstance(this);
+    public void init() {
+        isStrokePatient = Patient.getPatient().getDiagnosis().equals("Stroke");
 
-        // load saved CSV into InfoFile
-        ReadCSV.retrieveInfos(this);
+        // --- Always load sleep questionnaire ---
+        sleepQuestionnaire = (SleepQuestionnaire) Questionnaires.get(this, QuestionnaireType.SLEEP);
 
-        // immediately show FSMC and sleep status
-        displayFSMC();
-        displaysleep();
+        // --- Only load FSMC if not a stroke patient ---
+        if (isStrokePatient) {
+            binding.rdBtnFSMC.setVisibility(View.GONE);
+            binding.txtQuestionFatigueFSMC.setVisibility(View.GONE);
+        } else {
+            fsmcQuestionnaire = (FSMCQuestionnaire) Questionnaires.get(this, QuestionnaireType.FSMC);
+        }
 
-        // if both done, drop into the summary table
+        // --- Display questionnaires ---
+        displaySleep();
+        if (!isStrokePatient) displayFSMC();
+
+        // --- If both done, show summary table ---
         checkQuestionnaireDone();
     }
 
     @Override
     public void listenBtn() {
-
         listenRadioGroup();
         listenBtnConfirm();
     }
@@ -56,123 +63,115 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
         setContentView(binding.getRoot());
     }
 
-    private void checkQuestionnaireDone(){
-        if (fsmc.equals("done") && sleep.equals("done") /*&& qol1.equals("done") && qol2.equals("done") && qol3.equals("done") && qol4.equals("done") && qol5.equals("done") && qol7.equals("done") && qol8.equals("done") && qol9.equals("done") && qol10.equals("done")*/) {
-            uploadData(FileManager.getInfoFile(this));
+    private void checkQuestionnaireDone() {
+        boolean sleepDone = sleepQuestionnaire.getProgressStatus() == QuestionnaireStatus.COMPLETED;
+        boolean fsmcDone = !isStrokePatient &&
+                fsmcQuestionnaire != null &&
+                fsmcQuestionnaire.getProgressStatus() == QuestionnaireStatus.COMPLETED;
 
+        if (isStrokePatient && sleepDone) {
             binding.btnConfirm.setVisibility(View.GONE);
             initTab();
+            uploadData(sleepQuestionnaire.getQuestionnaireFile(this));
+        } else if (sleepDone && fsmcDone) {
+            binding.btnConfirm.setVisibility(View.GONE);
+            initTab();
+            uploadData(sleepQuestionnaire.getQuestionnaireFile(this));
+            uploadData(fsmcQuestionnaire.getQuestionnaireFile(this));
         }
     }
 
-
-
     @SuppressLint("SetTextI18n")
-    private void displayFSMC(){
-        if(!Patient.getPatient().getDiagnosis().equals("Stroke")){
-            if(!fsmc.equals("null")){
-                binding.txtQuestionFatigueFSMC.setText(getString(R.string.questions_answered)+ questionAnsFCSM + " / 20 - (" +skipped_question_fsmc + " " + getString(R.string.x_skipped) + ")");
+    private void displayFSMC() {
+        if (fsmcQuestionnaire == null || fsmcQuestionnaire.getProgressStatus() == QuestionnaireStatus.NOT_STARTED)
+            return;
 
-                if(fsmc.equals("done")){
-                    binding.imgDoneFsmc.setVisibility(View.VISIBLE);
-                    if(scoreFSMC.equals("0")){
-                        binding.txtQuestionFatigueFSMC.setVisibility(View.GONE);
-                        binding.txtQuestionnaireSkippedFsmc.setVisibility(View.VISIBLE);
-                    }else{
-                        binding.rdBtnFSMC.setClickable(false);
-                        createResultFSMCCSV();
-                        uploadData(FileManager.getFSMCResultFile(this));
-                        binding.txtQuestionFatigueFSMC.setVisibility(View.VISIBLE);
-                        binding.txtRawValueFsmc.setText(getString(R.string.total_score) + scoreFSMC  + " / 63");
-                        binding.txtRawValueFsmc.setVisibility(View.VISIBLE);
-                    }
+        int answered = fsmcQuestionnaire.getAnsweredQues();
+        int skipped = fsmcQuestionnaire.getSkippedQues();
+        int score = fsmcQuestionnaire.getScore();
+        boolean done = fsmcQuestionnaire.getProgressStatus() == QuestionnaireStatus.COMPLETED;
 
-                }
-            }
-        }
+        binding.txtQuestionFatigueFSMC.setText(getString(R.string.questions_answered)
+                + answered + " / 20 - (" + skipped + " " + getString(R.string.x_skipped) + ")");
 
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void displaysleep(){
-        if(!sleep.equals("null")){
-            binding.txtQuestionFatigueSleep.setText(getString(R.string.questions_answered) + questionAnsSleep + " / 8  - ("+skipped_question_sleep + " " + getString(R.string.x_skipped) + ")");
-
-            if(sleep.equals("done")){
-                binding.imgDoneSleep.setVisibility(View.VISIBLE);
-                if(score_sleep.equals("0")){
-                    binding.txtQuestionFatigueSleep.setVisibility(View.GONE);
-                    binding.txtQuestionnaireSkipped.setVisibility(View.VISIBLE);
-                }else{
-                    binding.rdBtnESSFatigue.setClickable(false);
-                    createResultSleepCSV();
-                    uploadData(FileManager.getSleepResultFile(this));
-                    binding.txtQuestionFatigueSleep.setVisibility(View.VISIBLE);
-                    binding.txtRawValueSleep.setText(getString(R.string.total_score) + score_sleep  + " / 24");
-                    binding.txtRawValueSleep.setVisibility(View.VISIBLE);
-                }
-
+        if (done) {
+            binding.imgDoneFsmc.setVisibility(View.VISIBLE);
+            if (score == 0) {
+                binding.txtQuestionFatigueFSMC.setVisibility(View.GONE);
+                binding.txtQuestionnaireSkippedFsmc.setVisibility(View.VISIBLE);
+            } else {
+                binding.rdBtnFSMC.setEnabled(false);
+                binding.txtQuestionFatigueFSMC.setVisibility(View.VISIBLE);
+                binding.txtRawValueFsmc.setText(getString(R.string.total_score) + score + " / 63");
+                binding.txtRawValueFsmc.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    private void createResultSleepCSV(){
-        Patient patient = Patient.getPatient();
-        String patientID = patient.getPatientId();
-        String caseID = patient.getCaseId();
-        String date = patient.getDate();
+    @SuppressLint("SetTextI18n")
+    private void displaySleep() {
+        if (sleepQuestionnaire == null || sleepQuestionnaire.getProgressStatus() == QuestionnaireStatus.NOT_STARTED)
+            return;
 
-        if(!FileManager.isSleepResultFileExist(this)){
-            writeCSV.createAndWriteSleepResult(FileManager.getSleepResultFile(this).getAbsolutePath(), patientID, caseID, date,score_sleep, sleepQuestionScores);
+        int answered = sleepQuestionnaire.getAnsweredQues();
+        int skipped = sleepQuestionnaire.getSkippedQues();
+        int score = sleepQuestionnaire.getScore();
+        boolean done = sleepQuestionnaire.getProgressStatus() == QuestionnaireStatus.COMPLETED;
+
+        binding.txtQuestionFatigueSleep.setText(getString(R.string.questions_answered)
+                + answered + " / 8 - (" + skipped + " " + getString(R.string.x_skipped) + ")");
+
+        if (done) {
+            binding.imgDoneSleep.setVisibility(View.VISIBLE);
+            if (score == 0) {
+                binding.txtQuestionFatigueSleep.setVisibility(View.GONE);
+                binding.txtQuestionnaireSkipped.setVisibility(View.VISIBLE);
+            } else {
+                binding.rdBtnESSFatigue.setEnabled(false);
+                binding.txtQuestionFatigueSleep.setVisibility(View.VISIBLE);
+                binding.txtRawValueSleep.setText(getString(R.string.total_score) + score + " / 24");
+                binding.txtRawValueSleep.setVisibility(View.VISIBLE);
+            }
         }
     }
 
-    private void createResultFSMCCSV(){
-        Patient patient = Patient.getPatient();
-        String patientID = patient.getPatientId();
-        String caseID = patient.getCaseId();
-        String date = patient.getDate();
-        Type type = MyApplication.getType();
-
-        if(!FileManager.isFSMCResultFileExist(this)){
-            writeCSV.createAndWriteFSMCResult(FileManager.getFSMCResultFile(this).getAbsolutePath(), patientID, caseID, date, scoreFSMC, fsmcQuestionScores);
-        }
-    }
-
-
-
-
-    private void initTab(){
+    private void initTab() {
         binding.tableLayout.setVisibility(View.VISIBLE);
         binding.btnConfirm.setVisibility(View.GONE);
 
-        binding.cellScoreSleep.setText(score_sleep);
+        // Sleep always present
+        binding.cellScoreSleep.setText(String.valueOf(sleepQuestionnaire.getScore()));
         displayResult("sleep");
-        binding.cellFSMCScore.setText(scoreFSMC);
-        displayResult("fsmc");
+
+        // FSMC only if not stroke
+        if (!isStrokePatient && fsmcQuestionnaire != null) {
+            binding.cellFSMCScore.setText(String.valueOf(fsmcQuestionnaire.getScore()));
+            displayResult("fsmc");
+        }
     }
 
-    private void displayResult(String categorie){
-
+    private void displayResult(String category) {
+        int questionAnsSleep = sleepQuestionnaire.getAnsweredQues();
+        int scoreSleep = sleepQuestionnaire.getScore();
         String text_interpretations;
-        if(categorie.equals("sleep")){
-            if(score_sleep.equals("0") && !questionAnsSleep.equals("9")){
+
+        if(category.equals("sleep")){
+            if(scoreSleep == 0 && (questionAnsSleep != 9)){
                 text_interpretations = getString(R.string.skipped_questionniare);
                 int[] colors = {Color.rgb(128,128,128)};
                 float[] upperlimit = {5.5f};
                 binding.cellResultSleep.setColorSections(upperlimit, colors);
                 binding.cellResultSleep.setUserScore(2.75f);
                 binding.cellResultSleep.setUserText(text_interpretations);
-                Log.d("TEST",  "HRER");
             }else{
-                if(Integer.parseInt(score_sleep)<4){
+                if (scoreSleep<4){
                     text_interpretations = getString(R.string.good);
-                } else if (Integer.parseInt(score_sleep)<10) {
+                } else if (scoreSleep <10) {
                     text_interpretations = getString(R.string.moderate);
-                }else
-                {
+                } else {
                     text_interpretations = getString(R.string.severe);
                 }
+
                 int[] colors = {android.graphics.Color.GREEN, Color.YELLOW, Color.RED};
 
                 float min = 0.0f;
@@ -185,8 +184,7 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
                         binding.cellResultSleep.rescaleValue(redEnd, min,redEnd, 40.0f)};
                 Log.d("TEST", "HERE");
 
-                float user_score = Float.parseFloat(score_sleep);
-                float user_score_rescale = binding.cellResultSleep.rescaleValue(user_score,min,redEnd, 40.0f);
+                float user_score_rescale = binding.cellResultSleep.rescaleValue((float) scoreSleep,min,redEnd, 40.0f);
 
                 binding.cellResultSleep.setColorSections(upperlimit, colors);
                 binding.cellResultSleep.setUserScore(user_score_rescale);
@@ -194,80 +192,81 @@ public class OptionalQuestionnairesActivity extends BaseActivity {
             }
         }
 
-        if(categorie.equals("fsmc")){
-            if (scoreFSMC.equals("0") && !questionAnsFCSM.equals("21")) {
-                String txt_interpretations = getString(R.string.skipped_questionniare);
-                int[] colors = {Color.rgb(128,128,128)};
-                float[] upperlimit = {5.5f};
-                binding.cellFSMCResult.setColorSections(upperlimit, colors);
-                binding.cellFSMCResult.setUserScore(2.75f);
-                binding.cellFSMCResult.setUserText(txt_interpretations);
-                Log.d("TEST",  "HRER");
-            }else{
-                String txt_interpretations  ="";
-                if(Integer.parseInt(scoreFSMC)<43){
-                    txt_interpretations = getString(R.string.good);
-                } else if (Integer.parseInt(scoreFSMC)<53) {
-                    txt_interpretations = getString(R.string.mild_fatigue);
-                } else if (Integer.parseInt(scoreFSMC)<63) {
-                    txt_interpretations = getString(R.string.moderate_fatigue);
-                } else if (Integer.parseInt(scoreFSMC)>62) {
-                    txt_interpretations = getString(R.string.severe_fatigue);
+        if(!patientInfo.getDiagnosis().equals("Stroke")) {
+
+            int questionAnsFSMC = fsmcQuestionnaire.getAnsweredQues();
+            int scoreFSMC = fsmcQuestionnaire.getScore();
+
+            if (category.equals("fsmc")) {
+                if (scoreFSMC == 0 && (questionAnsFSMC != 21)) {
+                    String txt_interpretations = getString(R.string.skipped_questionniare);
+                    int[] colors = {Color.rgb(128, 128, 128)};
+                    float[] upperlimit = {5.5f};
+                    binding.cellFSMCResult.setColorSections(upperlimit, colors);
+                    binding.cellFSMCResult.setUserScore(2.75f);
+                    binding.cellFSMCResult.setUserText(txt_interpretations);
+                } else {
+                    String txt_interpretations = "";
+                    if (scoreFSMC < 43) {
+                        txt_interpretations = getString(R.string.good);
+                    } else if (scoreFSMC < 53) {
+                        txt_interpretations = getString(R.string.mild_fatigue);
+                    } else if (scoreFSMC < 63) {
+                        txt_interpretations = getString(R.string.moderate_fatigue);
+                    } else {
+                        txt_interpretations = getString(R.string.severe_fatigue);
+                    }
+
+                    int[] colors = {android.graphics.Color.GREEN, Color.YELLOW, Color.rgb(255, 165, 0), Color.RED};
+
+                    float min = 0.0f;
+                    float greenEnd = 43.0f;
+                    float yellowEnd = 53.0f;
+                    float orangeEnd = 63.0f;
+                    float redEnd = 80.0f;
+
+                    float[] upperlimit = {binding.cellFSMCResult.rescaleValue(greenEnd, min, redEnd, 40.0f),
+                            binding.cellFSMCResult.rescaleValue(yellowEnd, min, redEnd, 40.0f),
+                            binding.cellFSMCResult.rescaleValue(orangeEnd, min, redEnd, 40.0f),
+                            binding.cellFSMCResult.rescaleValue(redEnd, min, redEnd, 40.0f)};
+
+                    float user_score_rescale = binding.cellFSMCResult.rescaleValue((float) scoreFSMC, min, redEnd, 40.0f);
+
+                    binding.cellFSMCResult.setColorSections(upperlimit, colors);
+                    binding.cellFSMCResult.setUserScore(user_score_rescale);
+                    binding.cellFSMCResult.setUserText(txt_interpretations);
                 }
-                int[] colors = {android.graphics.Color.GREEN, Color.YELLOW,Color.rgb(255,165,0), Color.RED};
-
-                float min = 0.0f;
-                float greenEnd = 43.0f;
-                float yellowEnd = 53.0f;
-                float orangeEnd = 63.0f;
-                float redEnd = 80.0f;
-
-                float[] upperlimit = {binding.cellFSMCResult.rescaleValue(greenEnd,min,redEnd,  40.0f),
-                        binding.cellFSMCResult.rescaleValue(yellowEnd, min,redEnd, 40.0f),
-                        binding.cellFSMCResult.rescaleValue(orangeEnd, min,redEnd, 40.0f),
-                        binding.cellFSMCResult.rescaleValue(redEnd, min,redEnd, 40.0f)};
-
-                Log.d("TEST", "HERE");
-                float user_score = Float.parseFloat(scoreFSMC);
-                float user_score_rescale = binding.cellFSMCResult.rescaleValue(user_score,min,redEnd, 40.0f);
-
-                binding.cellFSMCResult.setColorSections(upperlimit, colors);
-                binding.cellFSMCResult.setUserScore(user_score_rescale);
-                binding.cellFSMCResult.setUserText(txt_interpretations);
             }
         }
     }
 
     private void listenRadioGroup() {
         binding.radioGroup2.setOnCheckedChangeListener((group, checkedId) -> {
+            redo_questionnaire = false; // reset
             if (checkedId == R.id.rdBtnESSFatigue) {
                 questionnaire = "sleep";
-
-                if (Integer.parseInt(skipped_question_sleep) > 3)
+                if (sleepQuestionnaire.getSkippedQues() > 3)
                     redo_questionnaire = true;
-
-            } else if (checkedId == R.id.rdBtnFSMC) {
+            } else if (checkedId == R.id.rdBtnFSMC && !isStrokePatient) {
                 questionnaire = "fsmc";
-                if (Integer.parseInt(skipped_question_fsmc) > 4)
+                if (fsmcQuestionnaire.getSkippedQues() > 4)
                     redo_questionnaire = true;
             }
         });
     }
 
-    private void listenBtnConfirm(){
+    private void listenBtnConfirm() {
         binding.btnConfirm.setOnClickListener(v -> {
-            if(questionnaire.equals("sleep") || questionnaire.equals("ess_depression") || questionnaire.equals("ess_anxiety")){
-                navigateToNextActivityWithoutFinish(SleepActivity.class);
-            } else if (questionnaire.equals("fsmc")) {
+            if ("sleep".equals(questionnaire)) {
+                navigateToNextActivityWithoutFinish(SleepView.class);
+            } else if ("fsmc".equals(questionnaire) && !isStrokePatient) {
                 navigateToNextActivityWithoutFinish(IntroductionFSMCActivity.class);
             }
         });
-
     }
 
-    private void uploadData(File file){
-        DataTransfer dataTransfer = new DataTransfer(this);
-        dataTransfer.uploadFile(file);
+    private void uploadData(File file) {
+        new DataTransfer(this).uploadFile(file);
     }
 
     @Override

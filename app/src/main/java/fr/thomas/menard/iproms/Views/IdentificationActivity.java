@@ -36,8 +36,11 @@ public class IdentificationActivity extends BaseActivity {
 
     private void listenBtnConfirm(){
         binding.btnConfirm.setOnClickListener(v -> {
-            String patientID = binding.APatientTxtIdPatient.getText().toString().trim();
-            String caseID = binding.APatientTxtIdCase.getText().toString().trim();
+//            String patientID = binding.APatientTxtIdPatient.getText().toString().trim();
+//            String caseID = binding.APatientTxtIdCase.getText().toString().trim();
+
+            String patientID = "0000000";
+            String caseID = "0000000";
 
             if(patientID.length()!=7 || caseID.length()!=7){
                 Toast.makeText(this, "Please, write a correct PID & FID", Toast.LENGTH_SHORT).show();
@@ -48,7 +51,8 @@ public class IdentificationActivity extends BaseActivity {
                     diagnosis = binding.editOtherDiagnosis.getText().toString();
                 }
 
-                int clinicId = binding.clinicIdSpinner.getSelectedItemPosition();
+//                int clinicId = binding.clinicIdSpinner.getSelectedItemPosition();
+                int clinicId = 2;
                 patientInfo.setPatientData(patientID, caseID, diagnosis, clinicId);
                 navigateToNextActivity(IntroductionActivity.class);
             }

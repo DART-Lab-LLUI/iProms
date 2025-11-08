@@ -2,6 +2,7 @@ package fr.thomas.menard.iproms.Model;
 
 import android.content.Context;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,9 +43,10 @@ public class Questionnaires {
     /**
      * Returns a list of questionnaires that are already done (progressStatus == COMPLETED)
      */
-    public static List<QuestionnaireType> getCompletedQuestionnaires() {
+    public static List<QuestionnaireType> getCompletedQuestionnaires(Context context) {
         List<QuestionnaireType> done = new ArrayList<>();
         for (Map.Entry<QuestionnaireType, AbstractQuestionnaire> entry : questionnaireMap.entrySet()) {
+            entry.getValue().readCSV(context);
             if (entry.getValue().getProgressStatus() == QuestionnaireStatus.COMPLETED) {
                 done.add(entry.getKey());
             }

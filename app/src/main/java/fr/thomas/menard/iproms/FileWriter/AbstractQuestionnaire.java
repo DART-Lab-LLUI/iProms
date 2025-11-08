@@ -2,10 +2,7 @@ package fr.thomas.menard.iproms.FileWriter;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -25,14 +22,14 @@ import java.util.Map;
 
 import fr.thomas.menard.iproms.Enum.QuestionnaireStatus;
 import fr.thomas.menard.iproms.Model.Patient;
-import fr.thomas.menard.iproms.Utils.WriteCSV;
 
 public abstract class AbstractQuestionnaire extends ViewModel {
     protected Patient patient = Patient.getPatient();
-    protected Map<Integer, Integer> ques_entries = new LinkedHashMap<>();
+    protected Map<Integer, Integer> quesEntries = new LinkedHashMap<>();
     protected int[] questionIds;
     protected int currentQuestion = 0;
     protected QuestionnaireStatus progressStatus;
+    protected int[] answerOptions;
 
     public AbstractQuestionnaire(int[] questionIds) {
         this.questionIds = questionIds;
@@ -42,7 +39,7 @@ public abstract class AbstractQuestionnaire extends ViewModel {
 
     protected void initQuestionnaireEntries() {
         for (int resId : questionIds) {
-            ques_entries.put(resId, 0);
+            quesEntries.put(resId, 0);
         }
     }
 
@@ -79,6 +76,18 @@ public abstract class AbstractQuestionnaire extends ViewModel {
         return progressStatus;
     }
 
+    public int getQuestionIdsLength(){
+        return questionIds.length;
+    }
+
+    public String[] getAnswerOptions(Context context){
+        return context.getResources().getStringArray(answerOptions[currentQuestion]);
+    }
+
+    public String[] getAnswerOptions(Context context, int currentQuestion){
+        return context.getResources().getStringArray(answerOptions[currentQuestion]);
+    }
+
     public abstract void skipQuestion(Context context);
 
     public abstract void startNextQuestion(Context context, int rating);
@@ -87,11 +96,11 @@ public abstract class AbstractQuestionnaire extends ViewModel {
 
     public abstract void readCSV(Context context);
 
-    public static WriteCSV getInstance(@NonNull ViewModelStoreOwner owner) {
-        return new ViewModelProvider(owner, (ViewModelProvider.Factory) new ViewModelProvider.NewInstanceFactory()).get(WriteCSV.class);
+    public abstract File getQuestionnaireFile(Context context);
+
+    protected String getQuestionText(Context context, int resId) {
+        return context.getString(resId);
     }
-
-
 
     // CSV Writer
     protected CSVWriter getCSVWriter(File file){

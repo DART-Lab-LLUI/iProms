@@ -24,7 +24,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Views.PromisActivity"
+            android:name=".Views.PromisView"
             android:exported="false" />
         <activity
             android:name=".Views.OptionalQuestionnairesActivity"
@@ -33,7 +33,7 @@
             android:name=".Views.IntroductionFSMCActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.BDI_Activity"
+            android:name=".Views.BDIView"
             android:exported="false" />
         <activity
             android:name=".Views.FSMCActivity"
@@ -42,13 +42,13 @@
             android:name=".Views.SummaryActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.SleepActivity"
+            android:name=".Views.SleepView"
             android:exported="false" />
         <activity
             android:name=".Views.QualityofLifeActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.DepressionAnxietyActivity"
+            android:name=".Views.DepressionAnxietyView"
             android:exported="false" />
         <activity
             android:name=".Views.FatigueQuestionnaireView"
