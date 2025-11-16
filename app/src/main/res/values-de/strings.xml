@@ -600,6 +600,7 @@
     <string name="mild_fatigue">Leichte Müdigkeit</string>
     <string name="moderate_fatigue">Mittelgradige Müdigkeit</string>
     <string name="severe_fatigue">Schwere Müdigkeit</string>
+    <string name="fatigue_answer">Skala von 1(Stimme nicht zu) bis 7 (Stimme zu)</string>
     <string name="within_normal_limits">Innerhalb normaler Grenzwerte</string>
     <string name="borderline_case">Grenzfall</string>
     <string name="inconspicuous">Unauffällig</string>
@@ -616,5 +617,6 @@
     <string name="redo_questionaire_message">Der Fragebogen wurde bereits ausgefüllt. Sind Sie sicher, dass Sie ihn erneut ausfüllen möchten?</string>
     <string name="redo">Erneut starten</string>
     <string name="cancel">Abbrechen</string>
+    <string name="promis_pain_legend">"Schmerzenskala: "</string>
 
 </resources>

@@ -332,14 +332,17 @@ public class MainActivity extends BaseActivity {
                 File file = questionnaire.getQuestionnaireFile(this);
 
                 if (file != null && file.exists()) {
-                    uploadData(file);
+                    boolean success = uploadData(file);
+                    if (!success) {
+                        break;
+                    }
                 }
             }
         }
     }
 
-    private void uploadData(File file){
-        new DataTransfer(this).uploadFile(file);
+    private boolean uploadData(File file){
+        return new DataTransfer(this).uploadFile(file);
     }
 
     @Override

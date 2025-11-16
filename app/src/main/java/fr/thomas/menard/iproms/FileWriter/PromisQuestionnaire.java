@@ -1,7 +1,6 @@
 package fr.thomas.menard.iproms.FileWriter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.opencsv.CSVWriter;
 
@@ -191,11 +190,12 @@ public class PromisQuestionnaire extends AbstractQuestionnaire {
 
                 if (rating == -1){
                     csvData.add(new String[]{questionText, String.valueOf(rating)});
-                } else if (i > currentQuestion-1) {
+                } else if (i > currentQuestion) {
                     csvData.add(new String[]{questionText, String.valueOf(rating)});
                 } else if (i == 6) {
                     int recoded_rating = recodeGlobal07(rating);
-                    String answerText = context.getResources().getStringArray(answerOptions[i])[rating];
+                    String answerText = context.getString(R.string.promis_pain_legend) +
+                            context.getResources().getStringArray(answerOptions[i])[rating];
                     csvData.add(new String[]{questionText, String.valueOf(recoded_rating), answerText});
                 } else{
                     String answerText = context.getResources().getStringArray(answerOptions[i])[rating-1];
@@ -306,14 +306,6 @@ public class PromisQuestionnaire extends AbstractQuestionnaire {
 
     public int getMentalRawScore() {
         return mentalRawScore;
-    }
-
-    public String getPhysicalTScore() {
-        return physicalTScore;
-    }
-
-    public String getMentalTcore() {
-        return mentalTcore;
     }
 
     public int getQuestionAnswered() {

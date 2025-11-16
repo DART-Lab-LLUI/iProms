@@ -15,7 +15,6 @@ import fr.thomas.menard.iproms.FileWriter.PromisQuestionnaire;
 import fr.thomas.menard.iproms.Model.Questionnaires;
 import fr.thomas.menard.iproms.R;
 import fr.thomas.menard.iproms.Utils.DataTransfer;
-import fr.thomas.menard.iproms.Utils.FileManager;
 import fr.thomas.menard.iproms.Utils.RankingBarView;
 import fr.thomas.menard.iproms.Utils.tScore;
 import fr.thomas.menard.iproms.databinding.ActivitySummaryBinding;
@@ -29,8 +28,6 @@ public class SummaryActivity extends BaseActivity {
     public void init(){
         initTab();
         initPromisSummary();
-        createResultCSV();
-        uploadResultCSV();
         checkScoreforOthersQuestionnaires();
     }
 
@@ -89,31 +86,6 @@ public class SummaryActivity extends BaseActivity {
             navigateToNextActivityWithoutFinish(OptionalQuestionnairesActivity.class);
         });
     }
-
-    private void createResultCSV(){
-//        if(!FileManager.isResultFileExist(this)){
-//            double mean_fatigue = (double) Integer.parseInt(avg_score_fatigue) / (Integer.parseInt(questionAnsFatigue) - Integer.parseInt(lastQuestionFatigue) - 1);
-//            String csv_path = FileManager.getResultFilename(this);
-//            String idPatient = Patient.getPatient().getPatientId();
-//            String caseID = Patient.getPatient().getCaseId();
-//            String date = Patient.getPatient().getDate();
-//
-//            writeCSV.createAndWriteResult(csv_path, idPatient, caseID, date,
-//                    String.valueOf(mean_fatigue), fatigueQuestionScores,
-//                    avg_score_depression, avg_score_anxiety, depressionQuestionScores,
-//                    score_bdi, bdiQuestionScores,
-//                    avg_score_PROMIS_physical, avg_score_PROMIS_mental, promisQuestionScores,
-//                    scoreQOL1, scoreQOL2, scoreQOL3, scoreQOL4, scoreQOL5, scoreQOL6, scoreQOL7, scoreQOL8, scoreQOL9, scoreQOL10, qolQuestionScores,
-//                    qol1QuestionScores, qol2QuestionScores, qol3QuestionScores, qol4QuestionScores, qol5QuestionScores, qol6QuestionScores, qol7QuestionScores, qol8QuestionScores, qol9QuestionScores, qol10QuestionScores);
-//        }
-    }
-
-    private void uploadResultCSV(){
-        uploadData(FileManager.getResultFile(this));
-        binding.linearUpload.setVisibility(View.VISIBLE);
-    }
-
-
 
     @SuppressLint("ResourceAsColor")
     private String displayInterpretations(String categorie){
@@ -315,10 +287,5 @@ public class SummaryActivity extends BaseActivity {
         } else {
             binding.txtSummaryDescription.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void uploadData(File file){
-        DataTransfer dataTransfer = new DataTransfer(this);
-        dataTransfer.uploadFile(file);
     }
 }

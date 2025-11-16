@@ -556,6 +556,7 @@
     <string name="promis_10">How often have you been bothered by emotional problems such as feeling anxious, depressed or irritable ?</string>
     <string name="promis_8">How would you rate your fatigue on average ?</string>
     <string name="promis_7">How would you rate your pain on average ? </string>
+    <string name="promis_pain_legend">Pain scale: </string>
 
     <string-array name="promis_legend_1to59">
         <item>Poor</item>
@@ -623,6 +624,7 @@
     <string name="mild_fatigue">Mild fatigue</string>
     <string name="moderate_fatigue">Moderate fatigue</string>
     <string name="severe_fatigue">Severe fatigue</string>
+    <string name="fatigue_answer">Scale between 1(Disagree) and 7 (Agree)</string>
     <string name="within_normal_limits">Within normal limits</string>
     <string name="borderline_case">Borderline case</string>
     <string name="inconspicuous">Inconspicuous</string>

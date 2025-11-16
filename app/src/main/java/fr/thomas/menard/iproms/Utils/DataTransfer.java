@@ -44,26 +44,26 @@ public class DataTransfer {
         return minioHelper;
     }
 
-    public void uploadFile(File file){
+    public boolean uploadFile(File file){
 
-        if(testing) return;
+        if(testing) return true;
 
         try {
-            minioHelper.sendFileToMinio(file, uploadStatus -> {
-                mainActivity.runOnUiThread(() -> {
-                    int totalFiles = uploadStatus[0];
-                    int successfulUploads = uploadStatus[1];
+            minioHelper.sendFileToMinio(file, uploadStatus -> mainActivity.runOnUiThread(() -> {
+                int totalFiles = uploadStatus[0];
+                int successfulUploads = uploadStatus[1];
 
-                    if ((totalFiles == 0) || (successfulUploads == totalFiles))  {
-                        logoutMessage();
-                    }else {
-                        tryAgainMessage();
-                    }
-                });
-            });
+                if ((totalFiles == 0) || (successfulUploads == totalFiles))  {
+                    logoutMessage();
+                }else {
+                    tryAgainMessage();
+                }
+            }));
+            return true;
         } catch (Exception e){
             tryAgainMessage();
         }
+        return false;
     }
 
     public void uploadAllData(){

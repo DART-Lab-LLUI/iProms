@@ -1,7 +1,6 @@
 package fr.thomas.menard.iproms.Utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.File;
 
@@ -55,50 +54,37 @@ public class FileManager {
     }
 
     public static File getFSMCFile(Context context  ){
-        String filename = Patient.getPatient().getPatientId() + "_FSMC.csv";
+        String filename = "FSMC.csv";
         return new File(getSessionFolder(context), filename);
     }
 
     public static File getPromisFile(Context context  ){
-        String filename = Patient.getPatient().getPatientId() + "_Promis.csv";
+        String filename = "Promis.csv";
         return new File(getSessionFolder(context), filename);
     }
 
     public static File getQQLFile(Context context  ){
-        String filename = Patient.getPatient().getPatientId() + "_QQL.csv";
+        String filename = "QQL.csv";
         return new File(getSessionFolder(context), filename);
-    }
-
-    public static String getQQLFilename(Context context){
-        return getFilename(getQQLFile(context));
-    }
-
-    public static boolean isQQLFileExist(Context context  ){
-        return isFileExists(getQQLFile(context));
     }
 
     public static File getESSFile(Context context  ){
-        String filename = Patient.getPatient().getPatientId() + "_ESS.csv";
-        return new File(getSessionFolder(context), filename);
-    }
-
-    public static File getResultFile(Context context  ){
-        String filename = Patient.getPatient().getPatientId() + "_result.csv";
+        String filename = "ESS.csv";
         return new File(getSessionFolder(context), filename);
     }
 
     public static File getBDIFile(Context context  ){
-        String filename = Patient.getPatient().getPatientId() + "_BDI.csv";
+        String filename = "BDI.csv";
         return new File(getSessionFolder(context), filename);
     }
 
     public static File getHADSFile(Context context  ){
-        String filename = Patient.getPatient().getPatientId() + "_HADS.csv";
+        String filename = "HADS.csv";
         return new File(getSessionFolder(context), filename);
     }
 
     public static File getFSSFile(Context context  ){
-        String filename = Patient.getPatient().getPatientId() + "_FSS.csv";
+        String filename = "FSS.csv";
         return new File(getSessionFolder(context), filename);
     }
 }

@@ -31,6 +31,10 @@ public class FatigueQuestionnaire extends AbstractQuestionnaire {
                 R.string.question8_fatigue,
                 R.string.question9_fatigue
         });
+
+        answerOptions = new int[]{
+                R.string.fatigue_answer
+        };
     }
 
     public int getAnsweredQues() {
@@ -116,14 +120,15 @@ public class FatigueQuestionnaire extends AbstractQuestionnaire {
                         String.valueOf(skippedQues)
                 });
                 csvData.add(new String[]{});
-                csvData.add(new String[]{"Question", "Rating"});
+                csvData.add(new String[]{"Question", "Rating", "Rating Answer"});
             }
 
             // --- Append each question and its rating ---
             for (int resId : questionIds) {
                 String questionText = getQuestionText(context, resId);
                 int rating = quesEntries.getOrDefault(resId, 0);
-                csvData.add(new String[]{questionText, String.valueOf(rating)});
+                String answerText = context.getString(answerOptions[0]);
+                csvData.add(new String[]{questionText, String.valueOf(rating), answerText});
             }
 
             // --- Write back to file ---

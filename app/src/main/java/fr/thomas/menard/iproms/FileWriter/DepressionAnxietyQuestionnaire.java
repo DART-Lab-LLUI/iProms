@@ -178,7 +178,7 @@ public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
 
                 if (rating == -1){
                     csvData.add(new String[]{questionText, String.valueOf(rating)});
-                } else if (i > currentQuestion-1) {
+                } else if (i > currentQuestion) {
                     csvData.add(new String[]{questionText, String.valueOf(rating)});
                 } else{
                     String answerText = context.getResources().getStringArray(answerOptions[i])[rating];
