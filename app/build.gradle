@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'fr.thomas.menard.iproms'
+    namespace 'com.llui.iproms'
     compileSdk 33
 
     defaultConfig {
-        applicationId "fr.thomas.menard.iproms"
+        applicationId "com.llui.iproms"
         minSdk 26
         targetSdk 33
         versionCode 1

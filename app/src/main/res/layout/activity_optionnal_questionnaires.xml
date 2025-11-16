@@ -790,7 +790,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserratregular"/>
-                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                    <com.llui.iproms.Utils.RankingBarView
                         android:layout_width="20dp"
                         android:layout_height="70dp"
                         android:id="@+id/cellResultSleep"
@@ -828,7 +828,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserratregular"/>
-                    <fr.thomas.menard.iproms.Utils.RankingBarView
+                    <com.llui.iproms.Utils.RankingBarView
                         android:layout_width="80dp"
                         android:layout_height="70dp"
                         android:id="@+id/cellFSMCResult"
