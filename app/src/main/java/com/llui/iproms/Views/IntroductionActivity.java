@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import com.llui.iproms.FileWriter.InfoCycle;
+import com.llui.iproms.Questionnaires.InfoCycle;
 import com.llui.iproms.Utils.FileManager;
 import com.llui.iproms.databinding.ActivityIntroductionBinding;
 

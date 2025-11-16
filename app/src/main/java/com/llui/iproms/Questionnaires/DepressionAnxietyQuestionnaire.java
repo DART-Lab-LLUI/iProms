@@ -1,4 +1,4 @@
-package com.llui.iproms.FileWriter;
+package com.llui.iproms.Questionnaires;
 
 import android.content.Context;
 
@@ -13,46 +13,86 @@ import java.util.List;
 import com.llui.iproms.R;
 import com.llui.iproms.Utils.FileManager;
 
-public class SleepQuestionnaire extends AbstractQuestionnaire{
-    private int skippedQues = 0;
-    private int answeredQues = 0;
-    private int score = 0;
+public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
+    private int anxietyScore = 0;
+    private int depressionScore = 0;
+    private int anxietyQuestionAnswered = 0;
+    private int anxietySkippedAnswered = 0;
+    private int depressionQuestionAnswered = 0;
+    private int depressionSkippedAnswered = 0;
+    private String category;
 
-    public SleepQuestionnaire() {
+    public DepressionAnxietyQuestionnaire() {
         super(new int[]{
-                R.string.question_ess_1,
-                R.string.question_ess_2,
-                R.string.question_ess_3,
-                R.string.question_ess_4,
-                R.string.question_ess_5,
-                R.string.question_ess_6,
-                R.string.question_ess_7,
-                R.string.question_ess_8
+                R.string.question_HADS_1,
+                R.string.question_HADS_2,
+                R.string.question_HADS_3,
+                R.string.question_HADS_4,
+                R.string.question_HADS_5,
+                R.string.question_HADS_6,
+                R.string.question_HADS_7,
+                R.string.question_HADS_8,
+                R.string.question_HADS_9,
+                R.string.question_HADS_10,
+                R.string.question_HADS_11,
+                R.string.question_HADS_12,
+                R.string.question_HADS_13,
+                R.string.question_HADS_14
         });
-
+        
         answerOptions = new int[]{
-                R.array.answers_ess
+                R.array.HADS_answers_1,
+                R.array.HADS_answers_2,
+                R.array.HADS_answers_3,
+                R.array.HADS_answers_4,
+                R.array.HADS_answers_5,
+                R.array.HADS_answers_6,
+                R.array.HADS_answers_7,
+                R.array.HADS_answers_8,
+                R.array.HADS_answers_9,
+                R.array.HADS_answers_10,
+                R.array.HADS_answers_11,
+                R.array.HADS_answers_12,
+                R.array.HADS_answers_13,
+                R.array.HADS_answers_14
         };
+
+        checkCategory();
     }
 
-    public int getAnsweredQues() {
-        return answeredQues;
+    private void checkCategory(){
+        if(currentQuestion%2 == 0){
+            category = "depression";
+        } else {
+            category = "anxiety";
+        }
     }
 
-    public int getSkippedQues() {
-        return skippedQues;
-    }
+    private void updateCategoryValues(int rating){
+        checkCategory();
 
-    public int getScore() {
-        return score;
+        if(category.equals("depression")){
+            if(rating == -1){
+                depressionSkippedAnswered++;
+            } else {
+                depressionQuestionAnswered++;
+                depressionScore += rating;
+            }
+        } else {
+            if(rating == -1){
+                anxietySkippedAnswered++;
+            } else {
+                anxietyQuestionAnswered++;
+                anxietyScore += rating;
+            }
+        }
     }
 
     @Override
     public void startNextQuestion(Context context, int rating) {
         updateStatus();
-        score += rating;
+        updateCategoryValues(rating);
         quesEntries.put(questionIds[currentQuestion], rating);
-        answeredQues++;
         updateCSV(context);
         currentQuestion = Math.min(currentQuestion+1, questionIds.length-1);
     }
@@ -60,7 +100,7 @@ public class SleepQuestionnaire extends AbstractQuestionnaire{
     @Override
     public void skipQuestion(Context context) {
         updateStatus();
-        skippedQues++;
+        updateCategoryValues(-1);
         quesEntries.put(questionIds[currentQuestion], -1);
         updateCSV(context);
         currentQuestion = Math.min(currentQuestion+1, questionIds.length-1);
@@ -69,7 +109,7 @@ public class SleepQuestionnaire extends AbstractQuestionnaire{
     // CSV Storage
     @Override
     protected void updateCSV(Context context) {
-        File csvFile = getQuestionnaireFile(context);
+        File csvFile = FileManager.getHADSFile(context);
 
         List<String[]> csvData = new ArrayList<>();
         boolean fileExists = csvFile.exists() && csvFile.length() > 0;
@@ -86,9 +126,12 @@ public class SleepQuestionnaire extends AbstractQuestionnaire{
                             patient.getDate(),
                             patient.getCaseId(),
                             progressStatus.toString(),
-                            String.valueOf(score),
-                            String.valueOf(answeredQues),
-                            String.valueOf(skippedQues)
+                            String.valueOf(anxietyScore),
+                            String.valueOf(depressionScore),
+                            String.valueOf(anxietyQuestionAnswered),
+                            String.valueOf(depressionQuestionAnswered),
+                            String.valueOf(anxietySkippedAnswered),
+                            String.valueOf(depressionSkippedAnswered)
                     });
                 }
 
@@ -109,16 +152,20 @@ public class SleepQuestionnaire extends AbstractQuestionnaire{
                 // --- Create new file ---
                 csvData.add(new String[]{
                         "Patient_ID", "Date", "Case_ID", "Status",
-                        "Total_score",
-                        "Question_answered", "Question_skipped"});
+                        "Total_anxiety_score", "Total_depression_score",
+                        "Question_anxiety_answered", "Question_depression_answered",
+                        "Question_anxiety_skipped", "Question_depression_skipped"});
                 csvData.add(new String[]{
                         patient.getPatientId(),
                         patient.getDate(),
                         patient.getCaseId(),
                         progressStatus.toString(),
-                        String.valueOf(score),
-                        String.valueOf(answeredQues),
-                        String.valueOf(skippedQues)
+                        String.valueOf(anxietyScore),
+                        String.valueOf(depressionScore),
+                        String.valueOf(anxietyQuestionAnswered),
+                        String.valueOf(depressionQuestionAnswered),
+                        String.valueOf(anxietySkippedAnswered),
+                        String.valueOf(depressionSkippedAnswered)
                 });
                 csvData.add(new String[]{});
                 csvData.add(new String[]{"Question", "Rating", "Rating Answer"});
@@ -134,7 +181,7 @@ public class SleepQuestionnaire extends AbstractQuestionnaire{
                 } else if (i > currentQuestion) {
                     csvData.add(new String[]{questionText, String.valueOf(rating)});
                 } else{
-                    String answerText = context.getResources().getStringArray(answerOptions[0])[rating];
+                    String answerText = context.getResources().getStringArray(answerOptions[i])[rating];
                     csvData.add(new String[]{questionText, String.valueOf(rating), answerText});
                 }
             }
@@ -149,6 +196,7 @@ public class SleepQuestionnaire extends AbstractQuestionnaire{
         }
     }
 
+
     // Read CSV
     /**
      * Reads the Fatigue questionnaire CSV file and populates the questionnaire object.
@@ -156,7 +204,7 @@ public class SleepQuestionnaire extends AbstractQuestionnaire{
      */
     @Override
     public void readCSV(Context context) {
-        File csvFile = getQuestionnaireFile(context);
+        File csvFile = FileManager.getHADSFile(context);
 
         if (!csvFile.exists()) {
             return;
@@ -165,26 +213,29 @@ public class SleepQuestionnaire extends AbstractQuestionnaire{
         try {
             List<String[]> csvEntries = super.readExistingCSVFile(csvFile);
 
-            if (csvEntries.size() < 4) {
-                return;
-            }
+            if (csvEntries.size() < 4) return; // Not enough rows
 
             // --- Read patient info and summary from the second row ---
             String[] summaryRow = csvEntries.get(1);
-            if (summaryRow.length >= 7) {
+            if (summaryRow.length >= 10) {  // match updateCSV header
                 progressStatus = QuestionnaireStatus.valueOf(summaryRow[3]);
-                score = Integer.parseInt(summaryRow[4]);
-                answeredQues = Integer.parseInt(summaryRow[5]);
-                skippedQues = Integer.parseInt(summaryRow[6]);
+                anxietyScore = Integer.parseInt(summaryRow[4]);
+                depressionScore = Integer.parseInt(summaryRow[5]);
+                anxietyQuestionAnswered = Integer.parseInt(summaryRow[6]);
+                depressionQuestionAnswered = Integer.parseInt(summaryRow[7]);
+                anxietySkippedAnswered = Integer.parseInt(summaryRow[8]);
+                depressionSkippedAnswered = Integer.parseInt(summaryRow[9]);
             } else {
-                answeredQues = 0;
-                skippedQues = 0;
+                anxietyQuestionAnswered = 0;
+                depressionQuestionAnswered = 0;
+                anxietySkippedAnswered = 0;
+                depressionSkippedAnswered = 0;
             }
 
             // --- Clear previous entries ---
             quesEntries.clear();
 
-            // --- Find the "Question","Rating" header ---
+            // --- Find the "Question","Rating","Rating Answer" header ---
             int questionHeaderIndex = -1;
             for (int i = 0; i < csvEntries.size(); i++) {
                 String[] row = csvEntries.get(i);
@@ -200,9 +251,14 @@ public class SleepQuestionnaire extends AbstractQuestionnaire{
                     String[] row = csvEntries.get(i);
                     if (row.length >= 2) {
                         String questionText = row[0];
-                        int rating = Integer.parseInt(row[1]);
+                        int rating = 0;
+                        try {
+                            rating = Integer.parseInt(row[1]);
+                        } catch (NumberFormatException e) {
+                            rating = 0; // default if missing
+                        }
 
-                        // Match the questionText to the resource ID in questionIds
+                        // --- Match the question text to a resource ID ---
                         for (int resId : questionIds) {
                             String resText = getQuestionText(context, resId);
                             if (resText.equals(questionText)) {
@@ -214,16 +270,40 @@ public class SleepQuestionnaire extends AbstractQuestionnaire{
                 }
             }
 
-            // --- Set the current question pointer ---
-            currentQuestion = Math.min(answeredQues + skippedQues, questionIds.length - 1);
+            // --- Set currentQuestion pointer to first unanswered/skipped question ---
+            currentQuestion = Math.min(anxietyQuestionAnswered + depressionQuestionAnswered + anxietySkippedAnswered + depressionSkippedAnswered, questionIds.length - 1);
 
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public File getQuestionnaireFile(Context context) {
-        return FileManager.getESSFile(context);
+        return FileManager.getHADSFile(context);
+    }
+
+    public int getAnxietyScore() {
+        return anxietyScore;
+    }
+
+    public int getDepressionScore() {
+        return depressionScore;
+    }
+
+    public int getAnxietyQuestionAnswered() {
+        return anxietyQuestionAnswered;
+    }
+
+    public int getAnxietySkippedAnswered() {
+        return anxietySkippedAnswered;
+    }
+
+    public int getDepressionQuestionAnswered() {
+        return depressionQuestionAnswered;
+    }
+
+    public int getDepressionSkippedAnswered() {
+        return depressionSkippedAnswered;
     }
 }

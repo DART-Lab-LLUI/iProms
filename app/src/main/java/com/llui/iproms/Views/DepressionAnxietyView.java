@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.SeekBar;
 
 import com.llui.iproms.Enum.QuestionnaireType;
-import com.llui.iproms.FileWriter.AbstractQuestionnaire;
-import com.llui.iproms.FileWriter.DepressionAnxietyQuestionnaire;
+import com.llui.iproms.Questionnaires.AbstractQuestionnaire;
+import com.llui.iproms.Questionnaires.DepressionAnxietyQuestionnaire;
 import com.llui.iproms.Model.Questionnaires;
 import com.llui.iproms.R;
 import com.llui.iproms.databinding.ActivityDepressionAnxietyBinding;

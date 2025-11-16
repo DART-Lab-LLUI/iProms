@@ -1,4 +1,4 @@
-package com.llui.iproms.FileWriter;
+package com.llui.iproms.Questionnaires;
 
 import android.content.Context;
 
@@ -13,85 +13,78 @@ import java.util.List;
 import com.llui.iproms.R;
 import com.llui.iproms.Utils.FileManager;
 
-public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
-    private int anxietyScore = 0;
-    private int depressionScore = 0;
-    private int anxietyQuestionAnswered = 0;
-    private int anxietySkippedAnswered = 0;
-    private int depressionQuestionAnswered = 0;
-    private int depressionSkippedAnswered = 0;
-    private String category;
+public class BDIQuestionnaire extends AbstractQuestionnaire{
+    private int totalScore = 0;
+    private int questionAnswered = 0;
+    private int questionSkipped = 0;
 
-    public DepressionAnxietyQuestionnaire() {
+    public BDIQuestionnaire() {
         super(new int[]{
-                R.string.question_HADS_1,
-                R.string.question_HADS_2,
-                R.string.question_HADS_3,
-                R.string.question_HADS_4,
-                R.string.question_HADS_5,
-                R.string.question_HADS_6,
-                R.string.question_HADS_7,
-                R.string.question_HADS_8,
-                R.string.question_HADS_9,
-                R.string.question_HADS_10,
-                R.string.question_HADS_11,
-                R.string.question_HADS_12,
-                R.string.question_HADS_13,
-                R.string.question_HADS_14
+                R.string.bdi_ii_1,
+                R.string.bdi_ii_2,
+                R.string.bdi_ii_3,
+                R.string.bdi_ii_4,
+                R.string.bdi_ii_5,
+                R.string.bdi_ii_6,
+                R.string.bdi_ii_7,
+                R.string.bdi_ii_8,
+                R.string.bdi_ii_9,
+                R.string.bdi_ii_10,
+                R.string.bdi_ii_11,
+                R.string.bdi_ii_12,
+                R.string.bdi_ii_13,
+                R.string.bdi_ii_14,
+                R.string.bdi_ii_15,
+                R.string.bdi_ii_16,
+                R.string.bdi_ii_17,
+                R.string.bdi_ii_18,
+                R.string.bdi_ii_19,
+                R.string.bdi_ii_20,
+                R.string.bdi_ii_21
         });
-        
+
         answerOptions = new int[]{
-                R.array.HADS_answers_1,
-                R.array.HADS_answers_2,
-                R.array.HADS_answers_3,
-                R.array.HADS_answers_4,
-                R.array.HADS_answers_5,
-                R.array.HADS_answers_6,
-                R.array.HADS_answers_7,
-                R.array.HADS_answers_8,
-                R.array.HADS_answers_9,
-                R.array.HADS_answers_10,
-                R.array.HADS_answers_11,
-                R.array.HADS_answers_12,
-                R.array.HADS_answers_13,
-                R.array.HADS_answers_14
+                R.array.bdi_answers_1,
+                R.array.bdi_answers_2,
+                R.array.bdi_answers_3,
+                R.array.bdi_answers_4,
+                R.array.bdi_answers_5,
+                R.array.bdi_answers_6,
+                R.array.bdi_answers_7,
+                R.array.bdi_answers_8,
+                R.array.bdi_answers_9,
+                R.array.bdi_answers_10,
+                R.array.bdi_answers_11,
+                R.array.bdi_answers_12,
+                R.array.bdi_answers_13,
+                R.array.bdi_answers_14,
+                R.array.bdi_answers_15,
+                R.array.bdi_answers_16,
+                R.array.bdi_answers_17,
+                R.array.bdi_answers_18,
+                R.array.bdi_answers_19,
+                R.array.bdi_answers_20,
+                R.array.bdi_answers_21
         };
-
-        checkCategory();
     }
 
-    private void checkCategory(){
-        if(currentQuestion%2 == 0){
-            category = "depression";
-        } else {
-            category = "anxiety";
-        }
+    public int getTotalScore() {
+        return totalScore;
     }
 
-    private void updateCategoryValues(int rating){
-        checkCategory();
+    public int getQuestionAnswered() {
+        return questionAnswered;
+    }
 
-        if(category.equals("depression")){
-            if(rating == -1){
-                depressionSkippedAnswered++;
-            } else {
-                depressionQuestionAnswered++;
-                depressionScore += rating;
-            }
-        } else {
-            if(rating == -1){
-                anxietySkippedAnswered++;
-            } else {
-                anxietyQuestionAnswered++;
-                anxietyScore += rating;
-            }
-        }
+    public int getQuestionSkipped() {
+        return questionSkipped;
     }
 
     @Override
     public void startNextQuestion(Context context, int rating) {
         updateStatus();
-        updateCategoryValues(rating);
+        totalScore += rating;
+        questionAnswered++;
         quesEntries.put(questionIds[currentQuestion], rating);
         updateCSV(context);
         currentQuestion = Math.min(currentQuestion+1, questionIds.length-1);
@@ -100,7 +93,7 @@ public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
     @Override
     public void skipQuestion(Context context) {
         updateStatus();
-        updateCategoryValues(-1);
+        questionSkipped++;
         quesEntries.put(questionIds[currentQuestion], -1);
         updateCSV(context);
         currentQuestion = Math.min(currentQuestion+1, questionIds.length-1);
@@ -109,7 +102,7 @@ public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
     // CSV Storage
     @Override
     protected void updateCSV(Context context) {
-        File csvFile = FileManager.getHADSFile(context);
+        File csvFile = FileManager.getBDIFile(context);
 
         List<String[]> csvData = new ArrayList<>();
         boolean fileExists = csvFile.exists() && csvFile.length() > 0;
@@ -126,12 +119,9 @@ public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
                             patient.getDate(),
                             patient.getCaseId(),
                             progressStatus.toString(),
-                            String.valueOf(anxietyScore),
-                            String.valueOf(depressionScore),
-                            String.valueOf(anxietyQuestionAnswered),
-                            String.valueOf(depressionQuestionAnswered),
-                            String.valueOf(anxietySkippedAnswered),
-                            String.valueOf(depressionSkippedAnswered)
+                            String.valueOf(totalScore),
+                            String.valueOf(questionAnswered),
+                            String.valueOf(questionSkipped)
                     });
                 }
 
@@ -152,20 +142,16 @@ public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
                 // --- Create new file ---
                 csvData.add(new String[]{
                         "Patient_ID", "Date", "Case_ID", "Status",
-                        "Total_anxiety_score", "Total_depression_score",
-                        "Question_anxiety_answered", "Question_depression_answered",
-                        "Question_anxiety_skipped", "Question_depression_skipped"});
+                        "Total_score",
+                        "Question_answered", "Question_skipped"});
                 csvData.add(new String[]{
                         patient.getPatientId(),
                         patient.getDate(),
                         patient.getCaseId(),
                         progressStatus.toString(),
-                        String.valueOf(anxietyScore),
-                        String.valueOf(depressionScore),
-                        String.valueOf(anxietyQuestionAnswered),
-                        String.valueOf(depressionQuestionAnswered),
-                        String.valueOf(anxietySkippedAnswered),
-                        String.valueOf(depressionSkippedAnswered)
+                        String.valueOf(totalScore),
+                        String.valueOf(questionAnswered),
+                        String.valueOf(questionSkipped)
                 });
                 csvData.add(new String[]{});
                 csvData.add(new String[]{"Question", "Rating", "Rating Answer"});
@@ -204,7 +190,7 @@ public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
      */
     @Override
     public void readCSV(Context context) {
-        File csvFile = FileManager.getHADSFile(context);
+        File csvFile = FileManager.getBDIFile(context);
 
         if (!csvFile.exists()) {
             return;
@@ -217,19 +203,15 @@ public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
 
             // --- Read patient info and summary from the second row ---
             String[] summaryRow = csvEntries.get(1);
-            if (summaryRow.length >= 10) {  // match updateCSV header
+            if (summaryRow.length >= 7) {  // match updateCSV header
                 progressStatus = QuestionnaireStatus.valueOf(summaryRow[3]);
-                anxietyScore = Integer.parseInt(summaryRow[4]);
-                depressionScore = Integer.parseInt(summaryRow[5]);
-                anxietyQuestionAnswered = Integer.parseInt(summaryRow[6]);
-                depressionQuestionAnswered = Integer.parseInt(summaryRow[7]);
-                anxietySkippedAnswered = Integer.parseInt(summaryRow[8]);
-                depressionSkippedAnswered = Integer.parseInt(summaryRow[9]);
+                totalScore = Integer.parseInt(summaryRow[4]);
+                questionAnswered = Integer.parseInt(summaryRow[5]);
+                questionSkipped = Integer.parseInt(summaryRow[6]);
             } else {
-                anxietyQuestionAnswered = 0;
-                depressionQuestionAnswered = 0;
-                anxietySkippedAnswered = 0;
-                depressionSkippedAnswered = 0;
+                totalScore = 0;
+                questionAnswered = 0;
+                questionSkipped = 0;
             }
 
             // --- Clear previous entries ---
@@ -271,7 +253,7 @@ public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
             }
 
             // --- Set currentQuestion pointer to first unanswered/skipped question ---
-            currentQuestion = Math.min(anxietyQuestionAnswered + depressionQuestionAnswered + anxietySkippedAnswered + depressionSkippedAnswered, questionIds.length - 1);
+            currentQuestion = Math.min(questionAnswered + questionSkipped, questionIds.length - 1);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,30 +262,6 @@ public class DepressionAnxietyQuestionnaire extends AbstractQuestionnaire{
 
     @Override
     public File getQuestionnaireFile(Context context) {
-        return FileManager.getHADSFile(context);
-    }
-
-    public int getAnxietyScore() {
-        return anxietyScore;
-    }
-
-    public int getDepressionScore() {
-        return depressionScore;
-    }
-
-    public int getAnxietyQuestionAnswered() {
-        return anxietyQuestionAnswered;
-    }
-
-    public int getAnxietySkippedAnswered() {
-        return anxietySkippedAnswered;
-    }
-
-    public int getDepressionQuestionAnswered() {
-        return depressionQuestionAnswered;
-    }
-
-    public int getDepressionSkippedAnswered() {
-        return depressionSkippedAnswered;
+        return FileManager.getBDIFile(context);
     }
 }

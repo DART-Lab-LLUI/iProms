@@ -8,8 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 
-import com.llui.iproms.FileWriter.AbstractQuestionnaire;
-import com.llui.iproms.FileWriter.FatigueQuestionnaire;
+import com.llui.iproms.Questionnaires.AbstractQuestionnaire;
+import com.llui.iproms.Questionnaires.FatigueQuestionnaire;
 import com.llui.iproms.Enum.QuestionnaireType;
 import com.llui.iproms.Model.Questionnaires;
 import com.llui.iproms.R;

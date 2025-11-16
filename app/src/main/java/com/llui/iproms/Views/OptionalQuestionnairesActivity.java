@@ -10,9 +10,9 @@ import android.view.View;
 import java.io.File;
 
 import com.llui.iproms.Enum.QuestionnaireStatus;
-import com.llui.iproms.FileWriter.SleepQuestionnaire;
+import com.llui.iproms.Questionnaires.SleepQuestionnaire;
 import com.llui.iproms.Enum.QuestionnaireType;
-import com.llui.iproms.FileWriter.FSMCQuestionnaire;
+import com.llui.iproms.Questionnaires.FSMCQuestionnaire;
 import com.llui.iproms.Model.Patient;
 import com.llui.iproms.Model.Questionnaires;
 import com.llui.iproms.R;

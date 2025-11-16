@@ -17,11 +17,11 @@ import java.util.Map;
 
 import com.llui.iproms.Enum.QuestionnaireStatus;
 import com.llui.iproms.Enum.QuestionnaireType;
-import com.llui.iproms.FileWriter.AbstractQuestionnaire;
-import com.llui.iproms.FileWriter.BDIQuestionnaire;
-import com.llui.iproms.FileWriter.DepressionAnxietyQuestionnaire;
-import com.llui.iproms.FileWriter.FatigueQuestionnaire;
-import com.llui.iproms.FileWriter.PromisQuestionnaire;
+import com.llui.iproms.Questionnaires.AbstractQuestionnaire;
+import com.llui.iproms.Questionnaires.BDIQuestionnaire;
+import com.llui.iproms.Questionnaires.DepressionAnxietyQuestionnaire;
+import com.llui.iproms.Questionnaires.FatigueQuestionnaire;
+import com.llui.iproms.Questionnaires.PromisQuestionnaire;
 import com.llui.iproms.App.MyApplication;
 import com.llui.iproms.Model.Questionnaires;
 import com.llui.iproms.R;

@@ -1,12 +1,12 @@
 package com.llui.iproms.Enum;
 
-import com.llui.iproms.FileWriter.AbstractQuestionnaire;
-import com.llui.iproms.FileWriter.BDIQuestionnaire;
-import com.llui.iproms.FileWriter.DepressionAnxietyQuestionnaire;
-import com.llui.iproms.FileWriter.FSMCQuestionnaire;
-import com.llui.iproms.FileWriter.FatigueQuestionnaire;
-import com.llui.iproms.FileWriter.PromisQuestionnaire;
-import com.llui.iproms.FileWriter.SleepQuestionnaire;
+import com.llui.iproms.Questionnaires.AbstractQuestionnaire;
+import com.llui.iproms.Questionnaires.BDIQuestionnaire;
+import com.llui.iproms.Questionnaires.DepressionAnxietyQuestionnaire;
+import com.llui.iproms.Questionnaires.FSMCQuestionnaire;
+import com.llui.iproms.Questionnaires.FatigueQuestionnaire;
+import com.llui.iproms.Questionnaires.PromisQuestionnaire;
+import com.llui.iproms.Questionnaires.SleepQuestionnaire;
 
 public enum QuestionnaireType {
     FATIGUE(FatigueQuestionnaire.class),

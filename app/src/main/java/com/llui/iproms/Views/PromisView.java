@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 
 import com.llui.iproms.Enum.QuestionnaireType;
-import com.llui.iproms.FileWriter.AbstractQuestionnaire;
-import com.llui.iproms.FileWriter.PromisQuestionnaire;
+import com.llui.iproms.Questionnaires.AbstractQuestionnaire;
+import com.llui.iproms.Questionnaires.PromisQuestionnaire;
 import com.llui.iproms.Model.Questionnaires;
 import com.llui.iproms.R;
 import com.llui.iproms.databinding.ActivityPromisBinding;

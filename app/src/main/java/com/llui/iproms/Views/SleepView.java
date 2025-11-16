@@ -8,8 +8,8 @@ import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 
-import com.llui.iproms.FileWriter.AbstractQuestionnaire;
-import com.llui.iproms.FileWriter.SleepQuestionnaire;
+import com.llui.iproms.Questionnaires.AbstractQuestionnaire;
+import com.llui.iproms.Questionnaires.SleepQuestionnaire;
 import com.llui.iproms.Enum.QuestionnaireType;
 import com.llui.iproms.Model.Questionnaires;
 import com.llui.iproms.R;

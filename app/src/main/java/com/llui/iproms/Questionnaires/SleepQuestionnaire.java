@@ -1,4 +1,4 @@
-package com.llui.iproms.FileWriter;
+package com.llui.iproms.Questionnaires;
 
 import android.content.Context;
 
@@ -13,79 +13,46 @@ import java.util.List;
 import com.llui.iproms.R;
 import com.llui.iproms.Utils.FileManager;
 
-public class BDIQuestionnaire extends AbstractQuestionnaire{
-    private int totalScore = 0;
-    private int questionAnswered = 0;
-    private int questionSkipped = 0;
+public class SleepQuestionnaire extends AbstractQuestionnaire{
+    private int skippedQues = 0;
+    private int answeredQues = 0;
+    private int score = 0;
 
-    public BDIQuestionnaire() {
+    public SleepQuestionnaire() {
         super(new int[]{
-                R.string.bdi_ii_1,
-                R.string.bdi_ii_2,
-                R.string.bdi_ii_3,
-                R.string.bdi_ii_4,
-                R.string.bdi_ii_5,
-                R.string.bdi_ii_6,
-                R.string.bdi_ii_7,
-                R.string.bdi_ii_8,
-                R.string.bdi_ii_9,
-                R.string.bdi_ii_10,
-                R.string.bdi_ii_11,
-                R.string.bdi_ii_12,
-                R.string.bdi_ii_13,
-                R.string.bdi_ii_14,
-                R.string.bdi_ii_15,
-                R.string.bdi_ii_16,
-                R.string.bdi_ii_17,
-                R.string.bdi_ii_18,
-                R.string.bdi_ii_19,
-                R.string.bdi_ii_20,
-                R.string.bdi_ii_21
+                R.string.question_ess_1,
+                R.string.question_ess_2,
+                R.string.question_ess_3,
+                R.string.question_ess_4,
+                R.string.question_ess_5,
+                R.string.question_ess_6,
+                R.string.question_ess_7,
+                R.string.question_ess_8
         });
 
         answerOptions = new int[]{
-                R.array.bdi_answers_1,
-                R.array.bdi_answers_2,
-                R.array.bdi_answers_3,
-                R.array.bdi_answers_4,
-                R.array.bdi_answers_5,
-                R.array.bdi_answers_6,
-                R.array.bdi_answers_7,
-                R.array.bdi_answers_8,
-                R.array.bdi_answers_9,
-                R.array.bdi_answers_10,
-                R.array.bdi_answers_11,
-                R.array.bdi_answers_12,
-                R.array.bdi_answers_13,
-                R.array.bdi_answers_14,
-                R.array.bdi_answers_15,
-                R.array.bdi_answers_16,
-                R.array.bdi_answers_17,
-                R.array.bdi_answers_18,
-                R.array.bdi_answers_19,
-                R.array.bdi_answers_20,
-                R.array.bdi_answers_21
+                R.array.answers_ess
         };
     }
 
-    public int getTotalScore() {
-        return totalScore;
+    public int getAnsweredQues() {
+        return answeredQues;
     }
 
-    public int getQuestionAnswered() {
-        return questionAnswered;
+    public int getSkippedQues() {
+        return skippedQues;
     }
 
-    public int getQuestionSkipped() {
-        return questionSkipped;
+    public int getScore() {
+        return score;
     }
 
     @Override
     public void startNextQuestion(Context context, int rating) {
         updateStatus();
-        totalScore += rating;
-        questionAnswered++;
+        score += rating;
         quesEntries.put(questionIds[currentQuestion], rating);
+        answeredQues++;
         updateCSV(context);
         currentQuestion = Math.min(currentQuestion+1, questionIds.length-1);
     }
@@ -93,7 +60,7 @@ public class BDIQuestionnaire extends AbstractQuestionnaire{
     @Override
     public void skipQuestion(Context context) {
         updateStatus();
-        questionSkipped++;
+        skippedQues++;
         quesEntries.put(questionIds[currentQuestion], -1);
         updateCSV(context);
         currentQuestion = Math.min(currentQuestion+1, questionIds.length-1);
@@ -102,7 +69,7 @@ public class BDIQuestionnaire extends AbstractQuestionnaire{
     // CSV Storage
     @Override
     protected void updateCSV(Context context) {
-        File csvFile = FileManager.getBDIFile(context);
+        File csvFile = getQuestionnaireFile(context);
 
         List<String[]> csvData = new ArrayList<>();
         boolean fileExists = csvFile.exists() && csvFile.length() > 0;
@@ -119,9 +86,9 @@ public class BDIQuestionnaire extends AbstractQuestionnaire{
                             patient.getDate(),
                             patient.getCaseId(),
                             progressStatus.toString(),
-                            String.valueOf(totalScore),
-                            String.valueOf(questionAnswered),
-                            String.valueOf(questionSkipped)
+                            String.valueOf(score),
+                            String.valueOf(answeredQues),
+                            String.valueOf(skippedQues)
                     });
                 }
 
@@ -149,9 +116,9 @@ public class BDIQuestionnaire extends AbstractQuestionnaire{
                         patient.getDate(),
                         patient.getCaseId(),
                         progressStatus.toString(),
-                        String.valueOf(totalScore),
-                        String.valueOf(questionAnswered),
-                        String.valueOf(questionSkipped)
+                        String.valueOf(score),
+                        String.valueOf(answeredQues),
+                        String.valueOf(skippedQues)
                 });
                 csvData.add(new String[]{});
                 csvData.add(new String[]{"Question", "Rating", "Rating Answer"});
@@ -167,7 +134,7 @@ public class BDIQuestionnaire extends AbstractQuestionnaire{
                 } else if (i > currentQuestion) {
                     csvData.add(new String[]{questionText, String.valueOf(rating)});
                 } else{
-                    String answerText = context.getResources().getStringArray(answerOptions[i])[rating];
+                    String answerText = context.getResources().getStringArray(answerOptions[0])[rating];
                     csvData.add(new String[]{questionText, String.valueOf(rating), answerText});
                 }
             }
@@ -182,7 +149,6 @@ public class BDIQuestionnaire extends AbstractQuestionnaire{
         }
     }
 
-
     // Read CSV
     /**
      * Reads the Fatigue questionnaire CSV file and populates the questionnaire object.
@@ -190,7 +156,7 @@ public class BDIQuestionnaire extends AbstractQuestionnaire{
      */
     @Override
     public void readCSV(Context context) {
-        File csvFile = FileManager.getBDIFile(context);
+        File csvFile = getQuestionnaireFile(context);
 
         if (!csvFile.exists()) {
             return;
@@ -199,25 +165,26 @@ public class BDIQuestionnaire extends AbstractQuestionnaire{
         try {
             List<String[]> csvEntries = super.readExistingCSVFile(csvFile);
 
-            if (csvEntries.size() < 4) return; // Not enough rows
+            if (csvEntries.size() < 4) {
+                return;
+            }
 
             // --- Read patient info and summary from the second row ---
             String[] summaryRow = csvEntries.get(1);
-            if (summaryRow.length >= 7) {  // match updateCSV header
+            if (summaryRow.length >= 7) {
                 progressStatus = QuestionnaireStatus.valueOf(summaryRow[3]);
-                totalScore = Integer.parseInt(summaryRow[4]);
-                questionAnswered = Integer.parseInt(summaryRow[5]);
-                questionSkipped = Integer.parseInt(summaryRow[6]);
+                score = Integer.parseInt(summaryRow[4]);
+                answeredQues = Integer.parseInt(summaryRow[5]);
+                skippedQues = Integer.parseInt(summaryRow[6]);
             } else {
-                totalScore = 0;
-                questionAnswered = 0;
-                questionSkipped = 0;
+                answeredQues = 0;
+                skippedQues = 0;
             }
 
             // --- Clear previous entries ---
             quesEntries.clear();
 
-            // --- Find the "Question","Rating","Rating Answer" header ---
+            // --- Find the "Question","Rating" header ---
             int questionHeaderIndex = -1;
             for (int i = 0; i < csvEntries.size(); i++) {
                 String[] row = csvEntries.get(i);
@@ -233,14 +200,9 @@ public class BDIQuestionnaire extends AbstractQuestionnaire{
                     String[] row = csvEntries.get(i);
                     if (row.length >= 2) {
                         String questionText = row[0];
-                        int rating = 0;
-                        try {
-                            rating = Integer.parseInt(row[1]);
-                        } catch (NumberFormatException e) {
-                            rating = 0; // default if missing
-                        }
+                        int rating = Integer.parseInt(row[1]);
 
-                        // --- Match the question text to a resource ID ---
+                        // Match the questionText to the resource ID in questionIds
                         for (int resId : questionIds) {
                             String resText = getQuestionText(context, resId);
                             if (resText.equals(questionText)) {
@@ -252,16 +214,16 @@ public class BDIQuestionnaire extends AbstractQuestionnaire{
                 }
             }
 
-            // --- Set currentQuestion pointer to first unanswered/skipped question ---
-            currentQuestion = Math.min(questionAnswered + questionSkipped, questionIds.length - 1);
+            // --- Set the current question pointer ---
+            currentQuestion = Math.min(answeredQues + skippedQues, questionIds.length - 1);
 
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public File getQuestionnaireFile(Context context) {
-        return FileManager.getBDIFile(context);
+        return FileManager.getESSFile(context);
     }
 }

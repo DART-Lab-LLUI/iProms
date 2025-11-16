@@ -7,10 +7,10 @@ import android.view.View;
 import java.util.Locale;
 
 import com.llui.iproms.Enum.QuestionnaireType;
-import com.llui.iproms.FileWriter.BDIQuestionnaire;
-import com.llui.iproms.FileWriter.DepressionAnxietyQuestionnaire;
-import com.llui.iproms.FileWriter.FatigueQuestionnaire;
-import com.llui.iproms.FileWriter.PromisQuestionnaire;
+import com.llui.iproms.Questionnaires.BDIQuestionnaire;
+import com.llui.iproms.Questionnaires.DepressionAnxietyQuestionnaire;
+import com.llui.iproms.Questionnaires.FatigueQuestionnaire;
+import com.llui.iproms.Questionnaires.PromisQuestionnaire;
 import com.llui.iproms.Model.Questionnaires;
 import com.llui.iproms.R;
 import com.llui.iproms.Utils.RankingBarView;

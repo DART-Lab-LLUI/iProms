@@ -1,8 +1,8 @@
-package com.llui.iproms.FileWriter;
+package com.llui.iproms.Questionnaires;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.llui.iproms.Enum.QuestionnaireStatus;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
@@ -10,40 +10,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.llui.iproms.Enum.QuestionnaireStatus;
 import com.llui.iproms.R;
 import com.llui.iproms.Utils.FileManager;
 
-public class FSMCQuestionnaire extends AbstractQuestionnaire{
+public class FatigueQuestionnaire extends AbstractQuestionnaire {
     private int skippedQues = 0;
     private int answeredQues = 0;
     private int score = 0;
 
-    public FSMCQuestionnaire() {
+    public FatigueQuestionnaire() {
         super(new int[]{
-                R.string.question_fsmc_1,
-                R.string.question_fsmc_2,
-                R.string.question_fsmc_3,
-                R.string.question_fsmc_4,
-                R.string.question_fsmc_5,
-                R.string.question_fsmc_6,
-                R.string.question_fsmc_7,
-                R.string.question_fsmc_8,
-                R.string.question_fsmc_9,
-                R.string.question_fsmc_10,
-                R.string.question_fsmc_11,
-                R.string.question_fsmc_12,
-                R.string.question_fsmc_13,
-                R.string.question_fsmc_14,
-                R.string.question_fsmc_15,
-                R.string.question_fsmc_16,
-                R.string.question_fsmc_17,
-                R.string.question_fsmc_18,
-                R.string.question_fsmc_19,
-                R.string.question_fsmc_20,
+                R.string.question1_fatigue,
+                R.string.question2_fatigue,
+                R.string.question3_fatigue,
+                R.string.question4_fatigue,
+                R.string.question5_fatigue,
+                R.string.question6_fatigue,
+                R.string.question7_fatigue,
+                R.string.question8_fatigue,
+                R.string.question9_fatigue
         });
 
         answerOptions = new int[]{
-                R.array.answers_fsmc
+                R.string.fatigue_answer
         };
     }
 
@@ -81,7 +71,7 @@ public class FSMCQuestionnaire extends AbstractQuestionnaire{
     // CSV Storage
     @Override
     protected void updateCSV(Context context) {
-        File csvFile = getQuestionnaireFile(context);
+        File csvFile = FileManager.getFSSFile(context);
 
         List<String[]> csvData = new ArrayList<>();
         boolean fileExists = csvFile.exists() && csvFile.length() > 0;
@@ -119,10 +109,7 @@ public class FSMCQuestionnaire extends AbstractQuestionnaire{
 
             } else {
                 // --- Create new file ---
-                csvData.add(new String[]{
-                        "Patient_ID", "Date", "Case_ID", "Status",
-                        "Total_score",
-                        "Question_answered", "Question_skipped"});
+                csvData.add(new String[]{"Patient_ID", "Date", "Case_ID", "Status", "Total_score", "Question_answered", "Question_skipped"});
                 csvData.add(new String[]{
                         patient.getPatientId(),
                         patient.getDate(),
@@ -137,18 +124,11 @@ public class FSMCQuestionnaire extends AbstractQuestionnaire{
             }
 
             // --- Append each question and its rating ---
-            for (int i = 0; i < questionIds.length; i++) {
-                String questionText = getQuestionText(context, questionIds[i]);
-                int rating = quesEntries.getOrDefault(questionIds[i], 0);
-
-                if (rating == -1){
-                    csvData.add(new String[]{questionText, String.valueOf(rating)});
-                } else if (i > currentQuestion) {
-                    csvData.add(new String[]{questionText, String.valueOf(rating)});
-                } else{
-                    String answerText = context.getResources().getStringArray(answerOptions[0])[rating];
-                    csvData.add(new String[]{questionText, String.valueOf(rating), answerText});
-                }
+            for (int resId : questionIds) {
+                String questionText = getQuestionText(context, resId);
+                int rating = quesEntries.getOrDefault(resId, 0);
+                String answerText = context.getString(answerOptions[0]);
+                csvData.add(new String[]{questionText, String.valueOf(rating), answerText});
             }
 
             // --- Write back to file ---
@@ -161,6 +141,7 @@ public class FSMCQuestionnaire extends AbstractQuestionnaire{
         }
     }
 
+
     // Read CSV
     /**
      * Reads the Fatigue questionnaire CSV file and populates the questionnaire object.
@@ -168,7 +149,7 @@ public class FSMCQuestionnaire extends AbstractQuestionnaire{
      */
     @Override
     public void readCSV(Context context) {
-        File csvFile = getQuestionnaireFile(context);
+        File csvFile = FileManager.getFSSFile(context);
 
         if (!csvFile.exists()) {
             return;
@@ -219,6 +200,7 @@ public class FSMCQuestionnaire extends AbstractQuestionnaire{
                             String resText = getQuestionText(context, resId);
                             if (resText.equals(questionText)) {
                                 quesEntries.put(resId, rating);
+                                Log.d("FatigueQuestionnaire", "Question: " + questionText + ", Rating: " + rating);
                                 break;
                             }
                         }
@@ -236,6 +218,7 @@ public class FSMCQuestionnaire extends AbstractQuestionnaire{
 
     @Override
     public File getQuestionnaireFile(Context context) {
-        return FileManager.getFSMCFile(context);
+        return FileManager.getFSSFile(context);
     }
+
 }

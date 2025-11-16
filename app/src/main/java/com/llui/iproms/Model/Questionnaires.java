@@ -9,7 +9,7 @@ import java.util.Map;
 
 import com.llui.iproms.Enum.QuestionnaireStatus;
 import com.llui.iproms.Enum.QuestionnaireType;
-import com.llui.iproms.FileWriter.AbstractQuestionnaire;
+import com.llui.iproms.Questionnaires.AbstractQuestionnaire;
 
 public class Questionnaires {
 

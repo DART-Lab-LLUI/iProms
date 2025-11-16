@@ -46,8 +46,7 @@ public class IdentificationActivity extends BaseActivity {
                     diagnosis = binding.editOtherDiagnosis.getText().toString();
                 }
 
-//                int clinicId = binding.clinicIdSpinner.getSelectedItemPosition();
-                int clinicId = 3;
+                int clinicId = binding.clinicIdSpinner.getSelectedItemPosition();
                 patientInfo.setPatientData(patientID, caseID, diagnosis, clinicId);
                 navigateToNextActivity(IntroductionActivity.class);
             }
