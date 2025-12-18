@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.LangueActivity">
+    tools:context=".Views.LanguageActivity">
 
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_marginTop="300dp"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/montserratregular"
-        android:text="Please select your language"
+        android:text="@string/please_select_your_language"
         android:textColor="@color/colorPrimary"
         android:textSize="35sp" />
 

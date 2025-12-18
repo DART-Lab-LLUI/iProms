@@ -15,6 +15,8 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true"
         android:icon="@drawable/iproms"
         android:label="@string/app_name"
         android:roundIcon="@drawable/iproms"
@@ -22,16 +24,16 @@
         android:theme="@style/Theme.IPROMS"
         tools:targetApi="31">
         <activity
-            android:name=".Views.PromisActivity"
+            android:name=".Views.PromisView"
             android:exported="false" />
         <activity
-            android:name=".Views.OptionnalQuestionnairesActivity"
+            android:name=".Views.OptionalQuestionnairesActivity"
             android:exported="false" />
         <activity
             android:name=".Views.IntroductionFSMCActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.BDI_Activity"
+            android:name=".Views.BDIView"
             android:exported="false" />
         <activity
             android:name=".Views.FSMCActivity"
@@ -40,16 +42,16 @@
             android:name=".Views.SummaryActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.SleepActivity"
+            android:name=".Views.SleepView"
             android:exported="false" />
         <activity
             android:name=".Views.QualityofLifeActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.DepressionAnxietyActivity"
+            android:name=".Views.DepressionAnxietyView"
             android:exported="false" />
         <activity
-            android:name=".Views.FatigueQuestionnaire"
+            android:name=".Views.FatigueQuestionnaireView"
             android:exported="false" />
         <activity
             android:name=".Views.IntroductionActivity"
@@ -58,12 +60,11 @@
             android:name=".Views.IdentificationActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.LangueActivity"
+            android:name=".Views.LanguageActivity"
             android:exported="true"
             android:theme="@style/Theme.IPROMS">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

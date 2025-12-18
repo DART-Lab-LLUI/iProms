@@ -4,9 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.DepressionAnxietyActivity">
+    tools:context=".Views.DepressionAnxietyView">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/functionalBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/btnSkipQuestionnaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:fontFamily="@font/montserratregular"
+            android:text="@string/btn_finish_questionnaire"
+            android:visibility="visible"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            app:drawableStartCompat="@drawable/menu"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/btnSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:fontFamily="@font/montserratregular"
+            android:text="@string/btn_skip_question"
+            android:visibility="visible"
+            app:drawableEndCompat="@drawable/forward_arrow"
+            android:drawablePadding="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+        android:layout_below="@id/functionalBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -17,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Questionnaire : "
+            android:text="@string/questionnaire"
             android:fontFamily="@font/montserratregular"
             style="@style/Titleblue"/>
 
@@ -26,7 +67,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txtTitleQuestionnaire"
             android:fontFamily="@font/montserratregular"
-            android:text="Depression and Anxiety"
+            android:text="@string/depression_and_anxiety"
             style="@style/Titleblue"/>
     </LinearLayout>
 
@@ -42,7 +83,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Percentage completed after this question: "
+            android:text="@string/percentage_completed_after_this_questionnaire"
             android:fontFamily="@font/montserratregular"
             android:textColor="@color/black"
             android:textSize="18sp"/>
@@ -90,7 +131,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:fontFamily="@font/montserratregular"
-        android:text="question"
+        android:text="@string/question"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="25sp"
@@ -198,35 +239,6 @@
         android:background="@drawable/bg_button"
         android:visibility="invisible"
         android:fontFamily="@font/montserratregular"
-        android:text="Confirm"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnSkip"
-        android:layout_below="@id/btnConfirm"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="50dp"
-        android:background="@drawable/bg_circle_button"
-        android:visibility="visible"
-        android:fontFamily="@font/montserratregular"
-        android:text="Skip question"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnSkipQuestionnaire"
-        android:layout_below="@id/btnConfirm"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="50dp"
-        android:background="@drawable/bg_circle_button"
-        android:visibility="visible"
-        android:fontFamily="@font/montserratregular"
-        android:text="Finish\nquestionnaire"/>
-
-
-
+        android:text="@string/btn_confirm"/>
 
 </RelativeLayout>

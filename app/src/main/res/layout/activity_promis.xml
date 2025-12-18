@@ -4,9 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.PromisActivity">
+    tools:context=".Views.PromisView">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/functionalBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/btnSkipQuestionnaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:fontFamily="@font/montserratregular"
+            android:text="@string/btn_finish_questionnaire"
+            android:visibility="visible"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            app:drawableStartCompat="@drawable/menu"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/btnSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:fontFamily="@font/montserratregular"
+            android:text="@string/btn_skip_question"
+            android:visibility="visible"
+            app:drawableEndCompat="@drawable/forward_arrow"
+            android:drawablePadding="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+        android:layout_below="@id/functionalBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -42,7 +83,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Percentage completed after this question: "
+            android:text="@string/percentage_completed_after_this_questionnaire"
             android:fontFamily="@font/montserratregular"
             android:textColor="@color/black"
             android:textSize="18sp"/>
@@ -74,7 +115,7 @@
         android:layout_centerInParent="true"
         android:textAlignment="center"
         android:fontFamily="@font/montserratregular"
-        android:text="question_fatigue"
+        android:text="@string/question_fatigue"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold" />
@@ -113,87 +154,163 @@
 
         <SeekBar
             android:id="@+id/seekbar"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:layout_marginTop="50dp"
-            android:max="4"
-            android:progress="2"
+            android:max="10"
             android:progressDrawable="@drawable/progress_drawable"
             android:progressTint="@color/colorPrimary"
             android:splitTrack="false"
             android:thumb="@drawable/thumb_size"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
+        <TextView
+            android:id="@+id/txt00"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/montserratregular"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/txt0"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
 
         <TextView
             android:id="@+id/txt0"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:fontFamily="@font/montserratregular"
-            android:text="1"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="@id/seekbar"
-            app:layout_constraintTop_toBottomOf="@id/seekbar" />
-
-        <TextView
-            android:id="@+id/txt6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserratregular"
-            android:text="7"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txt3"
-            app:layout_constraintTop_toBottomOf="@id/seekbar" />
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toEndOf="@id/txt00"
+            app:layout_constraintEnd_toStartOf="@id/txt1"/>
 
         <TextView
             android:id="@+id/txt1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:fontFamily="@font/montserratregular"
-            android:text="2"
-            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/seekbar"
-            app:layout_constraintLeft_toRightOf="@id/txt0"
-            app:layout_constraintRight_toLeftOf="@id/txt2"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toEndOf="@id/txt0"
+            app:layout_constraintEnd_toStartOf="@id/txt2"/>
 
         <TextView
             android:id="@+id/txt2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/montserratregular"
-            android:text="3"
+            android:layout_weight="1"
             android:gravity="center"
+            android:fontFamily="@font/montserratregular"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintLeft_toRightOf="@id/txt1"
-            app:layout_constraintRight_toLeftOf="@id/txt3"
-            app:layout_constraintTop_toBottomOf="@id/seekbar" />
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toEndOf="@id/txt1"
+            app:layout_constraintEnd_toStartOf="@id/txt3"/>
 
         <TextView
             android:id="@+id/txt3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/montserratregular"
-            android:text="4"
+            android:layout_weight="1"
             android:gravity="center"
+            android:fontFamily="@font/montserratregular"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintLeft_toRightOf="@id/txt2"
-            app:layout_constraintRight_toLeftOf="@id/txt6"
-            app:layout_constraintBottom_toTopOf="@id/seekbar" />
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toEndOf="@id/txt2"
+            app:layout_constraintEnd_toStartOf="@id/txt4"/>
 
+        <TextView
+            android:id="@+id/txt4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/montserratregular"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toEndOf="@id/txt3"
+            app:layout_constraintEnd_toStartOf="@id/txt5"/>
+
+        <TextView
+            android:id="@+id/txt5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/montserratregular"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toEndOf="@id/txt4"
+            app:layout_constraintEnd_toStartOf="@id/txt6"/>
+
+        <TextView
+            android:id="@+id/txt6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/montserratregular"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toEndOf="@id/txt5"
+            app:layout_constraintEnd_toStartOf="@id/txt7"/>
+
+        <TextView
+            android:id="@+id/txt7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/montserratregular"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toEndOf="@id/txt6"
+            app:layout_constraintEnd_toStartOf="@id/txt8"/>
+
+        <TextView
+            android:id="@+id/txt8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/montserratregular"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toEndOf="@id/txt7"
+            app:layout_constraintEnd_toStartOf="@id/txt9"/>
+
+        <TextView
+            android:id="@+id/txt9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/montserratregular"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/seekbar"
+            app:layout_constraintStart_toEndOf="@id/txt8"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -208,35 +325,7 @@
         android:background="@drawable/bg_button"
         android:visibility="invisible"
         android:fontFamily="@font/montserratregular"
-        android:text="Confirm"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnSkip"
-        android:layout_below="@id/btnConfirm"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/bg_circle_button"
-        android:visibility="visible"
-        android:fontFamily="@font/montserratregular"
-        android:text="Skip question"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnSkipQuestionnaire"
-        android:layout_below="@id/btnConfirm"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="50dp"
-        android:background="@drawable/bg_circle_button"
-        android:visibility="visible"
-        android:fontFamily="@font/montserratregular"
-        android:text="Finish\nquestionnaire"/>
-
-
+        android:text="@string/btn_confirm"/>
 
 
 </RelativeLayout>

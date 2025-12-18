@@ -3,17 +3,65 @@ plugins {
 }
 
 android {
-    namespace 'fr.thomas.menard.iproms'
+    namespace 'com.llui.iproms'
     compileSdk 33
 
     defaultConfig {
-        applicationId "fr.thomas.menard.iproms"
-        minSdk 24
+        applicationId "com.llui.iproms"
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        File keystoreFile = project.rootProject.file("credentials.properties");
+        Properties properties = new Properties();
+
+        try (InputStream inputStream = new FileInputStream(keystoreFile)) {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String sftp_host = properties.getProperty("SFTP_HOST", "")
+        buildConfigField("String", "SFTP_HOST", sftp_host)
+
+        String sftp_port = properties.getProperty("SFTP_PORT", "")
+        buildConfigField("Integer", "SFTP_PORT", sftp_port)
+
+        String sftp_user = properties.getProperty("SFTP_USER", "")
+        buildConfigField("String", "SFTP_USER", sftp_user)
+
+        String sftp_pass = properties.getProperty("SFTP_PASS", "")
+        buildConfigField("String", "SFTP_PASS", sftp_pass)
+
+        String sftp_dir = properties.getProperty("SFTP_DIR", "")
+        buildConfigField("String", "SFTP_DIR", sftp_dir)
+
+        String minio_vz_access = properties.getProperty("MINIO_VZ_ACCESS", "")
+        buildConfigField("String", "MINIO_VZ_ACCESS", minio_vz_access)
+
+        String minio_vz_secret = properties.getProperty("MINIO_VZ_SECRET", "")
+        buildConfigField("String", "MINIO_VZ_SECRET", minio_vz_secret)
+
+        String minio_vz_bucket = properties.getProperty("MINIO_VZ_BUCKET", "")
+        buildConfigField("String", "MINIO_VZ_BUCKET", minio_vz_bucket)
+
+        String minio_vz_endpoint = properties.getProperty("MINIO_VZ_ENDPOINT", "")
+        buildConfigField("String", "MINIO_VZ_ENDPOINT", minio_vz_endpoint)
+
+        String minio_hs_access = properties.getProperty("MINIO_HS_ACCESS", "")
+        buildConfigField("String", "MINIO_HS_ACCESS", minio_hs_access)
+
+        String minio_hs_secret = properties.getProperty("MINIO_HS_SECRET", "")
+        buildConfigField("String", "MINIO_HS_SECRET", minio_hs_secret)
+
+        String minio_hs_bucket = properties.getProperty("MINIO_HS_BUCKET", "")
+        buildConfigField("String", "MINIO_HS_BUCKET", minio_hs_bucket)
+
+        String minio_hs_endpoint = properties.getProperty("MINIO_HS_ENDPOINT", "")
+        buildConfigField("String", "MINIO_HS_ENDPOINT", minio_hs_endpoint)
     }
 
     buildTypes {
@@ -27,6 +75,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildFeatures {
+        buildConfig true
         viewBinding true
     }
 }
@@ -34,13 +83,20 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.material:material:1.9.0'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation 'com.opencsv:opencsv:5.7.1'
     implementation 'com.jcraft:jsch:0.1.55'
+
+    //MINIO
+    implementation "io.minio:minio:8.5.12"
+    implementation 'com.fasterxml.woodstox:woodstox-core:6.2.4'
+    implementation 'org.codehaus.woodstox:stax2-api:4.2.1'
+    implementation 'javax.xml.stream:stax-api:1.0-2'
 
 }

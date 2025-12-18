@@ -1,12 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">iProms</string>
-    <string name="welcome">Welcome to iProms (DE)</string>
+    <string name="welcome">Willkommen zu iPROMS(DE)</string>
+    <string name="intro_text">
+        Auf der nächsten Seite finden Sie verschiedene Fragebögen, die uns helfen sollen, Ihr körperliches und emotionales Wohlbefinden besser zu verstehen. Ihre Antworten geben uns wichtige Einblicke in Ihre Lebensqualität und ermöglichen es Ihrem Rehabilitationsteam, Ihre Behandlung auf festgestellte Probleme oder Bedürfnisse zuzuschneiden, um Ihren Genesungsprozess zu verbessern und Ihre langfristige Gesundheit zu unterstützen. \n\n
+        Bitte beantworten Sie alle Fragen so vollständig wie möglich. Wenn eine Frage unklar ist, interpretieren Sie sie nach bestem Wissen und Gewissen und wählen Sie dann die Antwort aus, die Ihnen am zutreffendsten erscheint. Es gibt keine richtigen oder falschen Antworten; wir wollen nur Ihre Sichtweise verstehen. Wenn Sie unsicher sind oder sich nicht in der Lage fühlen zu antworten, können Sie die Frage überspringen.\n\n
+        Am Ende erhalten Sie eine Zusammenfassung Ihrer Ergebnisse, die Sie mit Ihrem Rehabilitationsteam besprechen können. Dies unterstützt die gemeinsame Entscheidungsfindung und hilft Ihrem Team, Ihren Pflegeplan auf das abzustimmen, was Ihnen am wichtigsten ist. \n\n
+        Wenn Sie Hilfe brauchen, zögern Sie nicht, unsere Krankenschwestern, Therapeuten oder Ärzte zu fragen.
+    </string>
 
-    <string name="intro_text">On the next page you will find different questionnaires that provide us valuable information to understand your health situation better./n All questionnaires are short screening tests. Please fill them out as completely as possible./n At the end, you will see a summary of the results and you will be able to discuss them with our medical team./n If you need any help, feel free to ask our nurses, therapists, or doctors.</string>
-    <string name="summary_text">You have completed all the screening measures.\n
-        If you are interested in sharing more details about your health situation with us, there are some optional, more detailed questionnaires coming up next.</string>
+    <string name = "diagnosis">Diagnose</string>
+    <string name = "case_id_7_characters">Fall-ID (7 Zeichen)</string>
+    <string name = "patient_id">Patient-ID :</string>
+    <string name = "diagnosis__">Diagnose :</string>"
+    <string name = "clinic_id">Klinik: </string>
 
+    <string name="we_suggest_you_to_complete_the_following_questionnaires">Wir empfehlen Ihnen, die folgenden Fragebögen auszufüllen</string>
+    <string name="thank_you_for_completing_our_questionnaires_n_you_can_now_look_at_your_results">Vielen Dank, dass Sie unsere Fragebögen ausgefüllt haben   Sie können nun Ihre Ergebnisse einsehen</string>
+    <string name="based_on_your_results">Aufgrund Ihrer Ergebnisse bitten wir Sie, die folgenden Fragebögen auszufüllen.</string>
+    <string name="based_on_your_results_clinical_team">Aufgrund Ihrer Ergebnisse würden wir die folgenden zusätzlichen Tests vorschlagen. \Jemand aus dem klinischen Team wird die Ergebnisse auch mit Ihnen besprechen.</string>
+    <string name="please_select_questionnaire">Bitte wählen Sie einen Fragebogen aus.</string>
+    <string name="data_uploaded">Ergebnisse \n hochgeladet</string>
+    <string name="your_results">Deine Ergebnisse</string>
+    <string name="category">Kategorie</string>
+    <string name="score">Ergebnis</string>
+    <string name="description">Beschreibung</string>
+
+    <string name="fatigue">Müdigkeit</string>
+    <string name="sleep">Schlaf: </string>
+    <string name="question_fatigue">Frage zu Müdigkeit</string>
+
+    <string name="question">Frage</string>
+    <string name="questions_answered">Beantwortete Fragen: </string>
+    <string name="average_score">Durchschnittliche Bewertung: </string>
+    <string name="skipped_questionniare">Fragebogen übersprungen</string>
+    <string name="additional_questionnaires">Zusätzliche Fragebögen</string>
+
+    <string name="depression_score">Depression Wert: </string>
+    <string name="anxiety_score">Angststörung Wert: </string>
+    <string name="total_score">Gesamtbewertung: </string>
+    <string name="physical_total_score">Physikalische Gesamtbewertung: </string>
+    <string name="mental_total_score">Mentale Gesamtbewertung: </string>
+
+    <string name="depression_and_anxiety">Depression und Angststörungen</string>
+    <string name="anxiety">Angststörung</string>
+    <string name="questionnaire">Fragebogen: </string>
+    <string name="your_rating">Ihre Bewertung: </string>
+    <string name="btn_confirm">Bestätigen</string>
+    <string name="btn_go_to_results">Zu den Ergebnissen</string>
+    <string name="btn_finish_questionnaire">Fragebogen überspringen</string>
+    <string name="btn_skip_question">Frage überspringen</string>
+    <string name="x_skipped">  übersprungen)</string>
+
+
+    <string name="txt_intro_depression">Kreuzen Sie das Kästchen neben der Antwort an, die Ihren Gefühlen in der letzten Woche am ehesten entspricht. \n \n Lassen Sie sich mit Ihren Antworten nicht zu viel Zeit: Am besten ist es, wenn Sie sofort antworten.</string>
+    <string name="percentage_completed_after_this_questionnaire">Prozentsatz, der nach dieser Frage ausgefüllt wurde: </string>
+    <string name="past_two_weeks"> - In den letzten zwei Wochen einschliesslich heute</string>
+
+    <string name="never">Nie\n</string>
+    <string name="always">Immer\n</string>
+    <string name="info_seek_WEIMus_0">Fast nie</string>
+    <string name="info_seek_WEIMus_1">Selten</string>
+    <string name="info_seek_WEIMus_2">Manchmal</string>
+    <string name="info_seek_WEIMus_3">Häufig</string>
+    <string name="info_seek_WEIMus_4">Fast immer</string>
+
+    <string name="instructions">Anleitungen</string>
+    <string name="intro_fsmc">Der folgende Fragebogen bezieht sich auf Alltagsprobleme, die in direktem Zusammenhang mit einer starken Form von Müdigkeit stehen. Intensive Form der Müdigkeit" ist ein unkontrollierbarer Zustand, der durch Abgeschlagenheit, Erschöpfung und Energiemangel gekennzeichnet ist und plötzlich und unabhängig von erkennbaren äußeren Ursachen auftritt. Es handelt sich nicht um einzelne Episoden, die jeder im Laufe des Tages, nach einer Anstrengung oder einer durchwachten Nacht erleben kann! Lesen Sie jeden Satz sorgfältig durch. Entscheiden Sie dann, inwieweit jeder Satz auf Ihre Situation in Bezug auf Ihr tägliches Leben zutrifft. Wenn möglich, versuchen Sie bitte, uns zu beschreiben, wie Sie sich im Alltag fühlen, ohne dabei zu berücksichtigen, wie Sie sich im Moment fühlen. Bitte kreuzen Sie das Kästchen an, das Ihrer Antwort entspricht.</string>
+    <string name="summary_text">Sie haben alle Fragebogen abgeschlossen.           Wenn Sie daran interessiert sind, uns mehr Einzelheiten über Ihre gesundheitliche Situation mitzuteilen, stehen Ihnen demnächst einige optionale, detailliertere Fragebögen zur Verfügung.</string>
+    <string name="btn_start_questionnaire">Fragebogen starten</string>
 
     <string name="intro_question_fatigue">In der vergangenen Woche habe ich festgestellt, dass :</string>
     <string name="question1_fatigue">Ich habe weniger Motivation, wenn ich erschöpft bin.</string>
@@ -20,98 +82,118 @@
     <string name="question9_fatigue">Die Erschöpfung hat Einfluss auf meine Arbeit, meine Familie bzw. mein soziales Leben.</string>
 
 
-    <string name="info_seek_WEIMus_0">fast nie</string>
-    <string name="info_seek_WEIMus_1">selten</string>
-    <string name="info_seek_WEIMus_2">manchmal</string>
-    <string name="info_seek_WEIMus_3">häufig</string>
-    <string name="info_seek_WEIMus_4">fast immer</string>
-
-
-    <string name="question_intro_HADS"> Intro question HADS in german</string>
+    <string name="question_intro_HADS">Intro Fragen HADS</string>
     <string name="question_HADS_1">Ich fühle mich angespannt oder überreizt</string>
-    <string name="question_HADS_1_0">überhaupt nicht</string>
-    <string name="question_HADS_1_1">gelegentlich</string>
-    <string name="question_HADS_1_2">oft</string>
-    <string name="question_HADS_1_3">meistens</string>
+    <string-array name="HADS_answers_1">
+        <item>überhaupt nicht</item>
+        <item>gelegentlich</item>
+        <item>oft</item>
+        <item>meistens</item>
+    </string-array>
 
     <string name="question_HADS_2">Ich kann mich heute noch so freuen \n wie früher</string>
-    <string name="question_HADS_2_0">ganz genau so</string>
-    <string name="question_HADS_2_1">nicht ganz so sehr</string>
-    <string name="question_HADS_2_2">nur noch ein wenig</string>
-    <string name="question_HADS_2_3">kaum oder gar nicht</string>
+    <string-array name="HADS_answers_2">
+        <item>ganz genau so</item>
+        <item>nicht ganz so sehr</item>
+        <item>nur noch ein wenig</item>
+        <item>kaum oder gar nicht</item>
+    </string-array>
 
     <string name="question_HADS_3">Mich überkommt eine ängstliche Vorahnung, dass etwas Schreckliches passieren könnte</string>
-    <string name="question_HADS_3_0">überhaupt nicht</string>
-    <string name="question_HADS_3_1">etwas, aber es macht mir keine Sorgen</string>
-    <string name="question_HADS_3_2"> ja, aber nicht allzu stark</string>
-    <string name="question_HADS_3_3"> ja, sehr stark</string>
+    <string-array name="HADS_answers_3">
+        <item>überhaupt nicht</item>
+        <item>etwas, aber es macht mir keine Sorgen</item>
+        <item>ja, aber nicht allzu stark</item>
+        <item>ja, sehr stark</item>
+    </string-array>
 
     <string name="question_HADS_4">Ich kann lachen und Dinge lustig finden</string>
-    <string name="question_HADS_4_0">ja, so wie immer</string>
-    <string name="question_HADS_4_1">nicht mehr so wie sonst</string>
-    <string name="question_HADS_4_2">definitiv viel weniger</string>
-    <string name="question_HADS_4_3">überhaupt nicht</string>
+    <string-array name="HADS_answers_4">
+        <item>ja, so wie immer</item>
+        <item>nicht mehr so wie sonst</item>
+        <item>definitiv viel weniger</item>
+        <item>überhaupt nicht</item>
+    </string-array>
 
     <string name="question_HADS_5">Mir gehen beunruhigende Gedanken \n durch den Kopf</string>
-    <string name="question_HADS_5_0">nur gelegentlich/nie</string>
-    <string name="question_HADS_5_1">von Zeit zu Zeit, aber nicht allzu oft</string>
-    <string name="question_HADS_5_2">verhältnismässig oft</string>
-    <string name="question_HADS_5_3">einen Grossteil der Zeit</string>
+    <string-array name="HADS_answers_5">
+        <item>nur gelegentlich/nie</item>
+        <item>von Zeit zu Zeit, aber nicht allzu oft</item>
+        <item>verhältnismässig oft</item>
+        <item>einen Grossteil der Zeit</item>
+    </string-array>
 
     <string name="question_HADS_6">Ich fühle mich glücklich</string>
-    <string name="question_HADS_6_0">meistens</string>
-    <string name="question_HADS_6_1">manchmal</string>
-    <string name="question_HADS_6_2">selten</string>
-    <string name="question_HADS_6_3">überhaupt nicht</string>
+    <string-array name="HADS_answers_6">
+        <item>meistens</item>
+        <item>manchmal</item>
+        <item>selten</item>
+        <item>überhaupt nicht</item>
+    </string-array>
 
     <string name="question_HADS_7">Ich kann behaglich dasitzen und \n mich entspannen</string>
-    <string name="question_HADS_7_0">ja, natürlich</string>
-    <string name="question_HADS_7_1">gewöhnlich schon</string>
-    <string name="question_HADS_7_2">nicht oft</string>
-    <string name="question_HADS_7_3">überhaupt nicht</string>
+    <string-array name="HADS_answers_7">
+        <item>ja, natürlich</item>
+        <item>gewöhnlich schon</item>
+        <item>nicht oft</item>
+        <item>überhaupt nicht</item>
+    </string-array>
 
     <string name="question_HADS_8">Ich fühle mich verlangsamt</string>
-    <string name="question_HADS_8_0">überhaupt nicht</string>
-    <string name="question_HADS_8_1">manchmal</string>
-    <string name="question_HADS_8_2">sehr oft</string>
-    <string name="question_HADS_8_3">fast immer</string>
+    <string-array name="HADS_answers_8">
+        <item>überhaupt nicht</item>
+        <item>manchmal</item>
+        <item>sehr oft</item>
+        <item>fast immer</item>
+    </string-array>
 
     <string name="question_HADS_9">Ich habe manchmal ein ängstliches \n Gefühl in der Magengegend</string>
-    <string name="question_HADS_9_0">überhaupt nicht</string>
-    <string name="question_HADS_9_1">gelegentlich</string>
-    <string name="question_HADS_9_2">ziemlich oft</string>
-    <string name="question_HADS_9_3">sehr oft</string>
+    <string-array name="HADS_answers_9">
+        <item>überhaupt nicht</item>
+        <item>gelegentlich</item>
+        <item>ziemlich oft</item>
+        <item>sehr oft</item>
+    </string-array>
 
     <string name="question_HADS_10">Ich interessiere mich weniger für \n mein Äusseres</string>
-    <string name="question_HADS_10_0">genauso sehr wie früher</string>
-    <string name="question_HADS_10_1">möglicherweise weniger als zuvor</string>
-    <string name="question_HADS_10_2">weniger, als ich sollte</string>
-    <string name="question_HADS_10_3">gar nicht mehr</string>
+    <string-array name="HADS_answers_10">
+        <item>genauso sehr wie früher</item>
+        <item>möglicherweise weniger als zuvor</item>
+        <item>weniger, als ich sollte</item>
+        <item>gar nicht mehr</item>
+    </string-array>
 
     <string name="question_HADS_11">Ich fühle mich rastlos, muss immer \n in Bewegung sein</string>
-    <string name="question_HADS_11_0">überhaupt nicht</string>
-    <string name="question_HADS_11_1">nicht sehr</string>
-    <string name="question_HADS_11_2">ein wenig</string>
-    <string name="question_HADS_11_3">ja, genau</string>
+    <string-array name="HADS_answers_11">
+        <item>überhaupt nicht</item>
+        <item>nicht sehr</item>
+        <item>ein wenig</item>
+        <item>ja, genau</item>
+    </string-array>
 
     <string name="question_HADS_12">Ich freue mich auf Dinge in der \n Zukunft</string>
-    <string name="question_HADS_12_0">so sehr wie früher</string>
-    <string name="question_HADS_12_1">eher weniger als früher</string>
-    <string name="question_HADS_12_2">viel weniger als früher</string>
-    <string name="question_HADS_12_3">kaum bis gar nicht</string>
+    <string-array name="HADS_answers_12">
+        <item>so sehr wie früher</item>
+        <item>eher weniger als früher</item>
+        <item>viel weniger als früher</item>
+        <item>kaum bis gar nicht</item>
+    </string-array>
 
     <string name="question_HADS_13">Mich überkommt plötzlich ein \n panikartiger Zustandt</string>
-    <string name="question_HADS_13_0">überhaupt nicht</string>
-    <string name="question_HADS_13_1">nicht sehr oft</string>
-    <string name="question_HADS_13_2">ziemlich oft</string>
-    <string name="question_HADS_13_3">ja, tatsächlich sehr oft</string>
+    <string-array name="HADS_answers_13">
+        <item>überhaupt nicht</item>
+        <item>nicht sehr oft</item>
+        <item>ziemlich oft</item>
+        <item>ja, tatsächlich sehr oft</item>
+    </string-array>
 
     <string name="question_HADS_14">Ich kann mich an einem Buch, einer \n Radio- oder Fernsehsendung freuen</string>
-    <string name="question_HADS_14_0">oft</string>
-    <string name="question_HADS_14_1">manchmal</string>
-    <string name="question_HADS_14_2">eher selten</string>
-    <string name="question_HADS_14_3">sehr selten</string>
-
+    <string-array name="HADS_answers_14">
+        <item>oft</item>
+        <item>manchmal</item>
+        <item>eher selten</item>
+        <item>sehr selten</item>
+    </string-array>
 
     <string name="question_ess_1">Sitzen und Lesen</string>
     <string name="question_ess_2">Fernsehen</string>
@@ -122,27 +204,12 @@
     <string name="question_ess_7">Ruhig sitzen nach Mittagessen ohne Alkohol</string>
     <string name="question_ess_8">Im Auto beim Stop an einer Verkehrsampel während einigen Minuten</string>
 
-    <string name="txt_info_ess_0">würde nie einschlafen</string>
-    <string name="txt_info_ess_1">würde kaum einschlafen</string>
-    <string name="txt_info_ess_2">würde möglicherweise einschlafen</string>
-    <string name="txt_info_ess_3">würde mit grosser Wahrscheinlichkeit einschlafen</string>
-
-
-    <string name="txtStart_questionnaire">Sie sind dabei, den Fragebogen zu beginnen:</string>
-    <string name="fatigue">Fatigue</string>
-    <string name="start_questionnaire">Start questionnaire</string>
-    <string name="questionnaire">Questionnaire :</string>
-    <string name="we_suggest_you_to_continue_with_the_following_questionnaire_depression_and_anxiety">We suggest you to continue with the following questionnaire : </string>
-    <string name="we_suggest_you_to_contiue_this_fatigue_questionnaire">We suggest you to contiue this fatigue questionnaire</string>
-
-    <string name="depression_and_anxiety">Depression and Anxiety</string>
-
-
-    <string name="diagnosis">Diagnose</string>
-    <string name="txt_intro_depression">Kreuzen Sie das Kästchen neben der Antwort an, die Ihren Gefühlen in der letzten Woche am ehesten entspricht. \n \n Lassen Sie sich mit Ihren Antworten nicht zu viel Zeit: Am besten ist es, wenn Sie sofort antworten.</string>
-    <string name="your_rating">Ihre Bewertung : </string>
-
-
+    <string-array name="answers_ess">
+        <item>würde nie einschlafen</item>
+        <item>würde kaum einschlafen</item>
+        <item>würde möglicherweise einschlafen</item>
+        <item>würde mit grosser Wahrscheinlichkeit einschlafen</item>
+    </string-array>
 
     <string name="emotional_behavioral_dyscontrol">Emotional and Behavioral Dyscontrol</string>
     <string name="in_the_past_7_days">"In the past 7 days"</string>
@@ -154,8 +221,6 @@
     <string name="question_qol1_6">I was bothered by little things.</string>
     <string name="question_qol1_7">I became easily upset.</string>
     <string name="question_qol1_8">I was in conflict with others.</string>
-    <string name="never">Never\n</string>
-    <string name="always">Always\n</string>
 
 
     <string name="sleep_disturbance">Sleep Disturbance</string>
@@ -259,12 +324,10 @@
     <string name="question_qol10_6">Are you able to run errands and shop?</string>
     <string name="question_qol10_7">Are you able to get up off the floor from lying on your back without help?</string>
     <string name="question_qol10_8">Are you able to go for a walk of at least 15 minutes?</string>
-    <string name="severely_increased">severely increased</string>
-    <string name="impaired">impaired</string>
-    <string name="severe">severe</string>
+    <string name="severely_increased">stark erhöht</string>
+    <string name="impaired">beeinträchtigt</string>
+    <string name="severe">schwerwiegend</string>
 
-
-    <string name="intro_fsmc">Der folgende Fragebogen bezieht sich auf Alltagsprobleme, die in direktem Zusammenhang mit einer starken Form von Müdigkeit stehen. Intensive Form der Müdigkeit" ist ein unkontrollierbarer Zustand, der durch Abgeschlagenheit, Erschöpfung und Energiemangel gekennzeichnet ist und plötzlich und unabhängig von erkennbaren äußeren Ursachen auftritt. Es handelt sich nicht um einzelne Episoden, die jeder im Laufe des Tages, nach einer Anstrengung oder einer durchwachten Nacht erleben kann! Lesen Sie jeden Satz sorgfältig durch. Entscheiden Sie dann, inwieweit jeder Satz auf Ihre Situation in Bezug auf Ihr tägliches Leben zutrifft. Wenn möglich, versuchen Sie bitte, uns zu beschreiben, wie Sie sich im Alltag fühlen, ohne dabei zu berücksichtigen, wie Sie sich im Moment fühlen. Bitte kreuzen Sie das Kästchen an, das Ihrer Antwort entspricht.</string>
     <string name="question_fsmc_1">Wenn ich mich lange genug konzentriere, bin ich schneller erschöpft als andere in meinem Alter.</string>
     <string name="question_fsmc_2">Während meiner Erschöpfungsphasen werden meine Bewegungen deutlich ungeschickter und weniger koordiniert</string>
     <string name="question_fsmc_3">Heute muss ich wegen meiner Erschöpfungsphasen häufiger und/oder länger als früher Pausen machen, wenn ich mich körperlich betätige.</string>
@@ -286,194 +349,274 @@
     <string name="question_fsmc_19">Wenn es heiß ist, fühle ich mich vor allem körperlich extrem schwach und energielos.</string>
     <string name="question_fsmc_20">Während meiner Erschöpfungsphasen bin ich deutlich anfälliger für Vergesslichkeit.</string>
 
-    <string name="txt_info_fsmc_0">Trifft auf meine Situation überhaupt nicht zu</string>
-    <string name="txt_info_fsmc_1">Trifft nicht wirklich auf meine Situation zu</string>
-    <string name="txt_info_fsmc_2">Trifft ein wenig auf meine Situation zu</string>
-    <string name="txt_info_fsmc_3">Gilt eher für meine Situation</string>
-    <string name="txt_info_fsmc_4">Trifft voll und ganz auf meine Situation zu</string>
+    <string-array name="answers_fsmc">
+        <item>Trifft auf meine Situation überhaupt nicht zu</item>
+        <item>Trifft nicht wirklich auf meine Situation zu</item>
+        <item>Trifft ein wenig auf meine Situation zu</item>
+        <item>Gilt eher für meine Situation</item>
+        <item>Trifft voll und ganz auf meine Situation zu</item>
+    </string-array>
 
     <string name="bdi_ii_1">Traurigkeit</string>
-    <string name="bdi_ii_1_0">Ich bin nicht traurig.</string>
-    <string name="bdi_ii_1_1">Ich bin oft traurig.</string>
-    <string name="bdi_ii_1_2">Ich bin ständig traurig.</string>
-    <string name="bdi_ii_1_3">Ich bin so traurig oder unglücklich, dass ich es nicht aushalte.</string>
-
+    <string-array name="bdi_answers_1">
+        <item>Ich bin nicht traurig.</item>
+        <item>Ich bin oft traurig.</item>
+        <item>Ich bin ständig traurig.</item>
+        <item>Ich bin so traurig oder unglücklich, dass ich es nicht aushalte.</item>
+    </string-array>
 
     <string name="bdi_ii_2">Pessimismus</string>
-    <string name="bdi_ii_2_0">Ich sehe nicht mutlos in die Zukunft.</string>
-    <string name="bdi_ii_2_1">Ich sehe mutloser in die Zukunft als sonst.</string>
-    <string name="bdi_ii_2_2">Ich bin mutlos und erwarte nicht, dass meine Situation besser wird.</string>
-    <string name="bdi_ii_2_3">Ich glaube, dass meine Zukunft hoffnungslos ist und nur noch schlechter wird.</string>
-
+    <string-array name="bdi_answers_2">
+        <item>Ich sehe nicht mutlos in die Zukunft.</item>
+        <item>Ich sehe mutloser in die Zukunft als sonst.</item>
+        <item>Ich bin mutlos und erwarte nicht, dass meine Situation besser wird.</item>
+        <item>Ich glaube, dass meine Zukunft hoffnungslos ist und nur noch schlechter wird.</item>
+    </string-array>
 
     <string name="bdi_ii_3">Versagensgefühle</string>
-    <string name="bdi_ii_3_0">Ich fühle mich nicht als Versager.</string>
-    <string name="bdi_ii_3_1">Ich habe häufiger Versagensgefühle.</string>
-    <string name="bdi_ii_3_2">Wenn ich zurückblicke, sehe ich eine Menge Fehlschläge.</string>
-    <string name="bdi_ii_3_3">Ich habe das Gefühl, als Mensch ein völliger Versager zu sein.</string>
+    <string-array name="bdi_answers_3">
+        <item>Ich fühle mich nicht als Versager.</item>
+        <item>Ich habe häufiger Versagensgefühle.</item>
+        <item>Wenn ich zurückblicke, sehe ich eine Menge Fehlschläge.</item>
+        <item>Ich habe das Gefühl, als Mensch ein völliger Versager zu sein.</item>
+    </string-array>
 
     <string name="bdi_ii_4">Verlust von Freude</string>
-    <string name="bdi_ii_4_0">Ich kann die Dinge genauso gut geniessen wie früher.</string>
-    <string name="bdi_ii_4_1">Ich kann die Dinge nicht mehr so geniessen wie früher.</string>
-    <string name="bdi_ii_4_2">Dinge, die mir früher Freude gemacht haben, kann ich kaum geniessen.</string>
-    <string name="bdi_ii_4_3">Dinge, die mir früher Freude gemacht haben, kann ich überhaupt nicht mehr geniessen.</string>
-
+    <string-array name="bdi_answers_4">
+        <item>Ich kann die Dinge genauso gut geniessen wie früher.</item>
+        <item>Ich kann die Dinge nicht mehr so geniessen wie früher.</item>
+        <item>Dinge, die mir früher Freude gemacht haben, kann ich kaum geniessen.</item>
+        <item>Dinge, die mir früher Freude gemacht haben, kann ich überhaupt nicht mehr geniessen.</item>
+    </string-array>
 
     <string name="bdi_ii_5">Schuldgefühle</string>
-    <string name="bdi_ii_5_0">Ich habe keine besonderen Schuldgefühle.</string>
-    <string name="bdi_ii_5_1">Ich habe oft Schuldgefühle wegen Dingen, die ich getan habe oder hätte tun sollen.</string>
-    <string name="bdi_ii_5_2">Ich habe die meiste Zeit Schuldgefühle.</string>
-    <string name="bdi_ii_5_3">Ich habe ständig Schuldgefühle</string>
-
+    <string-array name="bdi_answers_5">
+        <item>Ich habe keine besonderen Schuldgefühle.</item>
+        <item>Ich habe oft Schuldgefühle wegen Dingen, die ich getan habe oder hätte tun sollen.</item>
+        <item>Ich habe die meiste Zeit Schuldgefühle.</item>
+        <item>Ich habe ständig Schuldgefühle.</item>
+    </string-array>
 
     <string name="bdi_ii_6">Bestrafungsgefühle</string>
-    <string name="bdi_ii_6_0">Ich habe nicht das Gefühl, für etwas bestraft zu sein.</string>
-    <string name="bdi_ii_6_1">Ich habe das Gefühl, vielleicht bestraft zu werden.</string>
-    <string name="bdi_ii_6_2">Ich erwarte, bestraft zu werden.</string>
-    <string name="bdi_ii_6_3">Ich habe das Gefühl, bestraft zu sein.</string>
-
+    <string-array name="bdi_answers_6">
+        <item>Ich habe nicht das Gefühl, für etwas bestraft zu sein.</item>
+        <item>Ich habe das Gefühl, vielleicht bestraft zu werden.</item>
+        <item>Ich erwarte, bestraft zu werden.</item>
+        <item>Ich habe das Gefühl, bestraft zu sein.</item>
+    </string-array>
 
     <string name="bdi_ii_7">Selbstablehnung</string>
-    <string name="bdi_ii_7_0">Ich halte von mir genauso viel wie immer.</string>
-    <string name="bdi_ii_7_1">Ich habe Vertrauen in mich verloren.</string>
-    <string name="bdi_ii_7_2">Ich bin von mir enttäuscht.</string>
-    <string name="bdi_ii_7_3">Ich lehne mich völlig ab.</string>
-
+    <string-array name="bdi_answers_7">
+        <item>Ich halte von mir genauso viel wie immer.</item>
+        <item>Ich habe Vertrauen in mich verloren.</item>
+        <item>Ich bin von mir enttäuscht.</item>
+        <item>Ich lehne mich völlig ab.</item>
+    </string-array>
 
     <string name="bdi_ii_8">Selbstvorwürfe</string>
-    <string name="bdi_ii_8_0">Ich kritisiere oder tadle mich nicht mehr als sonst.</string>
-    <string name="bdi_ii_8_1">Ich bin mir gegenüber kritischer als sonst.</string>
-    <string name="bdi_ii_8_2">Ich kritisiere mich für all meine Mängel.</string>
-    <string name="bdi_ii_8_3">Ich gebe mir die Schuld für alles Schlimme, was passiert.</string>
-
+    <string-array name="bdi_answers_8">
+        <item>Ich kritisiere oder tadle mich nicht mehr als sonst.</item>
+        <item>Ich bin mir gegenüber kritischer als sonst.</item>
+        <item>Ich kritisiere mich für all meine Mängel.</item>
+        <item>Ich gebe mir die Schuld für alles Schlimme, was passiert.</item>
+    </string-array>
 
     <string name="bdi_ii_9">Selbstmordgedanken</string>
-    <string name="bdi_ii_9_0">Ich denke nicht daran, mir etwas anzutun.</string>
-    <string name="bdi_ii_9_1">Ich denke manchmal an Selbstmord, aber ich würde es nicht tun.</string>
-    <string name="bdi_ii_9_2">Ich möchte mich am liebsten umbringen.</string>
-    <string name="bdi_ii_9_3">Ich würde mich umbringen, wenn ich die Gelegenheit dazu hätte.</string>
-
+    <string-array name="bdi_answers_9">
+        <item>Ich denke nicht daran, mir etwas anzutun.</item>
+        <item>Ich denke manchmal an Selbstmord, aber ich würde es nicht tun.</item>
+        <item>Ich möchte mich am liebsten umbringen.</item>
+        <item>Ich würde mich umbringen, wenn ich die Gelegenheit dazu hätte.</item>
+    </string-array>
 
     <string name="bdi_ii_10">Weinen</string>
-    <string name="bdi_ii_10_0">Ich weine nicht öfter als früher.</string>
-    <string name="bdi_ii_10_1">Ich weine jetzt mehr als früher.</string>
-    <string name="bdi_ii_10_2">Ich weine beim geringsten Anlass.</string>
-    <string name="bdi_ii_10_3">Ich möchte gern weinen, aber ich kann nicht</string>
-
+    <string-array name="bdi_answers_10">
+        <item>Ich weine nicht öfter als früher.</item>
+        <item>Ich weine jetzt mehr als früher.</item>
+        <item>Ich weine beim geringsten Anlass.</item>
+        <item>Ich möchte gern weinen, aber ich kann nicht.</item>
+    </string-array>
 
     <string name="bdi_ii_11">Unruhe</string>
-    <string name="bdi_ii_11_0">Ich bin nicht unruhiger als sonst.</string>
-    <string name="bdi_ii_11_1">Ich bin unruhiger als sonst.</string>
-    <string name="bdi_ii_11_2">Ich bin so unruhig, dass es mir schwerfällt, still zu sitzen.</string>
-    <string name="bdi_ii_11_3">Ich bin so unruhig, dass ich mich ständig bewegen oder etwas tun muss.</string>
+    <string-array name="bdi_answers_11">
+        <item>Ich bin nicht unruhiger als sonst.</item>
+        <item>Ich bin unruhiger als sonst.</item>
+        <item>Ich bin so unruhig, dass es mir schwerfällt, still zu sitzen.</item>
+        <item>Ich bin so unruhig, dass ich mich ständig bewegen oder etwas tun muss.</item>
+    </string-array>
 
     <string name="bdi_ii_12">Interessenverlust</string>
-    <string name="bdi_ii_12_0">Ich habe das Interesse an anderen Menschen oder an Tätigkeiten nicht verloren.</string>
-    <string name="bdi_ii_12_1">Ich habe weniger Interesse an anderen Menschen oder an Dingen als sonst.</string>
-    <string name="bdi_ii_12_2">Ich habe das Interesse an anderen Menschen oder an Dingen zum grössten Teil verloren.</string>
-    <string name="bdi_ii_12_3">Es fällt mir schwer, mich überhaupt für irgend etwas zu interessieren.</string>
-
+    <string-array name="bdi_answers_12">
+        <item>Ich habe das Interesse an anderen Menschen oder an Tätigkeiten nicht verloren.</item>
+        <item>Ich habe weniger Interesse an anderen Menschen oder an Dingen als sonst.</item>
+        <item>Ich habe das Interesse an anderen Menschen oder an Dingen zum grössten Teil verloren.</item>
+        <item>Es fällt mir schwer, mich überhaupt für irgend etwas zu interessieren.</item>
+    </string-array>
 
     <string name="bdi_ii_13">Entschlussunfähigkeit</string>
-    <string name="bdi_ii_13_0">Ich bin so entschlussfreudig wie immer.</string>
-    <string name="bdi_ii_13_1">Es fällt mir schwerer als sonst, Entscheidungen zu treffen.</string>
-    <string name="bdi_ii_13_2">Es fällt mir sehr viel schwerer als sonst, Entscheidungen zu treffen.</string>
-    <string name="bdi_ii_13_3">Ich habe Mühe, überhaupt Entscheidungen zu treffen.</string>
-
+    <string-array name="bdi_answers_13">
+        <item>Ich bin so entschlussfreudig wie immer.</item>
+        <item>Es fällt mir schwerer als sonst, Entscheidungen zu treffen.</item>
+        <item>Es fällt mir sehr viel schwerer als sonst, Entscheidungen zu treffen.</item>
+        <item>Ich habe Mühe, überhaupt Entscheidungen zu treffen.</item>
+    </string-array>
 
     <string name="bdi_ii_14">Wertlosigkeit</string>
-    <string name="bdi_ii_14_0">Ich fühle mich nicht wertlos.</string>
-    <string name="bdi_ii_14_1">Ich halte mich für weniger wertvoll und nützlich als sonst.</string>
-    <string name="bdi_ii_14_2">Verglichen mit anderen Menschen fühle ich mich viel weniger wert.</string>
-    <string name="bdi_ii_14_3">Ich fühle mich völlig wertlos.</string>
-
+    <string-array name="bdi_answers_14">
+        <item>Ich fühle mich nicht wertlos.</item>
+        <item>Ich halte mich für weniger wertvoll und nützlich als sonst.</item>
+        <item>Verglichen mit anderen Menschen fühle ich mich viel weniger wert.</item>
+        <item>Ich fühle mich völlig wertlos.</item>
+    </string-array>
 
     <string name="bdi_ii_15">Energieverlust</string>
-    <string name="bdi_ii_15_0">Ich habe so viel Energie wie immer.</string>
-    <string name="bdi_ii_15_1">Ich habe weniger Energie als sonst.</string>
-    <string name="bdi_ii_15_2">Ich habe so wenig Energie, dass ich kaum noch etwas schaffe.</string>
-    <string name="bdi_ii_15_3">Ich habe keine Energie mehr, um überhaupt noch etwas zu tun.</string>
-
+    <string-array name="bdi_answers_15">
+        <item>Ich habe so viel Energie wie immer.</item>
+        <item>Ich habe weniger Energie als sonst.</item>
+        <item>Ich habe so wenig Energie, dass ich kaum noch etwas schaffe.</item>
+        <item>Ich habe keine Energie mehr, um überhaupt noch etwas zu tun.</item>
+    </string-array>
 
     <string name="bdi_ii_16">Veränderungen der Schlafgewohnheiten</string>
-    <string name="bdi_ii_16_0">Meine Schlafgewohnheiten haben sich nicht verändert.</string>
-    <string name="bdi_ii_16_1">Ich schlafe etwas mehr als sonst.</string>
-    <string name="bdi_ii_16_2">Ich schlafe viel mehr als sonst.</string>
-    <string name="bdi_ii_16_3">Ich wache 1–2 Stunden früher auf als gewöhnlich und kann dann nicht mehr einschlafen.</string>
-
+    <string-array name="bdi_answers_16">
+        <item>Meine Schlafgewohnheiten haben sich nicht verändert.</item>
+        <item>Ich schlafe etwas mehr als sonst.</item>
+        <item>Ich schlafe viel mehr als sonst.</item>
+        <item>Ich wache 1–2 Stunden früher auf als gewöhnlich und kann dann nicht mehr einschlafen.</item>
+    </string-array>
 
     <string name="bdi_ii_17">Reizbarkeit</string>
-    <string name="bdi_ii_17_0">Ich bin nicht reizbarer als sonst.</string>
-    <string name="bdi_ii_17_1">Ich bin reizbarer als sonst.</string>
-    <string name="bdi_ii_17_2">Ich bin viel reizbarer als sonst.</string>
-    <string name="bdi_ii_17_3">Ich fühle mich dauernd gereizt.</string>
-
+    <string-array name="bdi_answers_17">
+        <item>Ich bin nicht reizbarer als sonst.</item>
+        <item>Ich bin reizbarer als sonst.</item>
+        <item>Ich bin viel reizbarer als sonst.</item>
+        <item>Ich fühle mich dauernd gereizt.</item>
+    </string-array>
 
     <string name="bdi_ii_18">Veränderungen des Appetits</string>
-    <string name="bdi_ii_18_0">Mein Appetit hat sich nicht verändert.</string>
-    <string name="bdi_ii_18_1">Mein Appetit ist etwas schlechter als sonst.</string>
-    <string name="bdi_ii_18_2">Mein Appetit ist viel schlechter als sonst.</string>
-    <string name="bdi_ii_18_3">Ich habe überhaupt keinen Appetit.</string>
-
+    <string-array name="bdi_answers_18">
+        <item>Mein Appetit hat sich nicht verändert.</item>
+        <item>Mein Appetit ist etwas schlechter als sonst.</item>
+        <item>Mein Appetit ist viel schlechter als sonst.</item>
+        <item>Ich habe überhaupt keinen Appetit.</item>
+    </string-array>
 
     <string name="bdi_ii_19">Konzentrationsschwierigkeiten</string>
-    <string name="bdi_ii_19_0">Ich kann mich so gut konzentrieren wie immer.</string>
-    <string name="bdi_ii_19_1">Ich kann mich nicht mehr so gut konzentrieren wie sonst.</string>
-    <string name="bdi_ii_19_2">Es fällt mir schwer, mich längere Zeit auf irgend etwas zu konzentrieren.</string>
-    <string name="bdi_ii_19_3">Ich kann mich überhaupt nicht mehr konzentrieren.</string>
-
+    <string-array name="bdi_answers_19">
+        <item>Ich kann mich so gut konzentrieren wie immer.</item>
+        <item>Ich kann mich nicht mehr so gut konzentrieren wie sonst.</item>
+        <item>Es fällt mir schwer, mich längere Zeit auf irgend etwas zu konzentrieren.</item>
+        <item>Ich kann mich überhaupt nicht mehr konzentrieren.</item>
+    </string-array>
 
     <string name="bdi_ii_20">Ermüdung oder Erschöpfung</string>
-    <string name="bdi_ii_20_0">Ich fühle mich nicht müder oder erschöpfter als sonst.</string>
-    <string name="bdi_ii_20_1">Ich werde schneller müde oder erschöpft als sonst.</string>
-    <string name="bdi_ii_20_2">Für viele Dinge, die ich üblicherweise tue, bin ich zu müde oder erschöpft.</string>
-    <string name="bdi_ii_20_3">Ich bin so müde oder erschöpft, dass ich fast nichts mehr tun kann.</string>
-
+    <string-array name="bdi_answers_20">
+        <item>Ich fühle mich nicht müder oder erschöpfter als sonst.</item>
+        <item>Ich werde schneller müde oder erschöpft als sonst.</item>
+        <item>Für viele Dinge, die ich üblicherweise tue, bin ich zu müde oder erschöpft.</item>
+        <item>Ich bin so müde oder erschöpft, dass ich fast nichts mehr tun kann.</item>
+    </string-array>
 
     <string name="bdi_ii_21">Verlust an sexuellem Interesse</string>
-    <string name="bdi_ii_21_0">Mein Interesse an Sexualität hat sich in letzter Zeit nicht verändert.</string>
-    <string name="bdi_ii_21_1">Ich interessiere mich weniger für Sexualität als früher.</string>
-    <string name="bdi_ii_21_2">Ich interessiere mich jetzt viel weniger für Sexualität.</string>
-    <string name="bdi_ii_21_3">Ich habe das Interesse an Sexualität völlig verloren.</string>
+    <string-array name="bdi_answers_21">
+        <item>Mein Interesse an Sexualität hat sich in letzter Zeit nicht verändert.</item>
+        <item>Ich interessiere mich weniger für Sexualität als früher.</item>
+        <item>Ich interessiere mich jetzt viel weniger für Sexualität.</item>
+        <item>Ich habe das Interesse an Sexualität völlig verloren.</item>
+    </string-array>
+
+    <string name="promis_1">Wie würden Sie Ihren Gesundheitszustand insgesamt beschreiben ?</string>
+    <string name="promis_2">Wie würden Sie Ihre Lebensqualität insgesamt beschreiben ?</string>
+    <string name="promis_3">Wie würden Sie Ihren körperlichen Gesundheitszustand insgesamt beschreiben ?</string>
+    <string name="promis_4">"Wie würden Sie Ihre psychische Verfassung insgesamt beschreiben ? Dazu zählen Ihre Stimmung und Ihre Fähigkeit, klar zu denken. "</string>
+    <string name="promis_5">Wie zufrieden sind Sie insgesamt mit Ihren Aktivitäten mit anderen Menschen und mit Ihren Beziehungen zu anderen ?</string>
+    <string name="promis_9">Wie gut sind Sie insgesamt in der Lage, Aktivitäten mit anderen Menschen nachzugehen und Ihre Rollen im Alltag und in der Gemeinschaft auszufüllen ? (Dazu zählen Aktivitäten zu Hause, am Arbeitsplatz, in Ihrem Umfeld sowie Ihre Aufgaben als Elternteil, Sohn, Tochter, Lebenspartner/-in, im Berufsleben, in Ihrem Freundeskreis usw.)</string>
+    <string name="promis_7">Wie würden Sie Ihre Schmerzen im Allgemeinen einschätzen ?</string>
+    <string name="promis_8">Wie ausgeprägt war Ihre Müdigkeit im Allgemeinen ?</string>
+    <string name="promis_6">Inwieweit sind Sie in der Lage, alltägliche körperliche Aktivitäten auszuführen, z. B. Gehen, Treppensteigen, Einkäufe tragen oder Stühle verschieben ?</string>
+    <string name="promis_10">"Wie oft haben Ihnen seelische Probleme zu schafen gemacht, wie z. B. Angstgefühle, Traurigkeit, Niedergeschlagenheit oder Reizbarkeit ? "</string>
+
+    <string-array name="promis_legend_1to59">
+        <item>Schlecht</item>
+        <item>Einigermassen</item>
+        <item>Gut</item>
+        <item>Sehr Gut</item>
+        <item>Ausgezeichnet</item>
+    </string-array>
+
+    <string-array name="promis_legend_6">
+        <item>Überhaupt nicht</item>
+        <item>Ein wenig</item>
+        <item>Halbwegs</item>
+        <item>Grösstenteils</item>
+        <item>Vollständig</item>
+    </string-array>
+
+    <string-array name="promis_legend_10">
+        <item>Immer</item>
+        <item>Oft</item>
+        <item>Manchmal</item>
+        <item>Selten</item>
+        <item>Nie</item>
+    </string-array>
+
+    <string-array name="promis_legend_8">
+        <item>Sehr stark</item>
+        <item>Stark</item>
+        <item>Mässig</item>
+        <item>Schwach</item>
+        <item>Keine Müdigkeit</item>
+    </string-array>
+
+    <string-array name="promis_legend_7">
+        <item>Keine Schmerzen</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>Schlimmste vorstellbare Schmerzen</item>
+    </string-array>
 
 
-    <string name="promis_1">In general, would you say your health is: </string>
-    <string name="promis_2">In general, would you say your quality of life is: </string>
-    <string name="promis_3">In general, how would you rate your physical health ? </string>
-    <string name="promis_4">In general, how would you rate your mental health, including your mood and your ability to think ? </string>
-    <string name="promis_5">In general, how would you rate your satisfaction with your social activities and relationships ? </string>
-    <string name="promis_9">In general, please rate how well you carry out your usual social activities and roles. (This includes activities at home, at work and in your community, and responsibilities as a parent, child, spouse, employee, friend, etc.)</string>
-    <string name="promis_7">How would you rate your pain on average ? </string>
-    <string name="promis_8">How would you rate your fatigue on average ?</string>
-    <string name="promis_6">To what extent are you able to carry out your everyday physical activities such as walking, climbing stairs, carrying groceries, or moving a chair ? </string>
-    <string name="promis_10">How often have you been bothered by emotional problems such as feeling anxious, depressed or irritable ?</string>
-
-    <string name="promis_legend_1to59_1">Poor</string>
-    <string name="promis_legend_1to59_2">Fair</string>
-    <string name="promis_legend_1to59_3">Good</string>
-    <string name="promis_legend_1to59_4">Very good</string>
-    <string name="promis_legend_1to59_5">Excellent</string>
-
-    <string name="promis_legend_6to10_1">Not at all</string>
-    <string name="promis_legend_6to10_2">A little</string>
-    <string name="promis_legend_6to10_3">Moderately</string>
-    <string name="promis_legend_6to10_4">Mostly</string>
-    <string name="promis_legend_6to10_5">Completely</string>
-
-
-    <string name="instructions">INSTRUKTIONEN</string>
-    <string name="patient_id_7_characters">Patient ID (7 characters)</string>
-    <string name="stroke">Stroke</string>
+    <string name="patient_id_7_characters">Patient ID (7 Zeichen)</string>
+    <string name="stroke">Schlaganfall</string>
     <string name="parkinson">Parkinson</string>
     <string name="ms">MS</string>
-    <string name="other">Other</string>
-    <string name="precise_your_diagnosis">Precise your diagnosis</string>
-    <string name="confirm">Confirm</string>
-    <string name="introduction">Introduction</string>
-    <string name="go_to_questionnaires">Go to questionnaires</string>
-    <string name="disagree">Disagree</string>
-    <string name="agree">Agree</string>
+    <string name="other">Anderes</string>
+    <string name="precise_your_diagnosis">Genaue Diagnose</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="introduction">Einleitung</string>
+    <string name="go_to_questionnaires">Zu den Fragebögen</string>
+    <string name="disagree">Stimme nicht zu</string>
+    <string name="agree">Stimme zu</string>
     <string name="promis">PROMIS</string>
+    <string name="good">good</string>
+    <string name="moderate">mässig</string>
+    <string name="mild_fatigue">Leichte Müdigkeit</string>
+    <string name="moderate_fatigue">Mittelgradige Müdigkeit</string>
+    <string name="severe_fatigue">Schwere Müdigkeit</string>
+    <string name="fatigue_answer">Skala von 1(Stimme nicht zu) bis 7 (Stimme zu)</string>
+    <string name="within_normal_limits">Innerhalb normaler Grenzwerte</string>
+    <string name="borderline_case">Grenzfall</string>
+    <string name="inconspicuous">Unauffällig</string>
+    <string name="mild_depressive">Leichte Depression</string>
+    <string name="moderate_depressive">Mittelgradige Depression</string>
+    <string name="severe_depressive">Schwere Depression</string>"
+    <string name="very_high">sehr hoch</string>
+    <string name="high">Hoch</string>
+    <string name="average">Mittelmässig</string>
+    <string name="low">Niedrig</string>
+    <string name="very_low">Sehr niedrig</string>
 
+    <string name="redo_questionaire">Fragebogen %1$s wiederholen?</string>
+    <string name="redo_questionaire_message">Der Fragebogen wurde bereits ausgefüllt. Sind Sie sicher, dass Sie ihn erneut ausfüllen möchten?</string>
+    <string name="redo">Erneut starten</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="promis_pain_legend">"Schmerzenskala: "</string>
 
 </resources>

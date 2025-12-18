@@ -166,7 +166,7 @@
                             android:visibility="invisible"
                             android:textSize="18sp"
                             android:fontFamily="@font/montserratregular"
-                            android:text="(x skipped)"
+                            android:text="@string/x_skipped"
                             android:textColor="@color/colorPrimary"/>
 
                     </LinearLayout>
@@ -212,7 +212,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtQuestionnaireSkipped"
-                        android:text="Questionnaire skipped"
+                        android:text="@string/skipped_questionniare"
                         android:textSize="18sp"
                         android:visibility="gone"
                         android:fontFamily="@font/montserratregular"
@@ -275,7 +275,7 @@
                             android:visibility="invisible"
                             android:textSize="18sp"
                             android:fontFamily="@font/montserratregular"
-                            android:text="(x skipped)"
+                            android:text="@string/x_skipped"
                             android:textColor="@color/colorPrimary"/>
                     </LinearLayout>
 
@@ -291,7 +291,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Depression score : "
+                            android:text="@string/depression_score"
                             android:textSize="18sp"
                             android:fontFamily="@font/montserratregular"
                             android:textColor="@color/colorPrimary"
@@ -310,8 +310,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/txtQuestionsSkippedDep"
-                            android:layout_marginStart="20dp"
-                            android:text="3"
+                            android:layout_marginStart="5dp"
+                            android:text=" / 21"
                             android:textSize="18sp"
                             android:fontFamily="@font/montserratregular"
                             android:textColor="@color/colorPrimary"/>
@@ -323,12 +323,12 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="5dp"
                         android:id="@+id/linearAvgScore_anx"
-                        android:visibility="gone">
+                        android:visibility="invisible">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Anxiety score: "
+                            android:text="@string/anxiety_score"
                             android:textSize="18sp"
                             android:fontFamily="@font/montserratregular"
                             android:textColor="@color/colorPrimary"
@@ -346,9 +346,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
+                            android:layout_marginStart="5dp"
                             android:id="@+id/txtQuestionsSkippedAnx"
-                            android:text="3"
+                            android:text=" / 21"
                             android:textSize="18sp"
                             android:fontFamily="@font/montserratregular"
                             android:textColor="@color/colorPrimary"/>
@@ -358,12 +358,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtQuestionnaireSkippedDep"
-                        android:text="Questionnaire skipped"
+                        android:text="@string/skipped_questionniare"
                         android:textSize="18sp"
                         android:visibility="gone"
                         android:fontFamily="@font/montserratregular"
                         android:textColor="@color/colorPrimary"
-                        android:layout_marginStart="20dp"/>
+                        android:layout_marginStart="10dp"/>
 
 
 
@@ -375,25 +375,45 @@
                         android:text="PROMIS"
                         android:textStyle="bold"
                         android:textSize="25sp"
-                        android:textColor="@color/black"
-                        android:layout_marginTop="15dp"/>
+                        android:textColor="@color/black"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:id="@+id/linearPROMIS"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/txtQuestionPROMIS"
-                            android:text="Question answered : 0 / 10"
+                            android:text="@string/questions_answered"
                             android:layout_below="@+id/rdBtnPROMIS"
                             android:textColor="@color/colorPrimary"
                             android:fontFamily="@font/montserratregular"
                             android:textSize="18sp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="5dp"/>
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/nbrQuestionAnsweredPROMIS"
+                            android:text="0"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtOutQuestionsPROMIS"
+                            android:text=" / 10"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:layout_marginStart="5dp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -403,7 +423,7 @@
                             android:visibility="invisible"
                             android:textSize="18sp"
                             android:fontFamily="@font/montserratregular"
-                            android:text="(x skipped)"
+                            android:text="@string/x_skipped"
                             android:textColor="@color/colorPrimary"/>
                     </LinearLayout>
 
@@ -414,23 +434,35 @@
                         android:id="@+id/linearScorePhysicalPROMIS"
                         android:orientation="horizontal"
                         android:layout_below="@+id/txtQuestionPROMIS"
-                        android:visibility="visible"
-                        android:layout_marginStart="20dp"
+                        android:visibility="invisible"
                         android:layout_marginTop="5dp">
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/txtRawValuePhysicalPROMIS"
-                            android:text="Total score : x / 40"
+                            android:text="@string/physical_total_score"
                             android:textColor="@color/colorPrimary"
                             android:fontFamily="@font/montserratregular"
                             android:textSize="18sp"
-                            android:visibility="invisible"
-                            android:layout_marginTop="5dp"/>
+                            android:layout_marginStart = "20dp"/>
 
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtRawValuePhysicalPROMIS"
+                            android:text="3"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" / 20"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:layout_marginStart="5dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -439,24 +471,49 @@
                         android:id="@+id/linearScoreMentalPROMIS"
                         android:orientation="horizontal"
                         android:layout_below="@+id/txtQuestionPROMIS"
-                        android:visibility="visible"
-                        android:layout_marginStart="20dp"
+                        android:visibility="invisible"
                         android:layout_marginTop="5dp">
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/txtRawValueMentalPROMIS"
-                            android:text="Total score : x / 40"
+                            android:text="@string/mental_total_score"
                             android:textColor="@color/colorPrimary"
                             android:fontFamily="@font/montserratregular"
                             android:textSize="18sp"
-                            android:visibility="invisible"
-                            android:layout_marginTop="5dp"/>
+                            android:layout_marginStart="20dp"/>
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtRawValueMentalPROMIS"
+                            android:text="3"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" / 20"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:layout_marginStart="5dp"/>
 
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtQuestionnaireSkippedPROMIS"
+                        android:text="@string/skipped_questionniare"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:fontFamily="@font/montserratregular"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginStart="10dp"/>
 
                     <RadioButton
                         android:layout_width="wrap_content"
@@ -466,25 +523,44 @@
                         android:text="BDI - II"
                         android:textStyle="bold"
                         android:textSize="25sp"
-                        android:textColor="@color/black"
-                        android:layout_marginTop="15dp"/>
+                        android:textColor="@color/black"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/txtQuestionBDI"
-                            android:text="Question answered : 0 / 21"
+                            android:text="@string/questions_answered"
                             android:layout_below="@+id/rdBtnBDI"
                             android:textColor="@color/colorPrimary"
                             android:fontFamily="@font/montserratregular"
                             android:textSize="18sp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="5dp"/>
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/nbrQuestionAnsweredBDI"
+                            android:text="0"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtOutQuestionsBDI"
+                            android:text=" / 21"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:layout_marginStart="5dp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -494,7 +570,7 @@
                             android:visibility="invisible"
                             android:textSize="18sp"
                             android:fontFamily="@font/montserratregular"
-                            android:text="(x skipped)"
+                            android:text="@string/x_skipped"
                             android:textColor="@color/colorPrimary"/>
                     </LinearLayout>
 
@@ -505,34 +581,48 @@
                         android:id="@+id/linearScoreBDI"
                         android:orientation="horizontal"
                         android:layout_below="@+id/txtQuestionBDI"
-                        android:visibility="visible"
-                        android:layout_marginStart="20dp"
+                        android:visibility="invisible"
                         android:layout_marginTop="5dp">
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/txtRawValueBDI"
-                            android:text="Total score : x / 40"
+                            android:text="@string/total_score"
                             android:textColor="@color/colorPrimary"
                             android:fontFamily="@font/montserratregular"
                             android:textSize="18sp"
-                            android:visibility="invisible"
-                            android:layout_marginTop="5dp"/>
+                            android:layout_marginStart="20dp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/txtQuestionnaireSkipped_bdi"
-                            android:text="Questionnaire skipped"
-                            android:textSize="18sp"
-                            android:visibility="invisible"
-                            android:fontFamily="@font/montserratregular"
+                            android:id="@+id/txtRawValueBDI"
+                            android:text="3"
                             android:textColor="@color/colorPrimary"
-                            android:layout_marginStart="10dp"/>
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"/>
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" / 63"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/montserratregular"
+                            android:textSize="18sp"
+                            android:layout_marginStart="5dp"/>
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtQuestionnaireSkipped_bdi"
+                        android:text="@string/skipped_questionniare"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:fontFamily="@font/montserratregular"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginStart="10dp"/>
 
 
                 </RadioGroup>
@@ -601,7 +691,7 @@
                     android:id="@+id/txtInfoOptionnal"
                     android:layout_marginTop="50dp"
                     android:layout_centerHorizontal="true"
-                    android:text="Based on your results we ask you to complete the following questionnaires"
+                    android:text="@string/based_on_your_results"
                     android:textSize="25sp"
                     android:fontFamily="@font/montserratregular"
                     android:textColor="@color/black"
@@ -847,7 +937,7 @@
         android:layout_width="300dp"
         android:layout_height="80dp"
         android:id="@+id/btnResult"
-        android:text="Go to results"
+        android:text="@string/btn_go_to_results"
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_button"
         android:textSize="25sp"
@@ -865,7 +955,7 @@
         android:background="@drawable/bg_button"
         android:layout_alignParentBottom="true"
         android:textSize="25sp"
-        android:text="Confirm"/>
+        android:text="@string/btn_confirm"/>
 
 
 </RelativeLayout>
