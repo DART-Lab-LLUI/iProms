@@ -15,13 +15,13 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true"
         android:icon="@drawable/iproms"
         android:label="@string/app_name"
         android:roundIcon="@drawable/iproms"
         android:supportsRtl="true"
         android:theme="@style/Theme.IPROMS"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".Views.PromisView"
